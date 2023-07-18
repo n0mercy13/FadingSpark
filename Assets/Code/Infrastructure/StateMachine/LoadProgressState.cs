@@ -26,8 +26,12 @@ namespace Codebase.Infrastructure.StateMachine
             _staticDataService = staticDataService;
         }
 
-        public void Enter() => 
+        public void Enter()
+        {
             LoadProgressOrInitNew();
+
+            _stateMachine.Enter<
+        }
 
         public void Exit() { }
 
