@@ -1,12 +1,17 @@
-﻿namespace Codebase.Data
+﻿using System;
+
+namespace Codebase.Data
 {
+    [Serializable]
     public class PlayerProgress
     {
-        private string initialLevelName;
+        public PlayerState PlayerState;
+        public WorldData WorldData;
 
         public PlayerProgress(string initialLevelName)
         {
-            this.initialLevelName = initialLevelName;
+            WorldData = new WorldData(initialLevelName);
+            PlayerState = new PlayerState();
         }
     }
 }
