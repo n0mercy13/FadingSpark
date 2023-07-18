@@ -30,7 +30,7 @@ namespace Codebase.Infrastructure.StateMachine
         {
             LoadProgressOrInitNew();
 
-            _stateMachine.Enter<
+            //_stateMachine.Enter<
         }
 
         public void Exit() { }
