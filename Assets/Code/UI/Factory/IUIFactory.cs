@@ -1,6 +1,8 @@
-﻿namespace Codebase.UI.Factory
+﻿using Codebase.Services;
+
+namespace Codebase.UI.Factory
 {
-    public interface IUIFactory
+    public interface IUIFactory : IService
     {
         void CreateUIRoot();
         void CreateHUD();
