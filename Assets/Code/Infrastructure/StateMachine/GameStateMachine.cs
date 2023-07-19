@@ -10,13 +10,11 @@ namespace Codebase.Infrastructure.StateMachine
         private IExitableState _currentState;
 
         public GameStateMachine(
-            LoadProgressState loadProgressState,
             LoadLevelState loadLevelState,
             GameLoopState gameLoopState)
         {
             _states = new Dictionary<Type, IExitableState>
             {
-                [typeof(LoadProgressState)] = loadProgressState,
                 [typeof(LoadLevelState)] = loadLevelState,
                 [typeof(GameLoopState)] = gameLoopState,
             };
