@@ -2,12 +2,13 @@
 using Codebase.PlayerComponents;
 using Codebase.Services.StaticData;
 using Codebase.Services.PersistentProgress;
+using Codebase.Services.AssetProvider;
 
 namespace Codebase.Services.Factory
 {
     public class PlayerFactory : IPlayerFactory
     {
-        private readonly IAssetsProviderService _assetsProvider;
+        private readonly IAssetProviderService _assetsProvider;
         private readonly IStaticDataService _staticDataService;
         private readonly IInputService _inputService;
         private readonly IPersistentProgressService _persistentProgressService;
