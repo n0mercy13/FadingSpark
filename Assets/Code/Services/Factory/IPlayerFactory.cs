@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using Codebase.PlayerComponents;
+using Codebase.Logic.PlayerComponents;
 
 namespace Codebase.Services.Factory
 {

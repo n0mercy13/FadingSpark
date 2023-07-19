@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using Codebase.PlayerComponents;
+using Codebase.Logic.PlayerComponents;
 using Codebase.Services.StaticData;
 using Codebase.Services.PersistentProgress;
 using Codebase.Services.AssetProvider;

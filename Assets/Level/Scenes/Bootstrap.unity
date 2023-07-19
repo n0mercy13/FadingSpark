@@ -216,5 +216,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e3e1832cbfea3f41bf1bf4aaa3bedf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uiRoot: {fileID: 8112019856074689266, guid: 8947680b033b72c4ba2ee720fcf32ce1, type: 3}
-  _coroutineRunner: {fileID: 1200125814793579722, guid: 2af8527cf8d398345811566b3478961e, type: 3}
