@@ -3,6 +3,7 @@ using Codebase.PlayerComponents;
 using Codebase.Services.StaticData;
 using Codebase.Services.PersistentProgress;
 using Codebase.Services.AssetProvider;
+using Codebase.Services.Input;
 
 namespace Codebase.Services.Factory
 {

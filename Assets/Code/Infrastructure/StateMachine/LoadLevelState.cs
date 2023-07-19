@@ -1,4 +1,5 @@
-﻿using Codebase.Services.PersistentProgress;
+﻿using Codebase.Services.Factory;
+using Codebase.Services.PersistentProgress;
 using Codebase.Services.StaticData;
 using Codebase.UI.Factory;
 
