@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using Codebase.Logic.PlayerComponents;
 using Codebase.Services.StaticData;
-using Codebase.Services.PersistentProgress;
 using Codebase.Services.AssetProvider;
 using Codebase.Services.Input;
+using Codebase.StaticData;
 
 namespace Codebase.Services.Factory
 {
@@ -12,11 +12,25 @@ namespace Codebase.Services.Factory
         private readonly IAssetProviderService _assetsProvider;
         private readonly IStaticDataService _staticDataService;
         private readonly IInputService _inputService;
-        private readonly IPersistentProgressService _persistentProgressService;
 
-        public Player CreatePlayer(Vector3 at)
+        public PlayerFactory(
+            IAssetProviderService assetsProvider, 
+            IStaticDataService staticDataService, 
+            IInputService inputService)
         {
-            throw new System.NotImplementedException();
+            _assetsProvider = assetsProvider;
+            _staticDataService = staticDataService;
+            _inputService = inputService;
+        }
+
+        public Player Player { get; private set; }
+
+        public Player CreatePlayer()
+        {
+            Vector3 initialPosition = _staticDataService.ForPlayer().InitialPosition;
+            Player = _assetsProvider.Instantiate<Player>(Constants.AssetPath.Player, initialPosition);            
+
+            return Player;
         }
     }
 }

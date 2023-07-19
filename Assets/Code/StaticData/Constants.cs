@@ -12,6 +12,11 @@
             public const string InitialLevelName = "Main";
         }
 
+        public static class AssetPath
+        {
+            public const string Player = "Player/Player";
+        }
+
         public static class StaticDataPaths
         {
             public const string Player = "StaticData/Player/PlayerStaticData";
