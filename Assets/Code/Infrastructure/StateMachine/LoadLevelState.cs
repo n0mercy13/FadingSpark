@@ -1,6 +1,7 @@
 ﻿using Codebase.Services.Factory;
 using Codebase.Services.PersistentProgress;
 using Codebase.Services.StaticData;
+using Codebase.Services.SceneLoader;
 using Codebase.UI.Factory;
 
 namespace Codebase.Infrastructure.StateMachine
@@ -8,7 +9,7 @@ namespace Codebase.Infrastructure.StateMachine
     public class LoadLevelState : IPayloaderState<string>
     {
         private readonly GameStateMachine _gameStateMachine;
-        private readonly ISceneLoadService _sceneLoader;
+        private readonly ISceneLoaderService _sceneLoader;
         private readonly IPlayerFactory _playerFactory;
         private readonly IUIFactory _uiFactory;
         private readonly IPersistentProgressService _persistentProgressService;
