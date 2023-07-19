@@ -2,6 +2,11 @@
 {
     public static class Constants
     {
+        public static class Game
+        {
+            public const float Epsilon = 0.01f;
+        }
+
         public static class Level
         {
             public const string InitialLevelName = "Main";
