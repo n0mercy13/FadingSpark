@@ -2,14 +2,17 @@
 {
     public class GameLoopState : IState
     {
+        private readonly GameStateMachine _gameStateMachine;
+
+        public GameLoopState(GameStateMachine gameStateMachine) => 
+            _gameStateMachine = gameStateMachine;
+
         public void Enter()
         {
-            throw new System.NotImplementedException();
         }
 
         public void Exit()
         {
-            throw new System.NotImplementedException();
         }
     }
 }
