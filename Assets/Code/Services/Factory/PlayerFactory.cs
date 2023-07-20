@@ -4,7 +4,6 @@ using Codebase.Logic.PlayerComponents;
 using Codebase.Services.StaticData;
 using Codebase.Services.AssetProvider;
 using Codebase.StaticData;
-using System;
 using Codebase.Services.Input;
 
 namespace Codebase.Services.Factory
@@ -13,27 +12,27 @@ namespace Codebase.Services.Factory
     {
         private readonly DiContainer _container;
 
-        public PlayerFactory(DiContainer container)
-        {
+        private Player _player;
+
+        public PlayerFactory(DiContainer container) => 
             _container = container;
-        }
 
         public void CreatePlayer()
         {
             Vector3 initialPosition = GetPlayerInitialPosition();
-            Player player = InstantiatePlayer(at: initialPosition);
-            BindPlayer(player);
-            Initialize(player);
+            _player = InstantiatePlayer(at: initialPosition);
+            BindPlayer();
+            Initialize();
         }
 
-        private void Initialize(Player player)
+        private void Initialize()
         {
-            InitializeMover(player);
+            InitializeMover();
         }
 
-        private void InitializeMover(Player player)
+        private void InitializeMover()
         {
-            PlayerMover mover = player.GetComponent<PlayerMover>();
+            PlayerMover mover = _player.GetComponent<PlayerMover>();
             mover.Initialize(
                 _container.Resolve<IInputService>(), 
                 _container.Resolve<IStaticDataService>().ForPlayer().Speed);
@@ -49,10 +48,10 @@ namespace Codebase.Services.Factory
             _container.Resolve<IAssetProviderService>()
             .Instantiate<Player>(Constants.AssetPath.Player, at);
 
-        private void BindPlayer(Player player) => 
+        private void BindPlayer() => 
             _container
             .Bind<Player>()
-            .FromInstance(player)
+            .FromInstance(_player)
             .AsSingle();
     }
 }
