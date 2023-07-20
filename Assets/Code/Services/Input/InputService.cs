@@ -8,9 +8,9 @@ namespace Codebase.Services.Input
     {
         private readonly InputControls _controls;
 
-        public InputService(InputControls controls)
+        public InputService()
         {
-            _controls = controls;
+            _controls = new InputControls();
             _controls.Enable();
 
             _controls.Movements.Attack.performed += OnAttackPressed;

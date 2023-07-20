@@ -15,6 +15,9 @@
         public static class AssetPath
         {
             public const string Player = "Player/Player";
+
+            public const string UIRoot = "UI/UIRoot";
+            public const string HUD = "UI/HUD";
         }
 
         public static class StaticDataPaths

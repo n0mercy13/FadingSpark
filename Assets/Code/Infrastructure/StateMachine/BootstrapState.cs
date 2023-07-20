@@ -22,6 +22,7 @@ namespace Codebase.Infrastructure.StateMachine
 
             _gameStateMachine.Enter<LoadLevelState, string>(Constants.Level.InitialLevelName);
         }
+
         public void Exit()
         {
         }
