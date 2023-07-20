@@ -1,36 +1,42 @@
-﻿using UnityEngine;
+﻿using Zenject;
+using UnityEngine;
 using Codebase.Logic.PlayerComponents;
 using Codebase.Services.StaticData;
 using Codebase.Services.AssetProvider;
-using Codebase.Services.Input;
 using Codebase.StaticData;
 
 namespace Codebase.Services.Factory
 {
     public class PlayerFactory : IPlayerFactory
     {
-        private readonly IAssetProviderService _assetsProvider;
-        private readonly IStaticDataService _staticDataService;
-        private readonly IInputService _inputService;
+        private readonly DiContainer _container;
 
-        public PlayerFactory(
-            IAssetProviderService assetsProvider, 
-            IStaticDataService staticDataService, 
-            IInputService inputService)
+        public PlayerFactory(DiContainer container)
         {
-            _assetsProvider = assetsProvider;
-            _staticDataService = staticDataService;
-            _inputService = inputService;
+            _container = container;
         }
 
-        public Player Player { get; private set; }
-
-        public Player CreatePlayer()
+        public void CreatePlayer()
         {
-            Vector3 initialPosition = _staticDataService.ForPlayer().InitialPosition;
-            Player = _assetsProvider.Instantiate<Player>(Constants.AssetPath.Player, initialPosition);            
-
-            return Player;
+            Vector3 initialPosition = GetPlayerInitialPosition();
+            Player player = InstantiatePlayer(at: initialPosition);
+            BindPlayer(player);
         }
+        private Vector3 GetPlayerInitialPosition() => 
+            _container
+            .Resolve<IStaticDataService>()
+            .ForPlayer()
+            .InitialPosition;
+
+        private Player InstantiatePlayer(Vector3 at) =>
+            _container.Resolve<IAssetProviderService>()
+            .Instantiate<Player>(Constants.AssetPath.Player, at);
+
+
+        private void BindPlayer(Player player) => 
+            _container
+            .Bind<Player>()
+            .FromInstance(player)
+            .AsSingle();
     }
 }

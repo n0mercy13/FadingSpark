@@ -46,7 +46,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _scriptableObjectInstallers: []
-  _monoInstallers: []
+  _monoInstallers:
+  - {fileID: 5571971245242171182}
   _installerPrefabs: []
   _parentNewObjectsUnderContext: 0
   _editorReflectionBakingCoverageMode: 0
@@ -73,4 +74,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e3e1832cbfea3f41bf1bf4aaa3bedf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _coroutineRunner: {fileID: 0}
+  _coroutineRunner: {fileID: 4245001121318006580, guid: 2af8527cf8d398345811566b3478961e, type: 3}

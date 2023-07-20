@@ -4,7 +4,7 @@ using Codebase.Infrastructure.StateMachine;
 
 namespace Codebase.Infrastructure
 {
-    public class GameBootstrapper : MonoBehaviour, ICoroutineRunner
+    public class GameBootstrapper : MonoBehaviour
     {
         private GameStateMachine _gameStateMachine;
 
@@ -12,11 +12,7 @@ namespace Codebase.Infrastructure
         public void Construct(GameStateMachine gameStateMachine) => 
             _gameStateMachine = gameStateMachine;
 
-        private void Awake()
-        {
-            DontDestroyOnLoad(this);
-
-            _gameStateMachine.Enter<BootstrapState>();
-        }   
+        private void Awake() =>
+            _gameStateMachine.Enter<BootstrapState>();        
     }
 }

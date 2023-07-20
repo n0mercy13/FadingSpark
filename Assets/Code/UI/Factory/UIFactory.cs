@@ -16,7 +16,7 @@ namespace Codebase.UI.Factory
         public void CreateHUD()
         {
             GameObject hud = _assetProvider.Instantiate<GameObject>(Constants.AssetPath.HUD, Vector3.zero);
-            hud.transform.parent = _uiRoot.transform;
+            hud.transform.SetParent(_uiRoot.transform, false);
         }
 
         public void CreateMenu()

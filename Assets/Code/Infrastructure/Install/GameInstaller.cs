@@ -1,4 +1,5 @@
 using Zenject;
+using UnityEngine;
 using Codebase.Infrastructure.StateMachine;
 using Codebase.Services.StaticData;
 using Codebase.Services.Input;
@@ -11,8 +12,11 @@ namespace Codebase.Infrastructure.Installer
 {
     public class GameInstaller : MonoInstaller
     {
+        [SerializeField] private CoroutineRunner _coroutineRunner;
+
         public override void InstallBindings()
         {
+            BindInfrastructure();
             BindInputs();
             BindServices();
             BindFactories();
@@ -24,8 +28,17 @@ namespace Codebase.Infrastructure.Installer
             Container.BindInterfacesTo<UIFactory>().AsSingle();
         }
 
+        private void BindInfrastructure()
+        {
+            Container
+                .Bind<ICoroutineRunner>()
+                .To<CoroutineRunner>()
+                .FromComponentInNewPrefab(_coroutineRunner)
+                .AsSingle();
+        }
+
         private void BindInputs() => 
-            Container.Bind<InputControls>().AsSingle().NonLazy();
+            Container.Bind<InputControls>().AsSingle();
 
         private void BindServices()
         {
