@@ -4,6 +4,8 @@ using Codebase.Logic.PlayerComponents;
 using Codebase.Services.StaticData;
 using Codebase.Services.AssetProvider;
 using Codebase.StaticData;
+using System;
+using Codebase.Services.Input;
 
 namespace Codebase.Services.Factory
 {
@@ -21,7 +23,22 @@ namespace Codebase.Services.Factory
             Vector3 initialPosition = GetPlayerInitialPosition();
             Player player = InstantiatePlayer(at: initialPosition);
             BindPlayer(player);
+            Initialize(player);
         }
+
+        private void Initialize(Player player)
+        {
+            InitializeMover(player);
+        }
+
+        private void InitializeMover(Player player)
+        {
+            PlayerMover mover = player.GetComponent<PlayerMover>();
+            mover.Initialize(
+                _container.Resolve<IInputService>(), 
+                _container.Resolve<IStaticDataService>().ForPlayer().Speed);
+        }
+
         private Vector3 GetPlayerInitialPosition() => 
             _container
             .Resolve<IStaticDataService>()
@@ -31,7 +48,6 @@ namespace Codebase.Services.Factory
         private Player InstantiatePlayer(Vector3 at) =>
             _container.Resolve<IAssetProviderService>()
             .Instantiate<Player>(Constants.AssetPath.Player, at);
-
 
         private void BindPlayer(Player player) => 
             _container

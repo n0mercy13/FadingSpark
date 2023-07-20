@@ -70,7 +70,7 @@
                 {
                     "name": "Up",
                     "id": "9bde7c09-4278-4777-9ff7-edb95af1a892",
-                    "path": "",
+                    "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -81,7 +81,7 @@
                 {
                     "name": "Down",
                     "id": "24dd46cd-bc6d-4556-85c6-334bcd7d3154",
-                    "path": "",
+                    "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -104,28 +104,6 @@
                     "name": "Right",
                     "id": "0038051a-ebfc-4d15-88c2-3f9738ff802a",
                     "path": "<Keyboard>/d",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard & Mouse",
-                    "action": "Axis",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "Forward",
-                    "id": "3f415353-34e8-4daa-9ec2-cc2091e8857c",
-                    "path": "<Keyboard>/w",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard & Mouse",
-                    "action": "Axis",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "Backward",
-                    "id": "f0151d5c-afe4-4b58-992f-7b4cfa28a609",
-                    "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard & Mouse",

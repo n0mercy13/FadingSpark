@@ -1,6 +1,4 @@
-﻿using System;
-using Zenject;
-using UnityEngine;
+﻿using UnityEngine;
 using Codebase.Services.Input;
 using Codebase.StaticData;
 
@@ -13,12 +11,13 @@ namespace Codebase.Logic.PlayerComponents
         private IInputService _inputService;
         private float _movementSpeed;
 
-        [Inject]
-        public void Construct(IInputService inputService) => 
+        public void Initialize(
+            IInputService inputService, 
+            float movementSpeed)
+        {
             _inputService = inputService;
-
-        public void Initialize(float movementSpeed) => 
             _movementSpeed = movementSpeed;
+        }
 
         private void Awake() => 
             _characterController = GetComponent<CharacterController>();
