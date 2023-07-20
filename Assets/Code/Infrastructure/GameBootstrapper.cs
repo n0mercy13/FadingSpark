@@ -1,7 +1,6 @@
 ﻿using Zenject;
 using UnityEngine;
 using Codebase.Infrastructure.StateMachine;
-using Codebase.StaticData;
 
 namespace Codebase.Infrastructure
 {
@@ -13,11 +12,11 @@ namespace Codebase.Infrastructure
         public void Construct(GameStateMachine gameStateMachine) => 
             _gameStateMachine = gameStateMachine;
 
-        private void Awake() => 
+        private void Awake()
+        {
             DontDestroyOnLoad(this);
 
-        private void Start() => 
-            _gameStateMachine.Enter<LoadLevelState, string>(
-                Constants.Level.InitialLevelName);
+            _gameStateMachine.Enter<BootstrapState>();
+        }   
     }
 }

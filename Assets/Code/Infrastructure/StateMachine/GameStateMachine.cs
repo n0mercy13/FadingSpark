@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Codebase.Services.SceneLoader;
 using Codebase.Services.Factory;
 using Codebase.UI.Factory;
-
+using Codebase.Services.StaticData;
 
 namespace Codebase.Infrastructure.StateMachine
 {
@@ -14,14 +14,15 @@ namespace Codebase.Infrastructure.StateMachine
         private IExitableState _currentState;
 
         public GameStateMachine(
+            IStaticDataService staticDataService,
             ISceneLoaderService sceneLoader, 
             IPlayerFactory playerFactory, 
             IUIFactory uiFactory)
         {
             _states = new Dictionary<Type, IExitableState>
             {
-                [typeof(LoadLevelState)] = new LoadLevelState(
-                    this, sceneLoader, playerFactory, uiFactory),
+                [typeof(BootstrapState)] = new BootstrapState(this, staticDataService),
+                [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, playerFactory, uiFactory),
                 [typeof(GameLoopState)] = new GameLoopState(this),
             };
         }
