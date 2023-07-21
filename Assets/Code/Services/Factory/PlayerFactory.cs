@@ -2,9 +2,7 @@
 using UnityEngine;
 using Codebase.Logic.PlayerComponents;
 using Codebase.Services.StaticData;
-using Codebase.Services.AssetProvider;
 using Codebase.StaticData;
-using Codebase.Services.Input;
 
 namespace Codebase.Services.Factory
 {
@@ -12,30 +10,28 @@ namespace Codebase.Services.Factory
     {
         private readonly DiContainer _container;
 
-        private Player _player;
-
         public PlayerFactory(DiContainer container) => 
             _container = container;
 
         public void CreatePlayer()
         {
+            InstantiateAndBindPlayer();
+            Player player = GetPlayer();
+            Initialize(player);            
+        }
+
+        private Player GetPlayer() => 
+            _container.Resolve<Player>();
+
+        private void Initialize(Player player) => 
+            MovePlayerToInitialPosition(player);
+
+        private void MovePlayerToInitialPosition(Player player)
+        {
             Vector3 initialPosition = GetPlayerInitialPosition();
-            _player = InstantiatePlayer(at: initialPosition);
-            BindPlayer();
-            Initialize();
-        }
-
-        private void Initialize()
-        {
-            InitializeMover();
-        }
-
-        private void InitializeMover()
-        {
-            PlayerMover mover = _player.GetComponent<PlayerMover>();
-            mover.Initialize(
-                _container.Resolve<IInputService>(), 
-                _container.Resolve<IStaticDataService>().ForPlayer().Speed);
+            player.gameObject.SetActive(false);
+            player.transform.position = initialPosition;
+            player.gameObject.SetActive(true);
         }
 
         private Vector3 GetPlayerInitialPosition() => 
@@ -44,15 +40,10 @@ namespace Codebase.Services.Factory
             .ForPlayer()
             .InitialPosition;
 
-        private Player InstantiatePlayer(Vector3 at) =>
-            _container
-            .Resolve<IAssetProviderService>()
-            .Instantiate<Player>(Constants.AssetPath.Player, at);
-
-        private void BindPlayer() => 
+        private void InstantiateAndBindPlayer() =>
             _container
             .Bind<Player>()
-            .FromInstance(_player)
+            .FromNewComponentOnNewPrefabResource(Constants.AssetPath.Player)
             .AsSingle();
     }
 }
