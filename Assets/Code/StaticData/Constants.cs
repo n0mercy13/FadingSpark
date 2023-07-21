@@ -1,4 +1,6 @@
-﻿namespace Codebase.StaticData
+﻿using UnityEngine;
+
+namespace Codebase.StaticData
 {
     public static class Constants
     {
