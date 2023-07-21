@@ -45,7 +45,8 @@ namespace Codebase.Services.Factory
             .InitialPosition;
 
         private Player InstantiatePlayer(Vector3 at) =>
-            _container.Resolve<IAssetProviderService>()
+            _container
+            .Resolve<IAssetProviderService>()
             .Instantiate<Player>(Constants.AssetPath.Player, at);
 
         private void BindPlayer() => 

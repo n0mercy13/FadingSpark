@@ -83,7 +83,7 @@ namespace Codebase.Services.Input
                 {
                     ""name"": ""3D Vector"",
                     ""id"": ""8aefede0-112b-4267-8ac8-3616147c7475"",
-                    ""path"": ""3DVector"",
+                    ""path"": ""3DVector(mode=1)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
