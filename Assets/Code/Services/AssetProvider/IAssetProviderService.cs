@@ -4,6 +4,7 @@ namespace Codebase.Services.AssetProvider
 {
     public interface IAssetProviderService : IService
     {
-        T Instantiate<T>(string path, Vector3 at) where T : UnityEngine.Object;
+        T Get<T>(string path) where T : Object;
+        T Instantiate<T>(string path, Vector3 at) where T : Object;
     }
 }
