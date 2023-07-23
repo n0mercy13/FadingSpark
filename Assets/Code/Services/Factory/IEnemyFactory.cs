@@ -1,4 +1,4 @@
-﻿using Codebase.Logic.Enemy;
+﻿using Codebase.Logic.EnemyComponents;
 
 namespace Codebase.Services.Factory
 {

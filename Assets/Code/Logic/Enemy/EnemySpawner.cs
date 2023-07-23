@@ -1,7 +1,7 @@
 ﻿using Zenject;
 using Codebase.Services.Factory;
 
-namespace Codebase.Logic.Enemy
+namespace Codebase.Logic.EnemyComponents
 {
     public class EnemySpawner
     {

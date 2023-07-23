@@ -1,4 +1,9 @@
-﻿namespace Codebase.Logic.Enemy
+﻿using UnityEngine;
+
+namespace Codebase.Logic.EnemyComponents
 {
-    public class Enemy
+    public class Enemy : MonoBehaviour
+    {
+
+    }
 }

@@ -1,15 +1,20 @@
 ﻿using System;
 using Zenject;
-using Codebase.Logic.Enemy;
+using Codebase.Logic.EnemyComponents;
 using Codebase.Services.AssetProvider;
+using Codebase.StaticData;
+using UnityEngine;
 
 namespace Codebase.Services.Factory
 {
     public class EnemyFactory : IEnemyFactory
     {
+        private const string EnemiesFolderPath = "Enemies/";
+
         private readonly DiContainer _container;
         private readonly IAssetProviderService _assetProviderService;
 
+        private string _assetPath;
 
         public EnemyFactory(DiContainer container)
         {
@@ -21,26 +26,23 @@ namespace Codebase.Services.Factory
 
         public Enemy Create(EnemyTypes type)
         {
-            switch (type)
-            {
-                case EnemyTypes.SmallAsteroid:
-                    Instantiate(type);
-                    break;
+            Enemy enemy = Instantiate(type);
+            Initialize(enemy);
 
-                default:
-                    throw new InvalidOperationException(
-                        $"Unknown type of enemy: '{type}'");
-            }
+            return enemy;
         }
 
         public void Initialize(Enemy enemy)
         {
             throw new System.NotImplementedException();
         }
-        
-        private void Instantiate(EnemyTypes type)
+
+        private Enemy Instantiate(EnemyTypes type)
         {
-            throw new NotImplementedException();
+            _assetPath = EnemiesFolderPath + type.ToString();
+            GameObject prefab = _assetProviderService.Get<GameObject>(_assetPath);
+
+            return _container.InstantiatePrefabForComponent<Enemy>(prefab);
         }
     }
 }
