@@ -1,4 +1,4 @@
-﻿namespace Codebase.Logic.Weapon
+﻿namespace Codebase.Logic.Weapons
 {
     public interface IWeapon
     {

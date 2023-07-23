@@ -1,8 +1,6 @@
-﻿using System;
-using Zenject;
+﻿using Zenject;
 using Codebase.Logic.EnemyComponents;
 using Codebase.Services.AssetProvider;
-using Codebase.StaticData;
 using UnityEngine;
 
 namespace Codebase.Services.Factory

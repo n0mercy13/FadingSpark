@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Codebase.Logic.Player
+namespace Codebase.Logic.PlayerComponents
 {
     public class Energy : IDamageable
     {
