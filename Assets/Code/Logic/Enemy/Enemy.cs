@@ -3,20 +3,24 @@ using Codebase.Logic.PlayerComponents;
 using Codebase.Logic.Weapons;
 using Codebase.Logic.Enemy.StateMachine;
 using Zenject;
+using Codebase.Services.StaticData;
 
 namespace Codebase.Logic.EnemyComponents
 {
     public class Enemy : MonoBehaviour
     {
-        protected Player Target;
-        protected Weapon Weapon;
-        protected Health Health;
-        protected EnemyStateMachine StateMachine;
+        [SerializeField] private EnemyTypes _type;
+
+        private Player _target;
+        private Health _health;
+        private EnemyStateMachine _stateMachine;
+        private IStaticDataService _staticDataService;
 
         [Inject]
-        public void Construct(Player target)
+        public void Construct(Player target, IStaticDataService staticDataService)
         {
-            Target = target;            
+            _target = target;    
+            _staticDataService = staticDataService;
         }
 
         public void Initialize(Weapon weapon)

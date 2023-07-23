@@ -1,7 +1,4 @@
-﻿using Codebase.Logic.EnemyComponents;
-using UnityEngine;
-
-namespace Codebase.StaticData
+﻿namespace Codebase.StaticData
 {
     public static class Constants
     {
@@ -27,6 +24,7 @@ namespace Codebase.StaticData
         public static class StaticDataPaths
         {
             public const string Player = "StaticData/Player/PlayerStaticData";
+            public const string Enemies = "StaticData/Enemies";
         }
     }
 }
