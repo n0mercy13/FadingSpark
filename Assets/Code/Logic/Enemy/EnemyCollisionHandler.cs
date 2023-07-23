@@ -2,7 +2,7 @@
 
 namespace Codebase.Logic.EnemyComponents
 {
-    public class EnemyCollisonHandler : MonoBehaviour
+    public class EnemyCollisionHandler : MonoBehaviour
     {
 
     }

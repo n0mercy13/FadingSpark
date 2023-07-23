@@ -1,22 +1,33 @@
 ﻿using System;
+using UnityEngine;
 using System.Collections.Generic;
 using Codebase.Infrastructure.StateMachine;
-using Codebase.Services.StaticData;
 
 namespace Codebase.Logic.Enemy.StateMachine
 {
-    public class EnemyStateMachine : StateMachineBase
+    public class EnemyStateMachine : ScriptableObject
     {
-        public EnemyStateMachine(IStaticDataService staticDataService)
+        protected readonly Dictionary<Type, IExitableState> States;
+
+        protected IExitableState ActiveState;
+
+        public void Enter<TState>() where TState : class, IState
         {
-            States = new Dictionary<Type, IExitableState>
-            {
-                [typeof(InitializeState)] = new InitializeState(this, staticDataService),
-                [typeof(IdleState)] = new IdleState(this),
-                [typeof(MoveState)] = new MoveState(this),
-                [typeof(AttackState)] = new AttackState(this),
-                [typeof(DeathState)] = new DeathState(this),
-            };
+            IState state = ChangeState<TState>();
+            state.Enter();
         }
+
+        private TState ChangeState<TState>() where TState : class, IExitableState
+        {
+            ActiveState?.Exit();
+
+            TState state = GetState<TState>();
+            ActiveState = state;
+
+            return state;
+        }
+
+        private TState GetState<TState>() where TState : class, IExitableState =>
+            States[typeof(TState)] as TState;
     }
 }

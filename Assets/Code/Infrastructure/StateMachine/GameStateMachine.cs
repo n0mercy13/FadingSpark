@@ -7,15 +7,19 @@ using Codebase.Services.StaticData;
 
 namespace Codebase.Infrastructure.StateMachine
 {
-    public class GameStateMachine : StateMachineBase
+    public class GameStateMachine
     {
+        private readonly Dictionary<Type, IExitableState> _states;
+
+        private IExitableState _currentState;
+
         public GameStateMachine(
             IStaticDataService staticDataService,
             ISceneLoaderService sceneLoader,
             IPlayerFactory playerFactory,
             IUIFactory uiFactory)
         {
-            States = new Dictionary<Type, IExitableState>
+            _states = new Dictionary<Type, IExitableState>
             {
                 [typeof(BootstrapState)] = new BootstrapState(this, staticDataService),
                 [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, playerFactory, uiFactory),
@@ -23,10 +27,23 @@ namespace Codebase.Infrastructure.StateMachine
             };
         }
 
-        public void Enter<TState, TPayload>(TPayload payload) where TState : class, IPayloaderState<TPayload>
+        public void Enter<TState>() where TState : class, IState
         {
-            IPayloaderState<TPayload> state = ChangeState<TState>();
-            state.Enter(payload);
+            IState state = ChangeState<TState>();
+            state.Enter();
         }
+
+        private TState ChangeState<TState>() where TState : class, IExitableState
+        {
+            _currentState?.Exit();
+
+            TState state = GetState<TState>();
+            _currentState = state;
+
+            return state;
+        }
+
+        private TState GetState<TState>() where TState : class, IExitableState =>
+            _states[typeof(TState)] as TState;
     }
 }
