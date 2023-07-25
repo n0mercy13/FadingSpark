@@ -8,6 +8,7 @@ using Codebase.Services.Factory;
 using Codebase.Services.SceneLoader;
 using Codebase.Services.Tick;
 using Codebase.UI.Factory;
+using Codebase.Logic.EnemyComponents;
 
 namespace Codebase.Infrastructure.Installer
 {
@@ -26,7 +27,9 @@ namespace Codebase.Infrastructure.Installer
         private void BindFactories()
         {
             Container.BindInterfacesTo<PlayerFactory>().AsSingle();
+            Container.BindInterfacesTo<EnemyFactory>().AsSingle();
             Container.BindInterfacesTo<UIFactory>().AsSingle();
+            Container.Bind<GameFactory>().AsSingle();
         }
 
         private void BindInfrastructure()

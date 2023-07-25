@@ -9,8 +9,8 @@ namespace Codebase.Services.Factory
     {
         private const string EnemiesFolderPath = "Enemies/";
 
-        private readonly DiContainer _container;
         private readonly IAssetProviderService _assetProviderService;
+        private readonly DiContainer _container;
 
         private string _assetPath;
 
@@ -22,25 +22,28 @@ namespace Codebase.Services.Factory
                 .Resolve<IAssetProviderService>();
         }
 
-        public Enemy Create(EnemyTypes type)
+        public Enemy Create(EnemyTypes type, Vector3 at)
         {
             Enemy enemy = Instantiate(type);
-            Initialize(enemy);
+            Initialize(enemy, at);
 
             return enemy;
         }
 
-        public void Initialize(Enemy enemy)
+        private void Initialize(Enemy enemy, Vector3 at)
         {
-            throw new System.NotImplementedException();
+            enemy.transform.position = at;
+            enemy.gameObject.SetActive(true);
         }
 
         private Enemy Instantiate(EnemyTypes type)
         {
             _assetPath = EnemiesFolderPath + type.ToString();
             GameObject prefab = _assetProviderService.Get<GameObject>(_assetPath);
+            Enemy enemy = _container.InstantiatePrefabForComponent<Enemy>(prefab);
+            enemy.gameObject.SetActive(false);
 
-            return _container.InstantiatePrefabForComponent<Enemy>(prefab);
+            return enemy;
         }
     }
 }
