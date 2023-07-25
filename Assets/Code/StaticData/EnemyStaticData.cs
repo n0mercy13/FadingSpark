@@ -19,6 +19,9 @@ namespace Codebase.StaticData
         {
             if(Weapons == null)
                 throw new ArgumentNullException(nameof(Weapons));
+
+            if(AI == null) 
+                throw new ArgumentNullException(nameof(AI));
         }
     }
 }

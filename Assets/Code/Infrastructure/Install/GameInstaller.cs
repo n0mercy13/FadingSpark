@@ -12,7 +12,7 @@ namespace Codebase.Infrastructure.Installer
 {
     public class GameInstaller : MonoInstaller
     {
-        [SerializeField] private CoroutineRunner _coroutineRunner;
+        [SerializeField] private Runner _coroutineRunner;
 
         public override void InstallBindings()
         {
@@ -31,8 +31,7 @@ namespace Codebase.Infrastructure.Installer
         private void BindInfrastructure()
         {
             Container
-                .Bind<ICoroutineRunner>()
-                .To<CoroutineRunner>()
+                .BindInterfacesTo<Runner>()
                 .FromComponentInNewPrefab(_coroutineRunner)
                 .AsSingle();
         }

@@ -33,6 +33,12 @@ namespace Codebase.Infrastructure.StateMachine
             state.Enter();
         }
 
+        public void Enter<TState, TPayload>(TPayload payload) where TState : class, IPayloaderState<TPayload>
+        {
+            IPayloaderState<TPayload> state = ChangeState<TState>();
+            state.Enter(payload);
+        }
+
         private TState ChangeState<TState>() where TState : class, IExitableState
         {
             _currentState?.Exit();

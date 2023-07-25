@@ -26,5 +26,12 @@
             public const string Player = "StaticData/Player/PlayerStaticData";
             public const string Enemies = "StaticData/Enemies";
         }
+
+        public static class  Screen
+        {
+            public const int FPS_30 = 30;
+            public const int FPS_60 = 60;
+            public const int FPS_120 = 120;
+        }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Zenject;
 using UnityEngine;
 using Codebase.Logic.PlayerComponents;
-using Codebase.Logic.Weapons;
 using Codebase.Logic.Enemy.StateMachine;
 using Codebase.Services.StaticData;
 using Codebase.StaticData;
@@ -17,7 +16,7 @@ namespace Codebase.Logic.EnemyComponents
 
         private Player _target;
         private Health _health;
-        private EnemyStateMachine _ai;
+        private EnemyStateMachine _enemyStateMachine;
 
         private EnemyMover _mover;
         private EnemyCollisionHandler _collisionHandler;
@@ -43,11 +42,10 @@ namespace Codebase.Logic.EnemyComponents
         {
             EnemyStaticData enemyData = staticDataService.ForEnemy(_type);
 
-            _ai = enemyData.AI;
+            _enemyStateMachine = enemyData.AI;
+            _health = new Health(enemyData.MaxHealth);
             _mover.Initialize(enemyData.Speed);
             _weaponHandler.Initialize(enemyData.Weapons);
-
-            _health = new Health(enemyData.MaxHealth);
         }
     }
 }
