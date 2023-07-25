@@ -23,8 +23,11 @@ namespace Codebase.Logic.EnemyComponents
         {
             EnemyStaticData enemyData = staticDataService.ForEnemy(_type);
             float speed = enemyData.Speed;
+            int maxHealth = enemyData.MaxHealth;
 
             _mover = new EnemyMover(this, tickProvider, speed);
+            _enemyStateMachine = new EnemyStateMachine(_mover);
+            _health = new Health(maxHealth);
         }
     }
 }

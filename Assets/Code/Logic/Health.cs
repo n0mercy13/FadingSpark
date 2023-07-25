@@ -4,18 +4,23 @@ namespace Codebase.Logic
 {
     public class Health : IDamageable
     {
-        private int maxHealth;
+        private readonly int _maxHealth;
+
+        private int _value;
 
         public Health(int maxHealth)
         {
-            this.maxHealth = maxHealth;
+            _maxHealth = maxHealth;
+            _value = maxHealth;
         }
 
         public event Action<int, int> ValueChanged = delegate { };
 
-        public void ApplyDamage(int value)
+        public void ApplyDamage(int damage)
         {
-            throw new NotImplementedException();
+            _value -= damage;
+            _value = Math.Clamp(_value, 0, _maxHealth);
+            ValueChanged.Invoke(_value, _maxHealth);
         }
     }
 }
