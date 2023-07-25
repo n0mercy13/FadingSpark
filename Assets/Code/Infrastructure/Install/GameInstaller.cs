@@ -9,6 +9,7 @@ using Codebase.Services.SceneLoader;
 using Codebase.Services.Tick;
 using Codebase.UI.Factory;
 using Codebase.Logic.EnemyComponents;
+using Codebase.Services.RandomGenerator;
 
 namespace Codebase.Infrastructure.Installer
 {
@@ -45,6 +46,7 @@ namespace Codebase.Infrastructure.Installer
 
         private void BindServices()
         {
+            Container.BindInterfacesTo<RandomGeneratorService>().AsSingle();
             Container.BindInterfacesTo<StaticDataService>().AsSingle();
             Container.BindInterfacesTo<InputService>().AsSingle();
             Container.BindInterfacesTo<AssetProviderService>().AsSingle();

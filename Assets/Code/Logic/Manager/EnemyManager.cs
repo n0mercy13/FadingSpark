@@ -13,7 +13,6 @@ namespace Codebase.Logic.Manager
         private void Construct(GameFactory gameFactory)
         {
             _spawner = gameFactory.CreateEnemySpawner();
-            Debug.Log("injected");
         }
     }
 }

@@ -2,6 +2,7 @@
 using UnityEngine;
 using Codebase.Services.Factory;
 using Codebase.Services.Tick;
+using Codebase.Services.RandomGenerator;
 
 namespace Codebase.Logic.EnemyComponents
 {
@@ -11,15 +12,18 @@ namespace Codebase.Logic.EnemyComponents
 
         private readonly IEnemyFactory _enemyFactory;
         private readonly ITickProviderService _tickProvider;
+        private readonly IRandomGeneratorService _random;
 
         private float _timer;
 
         public EnemySpawner(
-            IEnemyFactory enemyFactory, 
-            ITickProviderService tickProvider)
+            IEnemyFactory enemyFactory,
+            ITickProviderService tickProvider,
+            IRandomGeneratorService random)
         {
             _enemyFactory = enemyFactory;
             _tickProvider = tickProvider;
+            _random = random;
 
             _tickProvider.Ticked += OnTick;
         }
@@ -42,6 +46,8 @@ namespace Codebase.Logic.EnemyComponents
         }
 
         private void CreateSmallAsteroid() => 
-            _enemyFactory.Create(EnemyTypes.SmallAsteroid, Vector3.zero);
+            _enemyFactory.Create(
+                EnemyTypes.SmallAsteroid, 
+                _random.GetPositionOutsideViewport());
     }
 }

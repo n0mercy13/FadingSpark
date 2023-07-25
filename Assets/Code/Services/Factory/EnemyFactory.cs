@@ -1,7 +1,8 @@
 ﻿using Zenject;
+using UnityEngine;
 using Codebase.Logic.EnemyComponents;
 using Codebase.Services.AssetProvider;
-using UnityEngine;
+using Codebase.Infrastructure;
 
 namespace Codebase.Services.Factory
 {
@@ -12,6 +13,7 @@ namespace Codebase.Services.Factory
         private readonly IAssetProviderService _assetProviderService;
         private readonly DiContainer _container;
 
+        private MonoBehaviour _runner;
         private string _assetPath;
 
         public EnemyFactory(DiContainer container)
@@ -20,30 +22,24 @@ namespace Codebase.Services.Factory
 
             _assetProviderService = _container
                 .Resolve<IAssetProviderService>();
+            _runner = _container
+                .Resolve<ICoroutineRunner>() as MonoBehaviour;
         }
 
         public Enemy Create(EnemyTypes type, Vector3 at)
         {
-            Enemy enemy = Instantiate(type);
-            Initialize(enemy, at);
-
-            return enemy;
+            GameObject prefab = GetPrefab(type);
+            return _container
+                .InstantiatePrefabForComponent<Enemy>(
+                prefab, at, Quaternion.identity, _runner.transform);
         }
 
-        private void Initialize(Enemy enemy, Vector3 at)
-        {
-            enemy.transform.position = at;
-            enemy.gameObject.SetActive(true);
-        }
-
-        private Enemy Instantiate(EnemyTypes type)
+        private GameObject GetPrefab(EnemyTypes type)
         {
             _assetPath = EnemiesFolderPath + type.ToString();
             GameObject prefab = _assetProviderService.Get<GameObject>(_assetPath);
-            Enemy enemy = _container.InstantiatePrefabForComponent<Enemy>(prefab);
-            enemy.gameObject.SetActive(false);
 
-            return enemy;
+            return prefab;
         }
     }
 }
