@@ -5,8 +5,9 @@ using Codebase.Services.StaticData;
 using Codebase.Services.Input;
 using Codebase.Services.AssetProvider;
 using Codebase.Services.Factory;
-using Codebase.UI.Factory;
 using Codebase.Services.SceneLoader;
+using Codebase.Services.Tick;
+using Codebase.UI.Factory;
 
 namespace Codebase.Infrastructure.Installer
 {
@@ -44,7 +45,8 @@ namespace Codebase.Infrastructure.Installer
             Container.BindInterfacesTo<StaticDataService>().AsSingle();
             Container.BindInterfacesTo<InputService>().AsSingle();
             Container.BindInterfacesTo<AssetProviderService>().AsSingle();
-            Container.BindInterfacesTo<SceneLoaderService>().AsSingle();                    
+            Container.BindInterfacesTo<SceneLoaderService>().AsSingle();  
+            Container.BindInterfacesTo<TickProviderService>().AsSingle();
             Container.Bind<GameStateMachine>().AsSingle();
         }
     }

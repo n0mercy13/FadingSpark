@@ -7,6 +7,7 @@ namespace Codebase.Services.Tick
     public partial class TickProviderService : ITickProviderService
     {
         private readonly IUpdateProvider _updateProvider;
+        private readonly int _framesPerSecond;
 
         private int _ticksCount;
         private float _tickTimer;
@@ -18,21 +19,20 @@ namespace Codebase.Services.Tick
             _updateProvider = updateProvider;
             updateProvider.Updated += OnUpdate;
 
-            FPS = Constants.Screen.FPS_60;
+            _framesPerSecond = Constants.Screen.FPS_60;
             _ticksCount = 0;
         }
 
-        public int FPS { get; set; }
-        private float _tickTimerMax => 1 / FPS;
-
+        public float DeltaTime => 
+            1f / _framesPerSecond;        
 
         private void OnUpdate()
         {
             _tickTimer += Time.deltaTime;
 
-            if(_tickTimer >= _tickTimerMax)
+            if(_tickTimer >= DeltaTime)
             {
-                _tickTimer -= _tickTimerMax;
+                _tickTimer -= DeltaTime;
                 _ticksCount++;
 
                 Ticked.Invoke(_ticksCount);

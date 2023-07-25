@@ -1,39 +1,47 @@
-﻿using Zenject;
+﻿using System;
 using UnityEngine;
 using Codebase.Services.Input;
 using Codebase.StaticData;
-using Codebase.Services.StaticData;
+using Codebase.Services.Tick;
 
 namespace Codebase.Logic.PlayerComponents
 {
-    [RequireComponent(typeof(CharacterController))]
-    public class PlayerMover : MonoBehaviour
+    public class PlayerMover : IDisposable
     {
-        private CharacterController _characterController;
-        private IInputService _inputService;
-        private float _movementSpeed;
+        private readonly CharacterController _characterController;
+        private readonly ITickProviderService _tickProvider;
+        private readonly IInputService _inputService;
+        private readonly float _movementSpeed;
 
-        [Inject]
-        public void Construct(IInputService inputService, IStaticDataService staticData)
+        public PlayerMover(
+            CharacterController characterController,
+            IInputService inputService,
+            ITickProviderService tickProvider,
+            float movementSpeed)
         {
+            _characterController = characterController;
             _inputService = inputService;
-            _movementSpeed = staticData.ForPlayer().Speed;
+            _tickProvider = tickProvider;
+            _movementSpeed = movementSpeed;
+
+            tickProvider.Ticked += OnTick;
         }
 
-        private void Awake() => 
-            _characterController = GetComponent<CharacterController>();
+        public void Dispose() => 
+            _tickProvider.Ticked -= OnTick;
 
-        private void Update() => 
+        private void OnTick(int _)
+        {
             MovePlayer();
+        }
 
         private void MovePlayer()
         {
             if(_inputService.Axis.sqrMagnitude >= Constants.Game.Epsilon)
             {
                 _characterController.Move(
-                    _movementSpeed * Time.deltaTime * _inputService.Axis);
+                    _movementSpeed * _tickProvider.DeltaTime * _inputService.Axis);                
             }
         }
-    }
-    
+    }    
 }

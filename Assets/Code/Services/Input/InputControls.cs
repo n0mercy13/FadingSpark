@@ -238,7 +238,7 @@ namespace Codebase.Services.Input
             ""devices"": [
                 {
                     ""devicePath"": ""<XboxOneGamepadAndroid>"",
-                    ""isOptional"": true,
+                    ""isOptional"": false,
                     ""isOR"": false
                 }
             ]
