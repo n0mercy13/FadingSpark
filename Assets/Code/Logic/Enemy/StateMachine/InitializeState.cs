@@ -3,7 +3,7 @@ using Codebase.Services.StaticData;
 
 namespace Codebase.Logic.Enemy.StateMachine
 {
-    public class InitializeState : IState
+    public class InitializeState : IPayloaderState
     {
         private EnemyStateMachine enemyStateMachine;
         private IStaticDataService staticDataService;

@@ -2,7 +2,7 @@
 
 namespace Codebase.Logic.Enemy.StateMachine
 {
-    internal class IdleState : IState
+    internal class IdleState : IPayloaderState
     {
         private readonly EnemyStateMachine enemyStateMachine;
 

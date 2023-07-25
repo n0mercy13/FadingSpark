@@ -4,6 +4,7 @@ using Codebase.Logic.PlayerComponents;
 using Codebase.Logic.Enemy.StateMachine;
 using Codebase.Services.StaticData;
 using Codebase.StaticData;
+using Codebase.Services.Tick;
 
 namespace Codebase.Logic.EnemyComponents
 {
@@ -11,38 +12,19 @@ namespace Codebase.Logic.EnemyComponents
     {
         [SerializeField] private EnemyTypes _type;
 
-        private Player _target;
         private Health _health;
         private EnemyStateMachine _enemyStateMachine;
-
         private EnemyMover _mover;
         private EnemyCollisionHandler _collisionHandler;
         private EnemyWeaponHandler _weaponHandler;
 
         [Inject]
-        public void Construct(Player target, IStaticDataService staticDataService)
-        {
-            _target = target;            
-
-            GetComponents();
-            Initialize(staticDataService);
-        }
-
-        private void GetComponents()
-        {
-            _mover = GetComponent<EnemyMover>();
-            _collisionHandler = GetComponent<EnemyCollisionHandler>();
-            _weaponHandler = GetComponent<EnemyWeaponHandler>();
-        }
-
-        public void Initialize(IStaticDataService staticDataService)
+        public void Construct(Player target, IStaticDataService staticDataService, ITickProviderService tickProvider)
         {
             EnemyStaticData enemyData = staticDataService.ForEnemy(_type);
+            float speed = enemyData.Speed;
 
-            _enemyStateMachine = enemyData.AI;
-            _health = new Health(enemyData.MaxHealth);
-            _mover.Initialize(enemyData.Speed);
-            _weaponHandler.Initialize(enemyData.Weapons);
+            _mover = new EnemyMover(this, tickProvider, speed);
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Codebase.Logic.Enemy.StateMachine
 {
-    internal class AttackState : IState
+    internal class AttackState : IPayloaderState
     {
         private EnemyStateMachine _enemyStateMachine;
 

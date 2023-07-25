@@ -27,9 +27,9 @@ namespace Codebase.Infrastructure.StateMachine
             };
         }
 
-        public void Enter<TState>() where TState : class, IState
+        public void Enter<TState>() where TState : class, IPayloaderState
         {
-            IState state = ChangeState<TState>();
+            IPayloaderState state = ChangeState<TState>();
             state.Enter();
         }
 

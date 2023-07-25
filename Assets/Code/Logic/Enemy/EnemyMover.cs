@@ -13,8 +13,8 @@ namespace Codebase.Logic.EnemyComponents
         private Vector3 _destination;
 
         public EnemyMover(
-            ITickProviderService tickProvider, 
-            Enemy enemy, 
+            Enemy enemy,
+            ITickProviderService tickProvider,
             float speed)
         {
             _tickProvider = tickProvider;

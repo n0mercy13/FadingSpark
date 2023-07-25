@@ -2,32 +2,47 @@
 using UnityEngine;
 using System.Collections.Generic;
 using Codebase.Infrastructure.StateMachine;
+using Codebase.Logic.EnemyComponents;
 
 namespace Codebase.Logic.Enemy.StateMachine
 {
-    public class EnemyStateMachine : ScriptableObject
+    public class EnemyStateMachine
     {
-        protected readonly Dictionary<Type, IExitableState> States;
+        private readonly Dictionary<Type, IExitableState> _states;
 
-        protected IExitableState ActiveState;
+        private IExitableState _activeState;
 
-        public void Enter<TState>() where TState : class, IState
+        public EnemyStateMachine(EnemyMover mover)
         {
-            IState state = ChangeState<TState>();
+            _states = new Dictionary<Type, IExitableState>
+            {
+                [typeof(MoveInDirectionState)] = new MoveInDirectionState(mover),
+            };
+        }
+
+        public void Enter<TState>() where TState : class, IPayloaderState
+        {
+            IPayloaderState state = ChangeState<TState>();
             state.Enter();
+        }
+
+        public void Enter<TState, TPayload>(TPayload payload) where TState : class, IPayloaderState<TPayload>
+        {
+            IPayloaderState<TPayload> state = ChangeState<TState>();
+            state.Enter(payload);
         }
 
         private TState ChangeState<TState>() where TState : class, IExitableState
         {
-            ActiveState?.Exit();
+            _activeState?.Exit();
 
             TState state = GetState<TState>();
-            ActiveState = state;
+            _activeState = state;
 
             return state;
         }
 
         private TState GetState<TState>() where TState : class, IExitableState =>
-            States[typeof(TState)] as TState;
+            _states[typeof(TState)] as TState;
     }
 }
