@@ -7,9 +7,6 @@ using Codebase.StaticData;
 
 namespace Codebase.Logic.EnemyComponents
 {
-    [RequireComponent(typeof(EnemyMover))]
-    [RequireComponent(typeof(EnemyCollisionHandler))]
-    [RequireComponent(typeof(EnemyWeaponHandler))]
     public class Enemy : MonoBehaviour
     {
         [SerializeField] private EnemyTypes _type;
