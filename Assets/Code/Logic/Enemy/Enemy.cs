@@ -8,26 +8,39 @@ using Codebase.Services.Tick;
 
 namespace Codebase.Logic.EnemyComponents
 {
-    public class Enemy : MonoBehaviour
+    public abstract class Enemy : MonoBehaviour
     {
         [SerializeField] private EnemyTypes _type;
 
+        protected EnemyStateMachine StateMachine;
+        protected Player Target;
+
         private Health _health;
-        private EnemyStateMachine _enemyStateMachine;
         private EnemyMover _mover;
         private EnemyCollisionHandler _collisionHandler;
         private EnemyWeaponHandler _weaponHandler;
 
         [Inject]
-        public void Construct(Player target, IStaticDataService staticDataService, ITickProviderService tickProvider)
+        private void Construct(
+            Player target, 
+            IStaticDataService staticDataService, 
+            ITickProviderService tickProvider)
         {
+            Target = target;
+
             EnemyStaticData enemyData = staticDataService.ForEnemy(_type);
             float speed = enemyData.Speed;
             int maxHealth = enemyData.MaxHealth;
-
+            
             _mover = new EnemyMover(this, tickProvider, speed);
-            _enemyStateMachine = new EnemyStateMachine(_mover);
             _health = new Health(maxHealth);
+            StateMachine = new EnemyStateMachine(_mover);
+
+            Initialize();
+        }
+
+        protected virtual void Initialize()
+        {
         }
     }
 }
