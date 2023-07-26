@@ -1,7 +1,6 @@
 ﻿using Codebase.Services.Factory;
 using Codebase.Services.SceneLoader;
 using Codebase.UI.Factory;
-using System;
 
 namespace Codebase.Infrastructure.StateMachine
 {
@@ -11,16 +10,19 @@ namespace Codebase.Infrastructure.StateMachine
         private readonly ISceneLoaderService _sceneLoader;
         private readonly IPlayerFactory _playerFactory;
         private readonly IUIFactory _uiFactory;
+        private readonly GameFactory _gameFactory;
 
-        public LoadLevelState(GameStateMachine gameStateMachine, 
-            ISceneLoaderService sceneLoader, 
-            IPlayerFactory playerFactory, 
-            IUIFactory uiFactory)
+        public LoadLevelState(GameStateMachine gameStateMachine,
+            ISceneLoaderService sceneLoader,
+            IPlayerFactory playerFactory,
+            IUIFactory uiFactory,
+            GameFactory gameFactory)
         {
             _gameStateMachine = gameStateMachine;
             _sceneLoader = sceneLoader;
             _playerFactory = playerFactory;
             _uiFactory = uiFactory;
+            _gameFactory = gameFactory;
         }
 
         public void Enter(string sceneName)
@@ -34,17 +36,15 @@ namespace Codebase.Infrastructure.StateMachine
 
         private void OnLoaded()
         {
-            CreatePlayer();
             CreateUI();
-            //CreateEnemySpawner();
+            CreatePlayer();
+            CreateEnemySpawner();
 
             _gameStateMachine.Enter<GameLoopState>();
         }
 
-        private void CreateEnemySpawner()
-        {
-            throw new NotImplementedException();
-        }
+        private void CreateEnemySpawner() => 
+            _gameFactory.CreateEnemySpawner();
 
         private void CreatePlayer() => 
             _playerFactory.CreatePlayer();

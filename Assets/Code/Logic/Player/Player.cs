@@ -29,7 +29,7 @@ namespace Codebase.Logic.PlayerComponents
             PlayerStaticData staticData = staticDataService.ForPlayer();
             float movementSpeed = staticData.Speed;
             int maxEnergy = staticData.MaxHealth;
-            var healthBar = uiFactory.HUD.GetComponent<BarView>();
+            BarView healthBar = uiFactory.HUD.GetComponentInChildren<BarView>();
 
             _playerMover = new PlayerMover(characterController, inputService, tickProvider, movementSpeed);
             _energy = new Energy(maxEnergy);

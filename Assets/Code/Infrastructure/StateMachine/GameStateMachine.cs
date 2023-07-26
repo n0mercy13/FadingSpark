@@ -10,19 +10,19 @@ namespace Codebase.Infrastructure.StateMachine
     public class GameStateMachine
     {
         private readonly Dictionary<Type, IExitableState> _states;
-
         private IExitableState _currentState;
 
         public GameStateMachine(
             IStaticDataService staticDataService,
             ISceneLoaderService sceneLoader,
             IPlayerFactory playerFactory,
-            IUIFactory uiFactory)
+            IUIFactory uiFactory,
+            GameFactory gameFactory)
         {
             _states = new Dictionary<Type, IExitableState>
             {
                 [typeof(BootstrapState)] = new BootstrapState(this, staticDataService),
-                [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, playerFactory, uiFactory),
+                [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, playerFactory, uiFactory, gameFactory),
                 [typeof(GameLoopState)] = new GameLoopState(this),
             };
         }

@@ -5,6 +5,9 @@ namespace Codebase.Logic.PlayerComponents
     [RequireComponent(typeof(SpriteRenderer))]
     public class BoundariesKeeper : MonoBehaviour
     {
+        private const float BottomContainerTopBoundary = 0.15f;
+        private const float TopContainerBottomBoundary = 0.9f;
+
         private Camera _camera;
         private SpriteRenderer _spriteRenderer;
         private Vector2 _position;
@@ -21,8 +24,8 @@ namespace Codebase.Logic.PlayerComponents
 
         private void Start()
         {
-            _minBounds = _camera.ViewportToWorldPoint(new Vector2(0f, 0.1f));
-            _maxBounds = _camera.ViewportToWorldPoint(new Vector2(1f, 0.92f));
+            _minBounds = _camera.ViewportToWorldPoint(new Vector2(0f, BottomContainerTopBoundary));
+            _maxBounds = _camera.ViewportToWorldPoint(new Vector2(1f, TopContainerBottomBoundary));
             _spriteWidth = _spriteRenderer.bounds.size.x / 2;
             _spriteHeight = _spriteRenderer.bounds.size.y / 2;
         }
