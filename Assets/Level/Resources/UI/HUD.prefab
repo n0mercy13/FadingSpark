@@ -241,6 +241,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6439658326195617979}
   - component: {fileID: 6685935835386052669}
+  - component: {fileID: 265024284659672044}
+  - component: {fileID: 618132267759018761}
   m_Layer: 5
   m_Name: EnergyBarHolder
   m_TagString: Untagged
@@ -265,10 +267,10 @@ RectTransform:
   m_Father: {fileID: 4219484160345675989}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 100}
+  m_SizeDelta: {x: 0, y: -250}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &6685935835386052669
 CanvasRenderer:
@@ -278,6 +280,31 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5588338426952290172}
   m_CullTransparentMesh: 1
+--- !u!225 &265024284659672044
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5588338426952290172}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &618132267759018761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5588338426952290172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ed3fe90416b9864fbebb28b00efcee9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _barView: {fileID: 8136676100260331010}
 --- !u!1 &8022689613302403150
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,7 +12,7 @@ namespace Codebase.Logic.PlayerComponents
     public class Player : MonoBehaviour, IDamageable
 	{
         private PlayerMover _playerMover;
-        private Energy _energy;
+        private IHealth _energy;
 
         [Inject]
         private void Construct(
