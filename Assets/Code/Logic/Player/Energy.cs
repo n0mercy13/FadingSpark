@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Codebase.Logic.PlayerComponents
 {
-    public class Energy : IDamageable
+    public class Energy
     {
         private readonly int _maxEnergy;
 
@@ -15,17 +15,13 @@ namespace Codebase.Logic.PlayerComponents
             _energy = _maxEnergy;
         }
 
-        public event Action Died = delegate { };
         public event Action<int, int> ValueChanged = delegate { };
 
-        public void ApplyDamage(int value)
+        public void Reduce(int by)
         {
-            _energy -= value;
+            _energy -= by;
             _energy = Mathf.Clamp(_energy, 0, _maxEnergy);
             ValueChanged.Invoke(_energy, _maxEnergy);
-
-            if (_energy == 0)
-                Died.Invoke();
         }
     }
 }

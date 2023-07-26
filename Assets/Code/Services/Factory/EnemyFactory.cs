@@ -12,8 +12,8 @@ namespace Codebase.Services.Factory
 
         private readonly IAssetProviderService _assetProviderService;
         private readonly DiContainer _container;
+        private readonly MonoBehaviour _runner;
 
-        private MonoBehaviour _runner;
         private string _assetPath;
 
         public EnemyFactory(DiContainer container)
