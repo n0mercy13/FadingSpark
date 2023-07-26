@@ -11,6 +11,7 @@ namespace Codebase.StaticData
         [field: SerializeField] public EnemyTypes Type { get; private set; }
         [field: SerializeField, Min(1)] public int MaxHealth { get; private set; }
         [field: SerializeField, Min(0.1f)] public float Speed { get; private set; }
+        [field: SerializeField, Min(0)] public int DamageOnCollision { get; private set; }
         [field: SerializeField] public Weapon[] Weapons { get; private set; }
 
         private void OnValidate()
