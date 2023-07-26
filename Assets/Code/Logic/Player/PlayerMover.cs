@@ -8,18 +8,18 @@ namespace Codebase.Logic.PlayerComponents
 {
     public class PlayerMover : IDisposable
     {
-        private readonly CharacterController _characterController;
+        private readonly Transform _playerTransform;
         private readonly ITickProviderService _tickProvider;
         private readonly IInputService _inputService;
         private readonly float _movementSpeed;
 
         public PlayerMover(
-            CharacterController characterController,
+            Transform playerTransform,
             IInputService inputService,
             ITickProviderService tickProvider,
             float movementSpeed)
         {
-            _characterController = characterController;
+            _playerTransform = playerTransform;
             _inputService = inputService;
             _tickProvider = tickProvider;
             _movementSpeed = movementSpeed;
@@ -30,17 +30,15 @@ namespace Codebase.Logic.PlayerComponents
         public void Dispose() => 
             _tickProvider.Ticked -= OnTick;
 
-        private void OnTick(int _)
-        {
+        private void OnTick(int _) => 
             MovePlayer();
-        }
 
         private void MovePlayer()
         {
             if(_inputService.Axis.sqrMagnitude >= Constants.Game.Epsilon)
             {
-                _characterController.Move(
-                    _movementSpeed * _tickProvider.DeltaTime * _inputService.Axis);                
+                _playerTransform.position +=
+                    _movementSpeed * _tickProvider.DeltaTime * _inputService.Axis;                
             }
         }
     }    

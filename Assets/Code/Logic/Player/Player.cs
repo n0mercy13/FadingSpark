@@ -1,4 +1,3 @@
-using System;
 using Zenject;
 using UnityEngine;
 using Codebase.Services.Input;
@@ -10,7 +9,8 @@ using Codebase.UI.Factory;
 
 namespace Codebase.Logic.PlayerComponents
 {
-    [RequireComponent(typeof(CharacterController))]
+    [RequireComponent(typeof(Rigidbody2D))]
+    [RequireComponent(typeof(Collider2D))]
     public class Player : MonoBehaviour, IDamageable
 	{
         private PlayerMover _playerMover;
@@ -24,14 +24,12 @@ namespace Codebase.Logic.PlayerComponents
             IStaticDataService staticDataService,
             IUIFactory uiFactory)
         {
-            CharacterController characterController = GetComponent<CharacterController>();
-
             PlayerStaticData staticData = staticDataService.ForPlayer();
             float movementSpeed = staticData.Speed;
             int maxEnergy = staticData.MaxHealth;
             BarView healthBar = uiFactory.HUD.GetComponentInChildren<BarView>();
 
-            _playerMover = new PlayerMover(characterController, inputService, tickProvider, movementSpeed);
+            _playerMover = new PlayerMover(transform, inputService, tickProvider, movementSpeed);
             _energy = new Energy(maxEnergy);
             _uiHandler = new UIHandler(_energy, healthBar);
         }
