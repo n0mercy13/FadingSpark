@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: SmallAsteroid
   m_EditorClassIdentifier: 
   <Type>k__BackingField: 1
-  <AI>k__BackingField: {fileID: 11400000, guid: 64177dd564ec5d4498611780f3ccd947, type: 2}
   <MaxHealth>k__BackingField: 10
   <Speed>k__BackingField: 4.5
+  <DamageOnCollision>k__BackingField: 5
   <Weapons>k__BackingField:
   - <Range>k__BackingField: 0
     <Damage>k__BackingField: 10

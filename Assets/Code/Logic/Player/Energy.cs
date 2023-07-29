@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using Codebase.Services.StaticData;
 
 namespace Codebase.Logic.PlayerComponents
 {
@@ -9,9 +10,9 @@ namespace Codebase.Logic.PlayerComponents
 
         private int _energy;
 
-        public Energy(int maxEnergy)
+        public Energy(IStaticDataService staticDataService)
         {
-            _maxEnergy = maxEnergy;
+            _maxEnergy = staticDataService.ForPlayer().MaxHealth;
             _energy = _maxEnergy;
         }
 

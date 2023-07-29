@@ -8,8 +8,9 @@ using Codebase.Services.Factory;
 using Codebase.Services.SceneLoader;
 using Codebase.Services.Tick;
 using Codebase.UI.Factory;
-using Codebase.Logic.EnemyComponents;
 using Codebase.Services.RandomGenerator;
+using Codebase.Logic;
+using Codebase.Logic.PlayerComponents;
 
 namespace Codebase.Infrastructure.Installer
 {
@@ -23,6 +24,17 @@ namespace Codebase.Infrastructure.Installer
             BindInputs();
             BindServices();
             BindFactories();
+            BindPlayerComponents();
+        }
+
+        private void BindPlayerComponents()
+        {
+            Container
+                .BindInterfacesTo<Energy>()
+                .AsSingle()
+                .WhenInjectedInto(typeof(Player), typeof(PlayerUIHandler));
+            Container.Bind<PlayerUIHandler>().AsSingle();
+            Container.Bind<PlayerMover>().AsSingle();  
         }
 
         private void BindFactories()
