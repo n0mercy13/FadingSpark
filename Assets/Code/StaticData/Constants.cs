@@ -25,6 +25,7 @@
         {
             public const string Player = "StaticData/Player/PlayerStaticData";
             public const string Enemies = "StaticData/Enemies";
+            public const string Weapons = "StaticData/Weapons";
         }
 
         public static class  Screen

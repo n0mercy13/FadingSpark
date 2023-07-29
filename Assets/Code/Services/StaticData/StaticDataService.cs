@@ -1,15 +1,18 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
 using Codebase.StaticData;
 using System.Collections.Generic;
 using Codebase.Logic.EnemyComponents;
-using System.Linq;
+using Codebase.Logic.Weapon;
+using Codebase.Logic.Weapons;
 
 namespace Codebase.Services.StaticData
 {
     public class StaticDataService : IStaticDataService
     {
         private Dictionary<EnemyTypes, EnemyStaticData> _enemiesData;
+        private Dictionary<WeaponTypes, WeaponStaticData> _weaponsData;
         private PlayerStaticData _playerData;
 
         public void Load()
@@ -17,6 +20,10 @@ namespace Codebase.Services.StaticData
             _enemiesData = Resources
                 .LoadAll<EnemyStaticData>(Constants.StaticDataPaths.Enemies)
                 .ToDictionary(enemyData => enemyData.Type, enemyData => enemyData);
+
+            _weaponsData = Resources
+                .LoadAll<WeaponStaticData>(Constants.StaticDataPaths.Weapons)
+                .ToDictionary(weaponData => weaponData.Type, weaponData => weaponData);
 
             _playerData = Resources
                 .Load<PlayerStaticData>(Constants.StaticDataPaths.Player);
@@ -33,5 +40,11 @@ namespace Codebase.Services.StaticData
             ? enemyData
             : throw new ArgumentNullException(
                 $"{typeof(EnemyStaticData)} for type '{type}' was not loaded");
+
+        public WeaponStaticData ForWeapon(WeaponTypes type) =>
+            _weaponsData.TryGetValue(type, out WeaponStaticData weaponData)
+            ? weaponData
+            : throw new ArgumentNullException(
+                $"{typeof(WeaponStaticData)} for type '{type}' was not loaded");
     }
 }
