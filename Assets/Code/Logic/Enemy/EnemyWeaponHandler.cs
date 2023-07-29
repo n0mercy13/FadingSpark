@@ -1,14 +1,14 @@
-﻿using Codebase.Logic.Weapons;
-using System;
+﻿using System;
+using Codebase.Logic.Weapons;
 using UnityEngine;
 
 namespace Codebase.Logic.EnemyComponents
 {
     public class EnemyWeaponHandler : MonoBehaviour
     {
-        private Weapon[] _weapons;
+        private IWeapon[] _weapons;
 
-        public void Initialize(Weapon[] weapons)
+        public void Initialize(IWeapon[] weapons)
         {
             _weapons = weapons;
         }

@@ -22,10 +22,8 @@ namespace Codebase.Logic.EnemyComponents
         private EnemyCollisionHandler _collisionHandler;
         private EnemyWeaponHandler _weaponHandler;
 
-        private void OnTriggerEnter2D(Collider2D collision)
-        {
+        private void OnTriggerEnter2D(Collider2D collision) => 
             _collisionHandler.OnCollision(collision);
-        }
 
         [Inject]
         private void Construct(

@@ -9,9 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35c7dfe1191b88841a0ae92252ef0ea8, type: 3}
-  m_Name: PlayerStaticData
+  m_Script: {fileID: 11500000, guid: dfdc7cf01c4edc14fbf42567132af1cd, type: 3}
+  m_Name: Laser
   m_EditorClassIdentifier: 
-  <InitialPosition>k__BackingField: {x: 0, y: -3, z: 0}
-  <MaxHealth>k__BackingField: 30
-  <Speed>k__BackingField: 3.17
+  <Type>k__BackingField: 1
+  <ProjectileSpeed>k__BackingField: 6.03
+  <RateOfFire>k__BackingField: 0.52
+  <ProjectileDamage>k__BackingField: 6
+  <EnergyConsumption>k__BackingField: 6
