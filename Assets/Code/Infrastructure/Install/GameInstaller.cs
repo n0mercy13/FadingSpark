@@ -42,6 +42,7 @@ namespace Codebase.Infrastructure.Installer
             Container.BindInterfacesTo<PlayerFactory>().AsSingle();
             Container.BindInterfacesTo<EnemyFactory>().AsSingle();
             Container.BindInterfacesTo<UIFactory>().AsSingle();
+            Container.BindInterfacesTo<ProjectileFactory>().AsSingle();
             Container.Bind<GameFactory>().AsSingle();
         }
 
