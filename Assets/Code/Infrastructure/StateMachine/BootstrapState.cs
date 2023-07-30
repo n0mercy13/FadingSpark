@@ -3,7 +3,7 @@ using Codebase.StaticData;
 
 namespace Codebase.Infrastructure.StateMachine
 {
-    public class BootstrapState : IPayloaderState
+    public class BootstrapState : IState
     {
         private readonly GameStateMachine _gameStateMachine;
         private readonly IStaticDataService _staticDataService;

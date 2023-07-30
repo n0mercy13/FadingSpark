@@ -1,24 +1,29 @@
-﻿using Codebase.Infrastructure.StateMachine;
+﻿using System;
+using Codebase.Infrastructure.StateMachine;
+using Codebase.Logic.EnemyComponents;
 
 namespace Codebase.Logic.Enemy.StateMachine
 {
-    internal class DeathState : IPayloaderState
+    public class DeathState : IState
     {
-        private EnemyStateMachine _enemyStateMachine;
+        private readonly EnemyMover _mover;
+        private readonly Action _destruction;
 
-        public DeathState(EnemyStateMachine enemyStateMachine)
+        public DeathState(EnemyMover mover, Action destruction)
         {
-            _enemyStateMachine = enemyStateMachine;
+            _mover = mover;
+            _destruction = destruction;
         }
 
         public void Enter()
         {
-            throw new System.NotImplementedException();
+            _mover.Dispose();
+
+            _destruction.Invoke();
         }
 
         public void Exit()
         {
-            throw new System.NotImplementedException();
         }
     }
 }

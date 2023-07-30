@@ -1,6 +1,6 @@
 ﻿namespace Codebase.Infrastructure.StateMachine
 {
-    public class GameLoopState : IPayloaderState
+    public class GameLoopState : IState
     {
         private readonly GameStateMachine _gameStateMachine;
 

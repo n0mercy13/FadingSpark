@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using Codebase.Services.Tick;
+using System;
 
 namespace Codebase.Logic.EnemyComponents
 {
-    public class EnemyMover
+    public class EnemyMover : IDisposable
     {
         private readonly ITickProviderService _tickProvider;
         private readonly Enemy _enemy;
@@ -45,8 +46,15 @@ namespace Codebase.Logic.EnemyComponents
             _direction = Vector3.positiveInfinity;
         }
 
-        private void OnTick(int _)
+        public void Dispose()
         {
+            StopMoving();
+
+            _tickProvider.Ticked -= OnTick;
+        }
+
+        private void OnTick(int _)
+        {           
             if (_direction != Vector3.zero)
                 MoveInDirection();
             else if (_destination != Vector3.positiveInfinity)

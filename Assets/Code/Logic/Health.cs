@@ -2,10 +2,9 @@
 
 namespace Codebase.Logic
 {
-    public class Health : IDamageable
+    public class Health : IHealth
     {
         private readonly int _maxHealth;
-
         private int _value;
 
         public Health(int maxHealth)
@@ -14,13 +13,17 @@ namespace Codebase.Logic
             _value = maxHealth;
         }
 
-        public event Action<int, int> ValueChanged = delegate { };
+        public event Action<int, int> Changed = delegate { };
+        public event Action Died = delegate { };
 
-        public void ApplyDamage(int damage)
+        public void Reduce(int by)
         {
-            _value -= damage;
+            _value -= by;
             _value = Math.Clamp(_value, 0, _maxHealth);
-            ValueChanged.Invoke(_value, _maxHealth);
+            Changed.Invoke(_value, _maxHealth);
+
+            if (_value == 0)
+                Died.Invoke();
         }
     }
 }

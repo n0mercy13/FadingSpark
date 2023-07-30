@@ -11,9 +11,9 @@ namespace Codebase.Logic.Weapon
     {
         private const float SelfDestructDelay = 5.0f;
 
+        private ICoroutineRunner _coroutineRunner;
         private Coroutine _moveInDirectionCoroutine;
         private Coroutine _selfDestructAfterDelayCoroutine;
-        private ICoroutineRunner _coroutineRunner;
         private int _damage;
         private float _speed;
 

@@ -7,7 +7,6 @@ namespace Codebase.Logic.PlayerComponents
     public class Energy : IHealth
     {
         private readonly int _maxEnergy;
-
         private int _energy;
 
         public Energy(IStaticDataService staticDataService)

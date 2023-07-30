@@ -1,6 +1,6 @@
 ﻿namespace Codebase.Infrastructure.StateMachine
 {
-    public interface IPayloaderState : IExitableState
+    public interface IState : IExitableState
     {
         void Enter();
     }

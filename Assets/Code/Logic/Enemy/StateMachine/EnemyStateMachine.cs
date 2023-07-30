@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEngine;
 using System.Collections.Generic;
 using Codebase.Infrastructure.StateMachine;
 using Codebase.Logic.EnemyComponents;
@@ -12,17 +11,18 @@ namespace Codebase.Logic.Enemy.StateMachine
 
         private IExitableState _activeState;
 
-        public EnemyStateMachine(EnemyMover mover)
+        public EnemyStateMachine(EnemyMover mover, Action destruction)
         {
             _states = new Dictionary<Type, IExitableState>
             {
                 [typeof(MoveInDirectionState)] = new MoveInDirectionState(mover),
+                [typeof(DeathState)] = new DeathState(mover, destruction),
             };
         }
 
-        public void Enter<TState>() where TState : class, IPayloaderState
+        public void Enter<TState>() where TState : class, IState
         {
-            IPayloaderState state = ChangeState<TState>();
+            IState state = ChangeState<TState>();
             state.Enter();
         }
 

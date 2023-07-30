@@ -6,6 +6,7 @@ namespace Codebase.Logic
     {
         event Action<int, int> Changed;
         event Action Died;
+
         void Reduce(int by);
     }
 }
