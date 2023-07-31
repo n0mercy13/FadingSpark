@@ -10,23 +10,20 @@ using Codebase.Infrastructure;
 namespace Codebase.Logic.EnemyComponents
 {
     [RequireComponent(typeof(Collider2D))]
-    public abstract class Enemy : MonoBehaviour, IDamageable
+    public abstract class Enemy : MonoBehaviour
     {
         [SerializeField] private EnemyTypes _type;
 
         protected EnemyStateMachine StateMachine;
         protected Player Target;
+        protected IHealth Health;
 
-        private IHealth _health;
         private EnemyMover _mover;
         private EnemyCollisionHandler _collisionHandler;
         private EnemyWeaponHandler _weaponHandler;
 
-        private void OnEnable() => 
-            _health.Died += OnDeath;
-
-        private void OnDisable() => 
-            _health.Died -= OnDeath;
+        private void OnDestroy() => 
+            Health.Died -= OnDeath;
 
         private void OnTriggerEnter2D(Collider2D collision) => 
             _collisionHandler.OnCollision(collision);
@@ -46,13 +43,12 @@ namespace Codebase.Logic.EnemyComponents
             int damageOnCollision = enemyData.DamageOnCollision;
             
             _mover = new EnemyMover(this, tickProvider, speed);
-            _health = new Health(maxHealth);
+            Health = new Health(maxHealth);
             _collisionHandler = new EnemyCollisionHandler(coroutineRunner, damageOnCollision);
             StateMachine = new EnemyStateMachine(_mover, Destruction);
-        }
 
-        public void ApplyDamage(int value) => 
-            _health.Reduce(by: value);
+            Health.Died += OnDeath;
+        }
 
         private void Destruction() => 
             Destroy(gameObject);

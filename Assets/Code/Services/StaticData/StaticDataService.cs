@@ -4,7 +4,6 @@ using UnityEngine;
 using Codebase.StaticData;
 using System.Collections.Generic;
 using Codebase.Logic.EnemyComponents;
-using Codebase.Logic.Weapon;
 using Codebase.Logic.Weapons;
 
 namespace Codebase.Services.StaticData

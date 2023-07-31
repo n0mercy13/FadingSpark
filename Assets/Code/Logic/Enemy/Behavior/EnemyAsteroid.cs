@@ -4,7 +4,7 @@ using Codebase.Logic.Enemy.StateMachine;
 
 namespace Codebase.Logic.EnemyComponents.Behavior
 {
-    public class EnemyAsteroid : Enemy
+    public class EnemyAsteroid : Enemy, IDamageable
     {
         private const float SelfDestructionTimer = 4.0f;
 
@@ -23,6 +23,9 @@ namespace Codebase.Logic.EnemyComponents.Behavior
             if(_selfDestructionCoroutine != null)
                 StopCoroutine(_selfDestructionCoroutine);
         }
+
+        public void ApplyDamage(int value) =>
+            Health.Reduce(by: value);
 
         private IEnumerator SelfDestructAfterDelay()
         {

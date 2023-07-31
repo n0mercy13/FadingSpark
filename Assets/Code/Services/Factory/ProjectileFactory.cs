@@ -2,7 +2,7 @@
 using UnityEngine;
 using Codebase.Services.AssetProvider;
 using Codebase.Infrastructure;
-using Codebase.Logic.Weapon;
+using Codebase.Logic.Weapons;
 using Codebase.StaticData;
 using Codebase.Services.StaticData;
 
@@ -17,7 +17,6 @@ namespace Codebase.Services.Factory
         private readonly DiContainer _container;
         private readonly Transform _parent;
 
-        private Vector3 _direction;
         private string _assetPath;
 
         public ProjectileFactory(
@@ -35,16 +34,15 @@ namespace Codebase.Services.Factory
         }
 
         public Projectile Create(
-            WeaponTypes type, Vector3 spawnPosition, Vector3 targetPosition)
+            WeaponTypes type, Vector3 spawnPosition, Vector3 direction)
         {
             GameObject prefab = GetPrefab(type);
             WeaponStaticData weaponData = _staticDataService.ForWeapon(type);
-            _direction = targetPosition - spawnPosition;
 
             Projectile projectile = _container
                 .InstantiatePrefabForComponent<Projectile>(
                 prefab, spawnPosition, Quaternion.identity, _parent);
-            projectile.Initialize(weaponData, _direction);
+            projectile.Initialize(weaponData, direction);
             projectile.gameObject.SetActive(true);
 
             return projectile;

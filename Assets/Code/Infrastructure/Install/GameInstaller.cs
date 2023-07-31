@@ -32,9 +32,12 @@ namespace Codebase.Infrastructure.Installer
             Container
                 .BindInterfacesTo<Energy>()
                 .AsSingle()
-                .WhenInjectedInto(typeof(Player), typeof(PlayerUIHandler));
+                .WhenInjectedInto(
+                    typeof(Player), 
+                    typeof(PlayerUIHandler));
             Container.Bind<PlayerUIHandler>().AsSingle();
             Container.Bind<PlayerMover>().AsSingle();  
+            Container.Bind<PlayerWeaponHandler>().AsSingle();
         }
 
         private void BindFactories()

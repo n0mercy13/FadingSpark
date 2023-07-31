@@ -1,25 +1,33 @@
 ﻿using System;
+using System.Collections;
 using Zenject;
 using UnityEngine;
 using Codebase.Infrastructure;
 using Codebase.StaticData;
-using System.Collections;
+using Codebase.Logic.EnemyComponents;
+using Codebase.Services.Tick;
 
-namespace Codebase.Logic.Weapon
+namespace Codebase.Logic.Weapons
 {
     public class Projectile : MonoBehaviour, IDisposable
     {
         private const float SelfDestructDelay = 5.0f;
 
+        private EnemyMover _mover;
         private ICoroutineRunner _coroutineRunner;
-        private Coroutine _moveInDirectionCoroutine;
+        private ITickProviderService _tickProvider;
         private Coroutine _selfDestructAfterDelayCoroutine;
         private int _damage;
         private float _speed;
 
         [Inject]
-        private void Construct(ICoroutineRunner coroutineRunner) =>
+        private void Construct(
+            ICoroutineRunner coroutineRunner, 
+            ITickProviderService tickProvider)
+        {
             _coroutineRunner = coroutineRunner;
+            _tickProvider = tickProvider;
+        }
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
@@ -31,26 +39,24 @@ namespace Codebase.Logic.Weapon
             }
         }
 
-        public void Initialize(WeaponStaticData weaponData, Vector2 direction)
+        public void Initialize(WeaponStaticData weaponData, Vector3 direction)
         {
             _speed = weaponData.ProjectileSpeed;
             _damage = weaponData.ProjectileDamage;
 
-            transform.forward = direction;
-
-            _moveInDirectionCoroutine = _coroutineRunner
-                .StartCoroutine(MoveInDirection(direction));
+            _mover = new EnemyMover(this, _tickProvider, _speed);
+            _mover.StartToMoveInDirection(direction);
+            
             _selfDestructAfterDelayCoroutine = _coroutineRunner
                 .StartCoroutine(SelfDestructAfterDelay());
         }
 
         public void Dispose()
         {
-            if (_moveInDirectionCoroutine != null)
-                _coroutineRunner.StopCoroutine(_moveInDirectionCoroutine);
-
             if (_selfDestructAfterDelayCoroutine != null)
                 _coroutineRunner.StopCoroutine(_selfDestructAfterDelayCoroutine);
+
+            _mover.Dispose();
 
             Destroy(gameObject);
         }
@@ -60,13 +66,6 @@ namespace Codebase.Logic.Weapon
             yield return new WaitForSeconds(SelfDestructDelay);
 
             this.Dispose();
-        }
-
-        private IEnumerator MoveInDirection(Vector3 direction)
-        {
-            transform.position += _speed * Time.deltaTime * direction;
-
-            yield return null;
         }
     }
 }

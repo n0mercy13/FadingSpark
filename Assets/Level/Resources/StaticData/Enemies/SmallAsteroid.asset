@@ -14,9 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Type>k__BackingField: 1
   <MaxHealth>k__BackingField: 10
-  <Speed>k__BackingField: 4.5
+  <Speed>k__BackingField: 5.94
   <DamageOnCollision>k__BackingField: 5
-  <Weapons>k__BackingField:
-  - <Range>k__BackingField: 0
-    <Damage>k__BackingField: 10
-    <RateOfFire>k__BackingField: 0

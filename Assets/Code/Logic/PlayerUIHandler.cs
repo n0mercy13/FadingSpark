@@ -6,30 +6,31 @@ namespace Codebase.Logic
 {
     public class PlayerUIHandler : IDisposable
     {
-        private readonly IHealth _energy;
         private readonly IUIFactory _uiFactory;
-
+        private readonly IHealth _energy;
         private BarView _bar;
 
         public PlayerUIHandler(
-            IHealth health, 
-            IUIFactory uiFactory)
+            IUIFactory uiFactory, 
+            IHealth energy)
         {
-            _energy = health;
-            _uiFactory = uiFactory; 
+            _uiFactory = uiFactory;
+            _energy = energy;
 
             _energy.Changed += OnHealthChanged;
         }
 
-        public void Initialize() => 
+        public void Initialize()
+        {
             _bar = _uiFactory.HUD.GetComponentInChildren<BarView>()
                 ?? throw new InvalidOperationException(
                     $"{typeof(BarView)} not found on HUD");
+        }
 
         public void Dispose() => 
             _energy.Changed -= OnHealthChanged;
 
-        private void OnHealthChanged(int currentHealth, int maxHealth) => 
-            _bar.SetValues(currentHealth, maxHealth);
+        private void OnHealthChanged(int current, int max) => 
+            _bar.SetValues(current, max);
     }
 }

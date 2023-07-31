@@ -1,5 +1,5 @@
 ﻿using Codebase.Logic.EnemyComponents;
-using Codebase.Logic.Weapon;
+using Codebase.Logic.Weapons;
 using Codebase.StaticData;
 
 namespace Codebase.Services.StaticData

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: PlayerStaticData
   m_EditorClassIdentifier: 
   <InitialPosition>k__BackingField: {x: 0, y: -3, z: 0}
-  <MaxHealth>k__BackingField: 30
+  <MaxEnergy>k__BackingField: 1193
   <Speed>k__BackingField: 3.17

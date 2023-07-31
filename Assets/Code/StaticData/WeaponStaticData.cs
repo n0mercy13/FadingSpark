@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using Codebase.Logic.Weapon;
+using Codebase.Logic.Weapons;
 
 namespace Codebase.StaticData
 {

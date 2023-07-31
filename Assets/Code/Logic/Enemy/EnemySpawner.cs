@@ -8,7 +8,7 @@ namespace Codebase.Logic.EnemyComponents
 {
     public class EnemySpawner : IDisposable
     {
-        private const float SpawnDelay = 2f;
+        private const float SpawnDelay = 1f;
 
         private readonly IEnemyFactory _enemyFactory;
         private readonly ITickProviderService _tickProvider;

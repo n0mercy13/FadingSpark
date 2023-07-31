@@ -1,18 +1,46 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
+using Codebase.Services.Factory;
+using Codebase.StaticData;
 
 namespace Codebase.Logic.Weapons
 {
-    [Serializable]
     public class Weapon : IWeapon
     {
-        [field: SerializeField] public RangeTypes Range { get; private set; }
-        [field: SerializeField, Min(0)] public int Damage { get; private set; }
-        [field: SerializeField, Min(0)] public float RateOfFire { get; private set; }
+        private readonly IHealth _shipsEnergy;
+        private readonly IProjectileFactory _projectileFactory;
+        private readonly Transform _projectileSpawnPoint;
+        private readonly int _energyConsumption;
+        private readonly float _rateOfFire;
 
-        public void Shoot(int damage)
+        private Vector3 _shootDirection;
+
+        public Weapon(
+            WeaponMountPoint mountPoint,
+            WeaponStaticData weaponData,
+            IHealth energy,
+            IProjectileFactory projectileFactory)
         {
-            throw new System.NotImplementedException();
+            _projectileSpawnPoint = mountPoint.transform;
+            Type = mountPoint.Type;
+
+            _rateOfFire = weaponData.RateOfFire;
+            _energyConsumption = weaponData.EnergyConsumption;
+
+            _shipsEnergy = energy;
+            _projectileFactory = projectileFactory;
+        }
+
+        public WeaponTypes Type { get; private set; }
+
+        public void Shoot()
+        {
+            if (_shipsEnergy.Current - _energyConsumption >= 0)
+            {
+                
+                _projectileFactory.Create(
+                    Type, _projectileSpawnPoint.position, Vector3.up);
+                _shipsEnergy.Reduce(_energyConsumption);
+            }
         }
     }
 }

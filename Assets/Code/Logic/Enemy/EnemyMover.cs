@@ -1,25 +1,25 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using Codebase.Services.Tick;
-using System;
 
 namespace Codebase.Logic.EnemyComponents
 {
     public class EnemyMover : IDisposable
     {
         private readonly ITickProviderService _tickProvider;
-        private readonly Enemy _enemy;
+        private readonly MonoBehaviour _objectToMove;
         private readonly float _speed;
 
         private Vector3 _direction;
         private Vector3 _destination;
 
         public EnemyMover(
-            Enemy enemy,
+            MonoBehaviour objectToMove,
             ITickProviderService tickProvider,
             float speed)
         {
             _tickProvider = tickProvider;
-            _enemy = enemy;
+            _objectToMove = objectToMove;
             _speed = speed;
 
             _tickProvider.Ticked += OnTick;
@@ -30,8 +30,8 @@ namespace Codebase.Logic.EnemyComponents
         private float _deltaDistance => _speed * _tickProvider.DeltaTime;
         private Vector3 _currentPosition
         {
-            get => _enemy.transform.position;
-            set => _enemy.transform.position = value;            
+            get => _objectToMove.transform.position;
+            set => _objectToMove.transform.position = value;            
         }
 
         public void StartToMoveInDirection(Vector3 direction) => 

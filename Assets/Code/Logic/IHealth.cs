@@ -7,6 +7,8 @@ namespace Codebase.Logic
         event Action<int, int> Changed;
         event Action Died;
 
+        int Current { get; }
+
         void Reduce(int by);
     }
 }

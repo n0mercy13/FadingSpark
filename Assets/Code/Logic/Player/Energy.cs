@@ -6,25 +6,27 @@ namespace Codebase.Logic.PlayerComponents
 {
     public class Energy : IHealth
     {
-        private readonly int _maxEnergy;
-        private int _energy;
+        private readonly int _maxValue;
+        private int _value;
 
         public Energy(IStaticDataService staticDataService)
         {
-            _maxEnergy = staticDataService.ForPlayer().MaxHealth;
-            _energy = _maxEnergy;
+            _maxValue = staticDataService.ForPlayer().MaxEnergy;
+            _value = _maxValue;
         }
+
+        public int Current => _value;
 
         public event Action<int, int> Changed = delegate { };
         public event Action Died = delegate { };
 
         public void Reduce(int by)
         {
-            _energy -= by;
-            _energy = Mathf.Clamp(_energy, 0, _maxEnergy);
-            Changed.Invoke(_energy, _maxEnergy);
+            _value -= by;
+            _value = Mathf.Clamp(_value, 0, _maxValue);
+            Changed.Invoke(_value, _maxValue);
 
-            if (_energy == 0)
+            if (_value == 0)
                 Died.Invoke();
         }
     }

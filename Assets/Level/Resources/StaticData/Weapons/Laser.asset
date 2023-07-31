@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Laser
   m_EditorClassIdentifier: 
   <Type>k__BackingField: 1
-  <ProjectileSpeed>k__BackingField: 6.03
-  <RateOfFire>k__BackingField: 0.52
-  <ProjectileDamage>k__BackingField: 6
-  <EnergyConsumption>k__BackingField: 6
+  <ProjectileSpeed>k__BackingField: 7.92
+  <RateOfFire>k__BackingField: 0.94
+  <ProjectileDamage>k__BackingField: 25
+  <EnergyConsumption>k__BackingField: 3
