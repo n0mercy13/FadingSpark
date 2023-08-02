@@ -12,6 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35c7dfe1191b88841a0ae92252ef0ea8, type: 3}
   m_Name: PlayerStaticData
   m_EditorClassIdentifier: 
-  <InitialPosition>k__BackingField: {x: 0, y: -3, z: 0}
   <MaxEnergy>k__BackingField: 1193
   <Speed>k__BackingField: 3.17
+  <InitialPosition>k__BackingField: {x: 0, y: -3, z: 0}
+  <ShieldActivationTime>k__BackingField: 1
+  <ShieldAbsorptionTime>k__BackingField: 2
+  <ShieldDeactivationTime>k__BackingField: 1
+  <ShieldInactiveColor>k__BackingField: {r: 1, g: 1, b: 1, a: 0}
+  <ShieldAbsorptionColor>k__BackingField: {r: 1, g: 0.6028373, b: 0, a: 1}
+  <ShieldActiveColor>k__BackingField: {r: 0.32549024, g: 0.89326215, b: 1, a: 0.5019608}
+  <ShieldMaterial>k__BackingField: {fileID: 2100000, guid: e4e28300ff52fb14e83fcd75a1c64bf2, type: 2}

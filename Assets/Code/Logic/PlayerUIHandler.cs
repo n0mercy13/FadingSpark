@@ -1,4 +1,5 @@
 ﻿using System;
+using Codebase.Logic.PlayerComponents;
 using Codebase.UI.Elements;
 using Codebase.UI.Factory;
 
@@ -7,12 +8,12 @@ namespace Codebase.Logic
     public class PlayerUIHandler : IDisposable
     {
         private readonly IUIFactory _uiFactory;
-        private readonly IHealth _energy;
+        private readonly IEnergy _energy;
         private BarView _bar;
 
         public PlayerUIHandler(
             IUIFactory uiFactory, 
-            IHealth energy)
+            IEnergy energy)
         {
             _uiFactory = uiFactory;
             _energy = energy;

@@ -1,3 +1,4 @@
+using System;
 using Zenject;
 using UnityEngine;
 using Codebase.Infrastructure.StateMachine;
@@ -7,10 +8,12 @@ using Codebase.Services.AssetProvider;
 using Codebase.Services.Factory;
 using Codebase.Services.SceneLoader;
 using Codebase.Services.Tick;
-using Codebase.UI.Factory;
 using Codebase.Services.RandomGenerator;
+using Codebase.UI.Factory;
 using Codebase.Logic;
 using Codebase.Logic.PlayerComponents;
+using Codebase.Logic.PlayerComponents.Shield;
+using Codebase.Infrastructure.Install;
 
 namespace Codebase.Infrastructure.Installer
 {
@@ -29,15 +32,13 @@ namespace Codebase.Infrastructure.Installer
 
         private void BindPlayerComponents()
         {
-            Container
-                .BindInterfacesTo<Energy>()
-                .AsSingle()
-                .WhenInjectedInto(
-                    typeof(Player), 
-                    typeof(PlayerUIHandler));
+            Container.BindInterfacesTo<Energy>().AsSingle();
+            Container.BindInterfacesTo<Shield>().AsSingle();
             Container.Bind<PlayerUIHandler>().AsSingle();
             Container.Bind<PlayerMover>().AsSingle();  
             Container.Bind<PlayerWeaponHandler>().AsSingle();
+            Container.Bind<ShieldStateMachine>().AsSingle();
+            Container.Bind<SpriteColorHandler>().WithId(InjectionIDs.Shield).AsSingle();
         }
 
         private void BindFactories()

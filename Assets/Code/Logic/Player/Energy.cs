@@ -1,17 +1,21 @@
 ﻿using System;
 using UnityEngine;
 using Codebase.Services.StaticData;
+using Codebase.StaticData;
 
 namespace Codebase.Logic.PlayerComponents
 {
-    public class Energy : IHealth
+    public class Energy : IEnergy
     {
         private readonly int _maxValue;
+        private readonly float _absorptionCoefficient;
         private int _value;
 
         public Energy(IStaticDataService staticDataService)
         {
-            _maxValue = staticDataService.ForPlayer().MaxEnergy;
+            PlayerStaticData playerData = staticDataService.ForPlayer();
+            _maxValue = playerData.MaxEnergy;
+            _absorptionCoefficient = playerData.ShieldDamageAbsorptionCoefficient;
             _value = _maxValue;
         }
 
@@ -19,6 +23,12 @@ namespace Codebase.Logic.PlayerComponents
 
         public event Action<int, int> Changed = delegate { };
         public event Action Died = delegate { };
+
+        public void Absorb(int amount)
+        {
+            _value += (int)(amount * _absorptionCoefficient);
+            _value = Mathf.Clamp(_value, 0, _maxValue);
+        }
 
         public void Reduce(int by)
         {

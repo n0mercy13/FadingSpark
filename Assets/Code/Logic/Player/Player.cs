@@ -1,24 +1,22 @@
-using System;
 using Zenject;
 using UnityEngine;
 
 namespace Codebase.Logic.PlayerComponents
 {
     [RequireComponent(typeof(Rigidbody2D))]
-    [RequireComponent(typeof(Collider2D))]
-    public class Player : MonoBehaviour, IDamageable
+    public class Player : MonoBehaviour
 	{
         private PlayerMover _playerMover;
         private PlayerUIHandler _uiHandler;
         private PlayerWeaponHandler _weaponHandler;
-        private IHealth _energy;
+        private IEnergy _energy;
 
         [Inject]
         private void Construct(
             PlayerMover playerMover,
             PlayerUIHandler uiHandler,
             PlayerWeaponHandler weaponHandler,
-            IHealth energy)
+            IEnergy energy)
         {
             _playerMover = playerMover;
             _uiHandler = uiHandler;
@@ -32,10 +30,7 @@ namespace Codebase.Logic.PlayerComponents
         private void OnDestroy() => 
             DisposeComponents();
 
-        public IHealth Energy => _energy;
-
-        public void ApplyDamage(int value) => 
-            _energy.Reduce(by: value);
+        public IEnergy Energy => _energy;
 
         private void InitializeComponents()
         {

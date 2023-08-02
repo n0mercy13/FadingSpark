@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 using Codebase.Services.Factory;
 using Codebase.StaticData;
+using Codebase.Logic.PlayerComponents;
 
 namespace Codebase.Logic.Weapons
 {
     public class Weapon : IWeapon
     {
-        private readonly IHealth _shipsEnergy;
+        private readonly IEnergy _shipsEnergy;
         private readonly IProjectileFactory _projectileFactory;
         private readonly Transform _projectileSpawnPoint;
         private readonly int _energyConsumption;
@@ -17,7 +18,7 @@ namespace Codebase.Logic.Weapons
         public Weapon(
             WeaponMountPoint mountPoint,
             WeaponStaticData weaponData,
-            IHealth energy,
+            IEnergy energy,
             IProjectileFactory projectileFactory)
         {
             _projectileSpawnPoint = mountPoint.transform;
