@@ -6,22 +6,25 @@ namespace Codebase.Logic.PlayerComponents
     [RequireComponent(typeof(Rigidbody2D))]
     public class Player : MonoBehaviour
 	{
+        private IEnergy _energy;
         private PlayerMover _playerMover;
         private PlayerUIHandler _uiHandler;
         private PlayerWeaponHandler _weaponHandler;
-        private IEnergy _energy;
+        private ShieldHandler _shieldHandler;
 
         [Inject]
         private void Construct(
+            IEnergy energy,
             PlayerMover playerMover,
             PlayerUIHandler uiHandler,
             PlayerWeaponHandler weaponHandler,
-            IEnergy energy)
+            ShieldHandler shieldHandler)
         {
+            _energy = energy;
             _playerMover = playerMover;
             _uiHandler = uiHandler;
             _weaponHandler = weaponHandler;
-            _energy = energy;
+            _shieldHandler = shieldHandler;
         }
 
         private void Start() => 
@@ -43,6 +46,7 @@ namespace Codebase.Logic.PlayerComponents
             _playerMover.Dispose();
             _uiHandler.Dispose();
             _weaponHandler.Dispose();
+            _shieldHandler.Dispose();
         }
     }
 }

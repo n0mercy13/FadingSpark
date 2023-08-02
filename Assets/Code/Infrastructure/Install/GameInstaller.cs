@@ -37,6 +37,7 @@ namespace Codebase.Infrastructure.Installer
             Container.Bind<PlayerUIHandler>().AsSingle();
             Container.Bind<PlayerMover>().AsSingle();  
             Container.Bind<PlayerWeaponHandler>().AsSingle();
+            Container.Bind<ShieldHandler>().AsSingle();
             Container.Bind<ShieldStateMachine>().AsSingle();
             Container.Bind<SpriteColorHandler>().WithId(InjectionIDs.Shield).AsSingle();
         }
