@@ -27,11 +27,13 @@ namespace Codebase.Logic.PlayerComponents.Shield
             [Inject(Id = InjectionIDs.Shield)]
             SpriteColorHandler colorHandler,
             IStaticDataService staticDataService,
+            ICoroutineRunner coroutineRunner,
             IShield shield)
         {
             _stateMachine = stateMachine;
-            _shield = shield;
             _colorHandler = colorHandler;
+            _coroutineRunner = coroutineRunner;
+            _shield = shield;
 
             PlayerStaticData staticData = staticDataService.ForPlayer();
             _shieldAbsorbColor = staticData.ShieldAbsorptionColor;
@@ -42,6 +44,8 @@ namespace Codebase.Logic.PlayerComponents.Shield
 
         public void Enter()
         {
+            _colorHandler.CurrentColor = _shieldAbsorbColor;
+
             _shield.EnableAbsorption();
 
             _switchToActiveStateCoroutine = 

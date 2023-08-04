@@ -28,6 +28,7 @@ namespace Codebase.Logic.PlayerComponents
         {
             _value += (int)(amount * _absorptionCoefficient);
             _value = Mathf.Clamp(_value, 0, _maxValue);
+            Changed.Invoke(_value, _maxValue);
         }
 
         public void Reduce(int by)

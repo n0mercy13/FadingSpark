@@ -15,6 +15,9 @@ namespace Codebase.StaticData
         [field: SerializeField, Min(0f)] public float ShieldDeactivationTime { get; private set; }
         [field: SerializeField, Min(1f)] public float ShieldDamageAbsorptionCoefficient { get; private set; }
         [field: SerializeField, Range(0f, 1f)] public float ShieldDamageReductionCoefficient { get; private set; }
+        [field: SerializeField, Min(0)] public float DeactivatedShieldRadius { get; private set; }
+        [field: SerializeField, Min(0)] public float ActivatedShieldRadius { get; private set; }
+        [field: SerializeField, Min(0)] public int ActivatedShieldContactDamage { get; private set; }
         [field: SerializeField] public Color ShieldInactiveColor { get; private set; }
         [field: SerializeField] public Color ShieldAbsorptionColor { get; private set; }
         [field: SerializeField] public Color ShieldActiveColor { get; private set; }

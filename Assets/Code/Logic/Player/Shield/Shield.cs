@@ -2,25 +2,24 @@
 using UnityEngine;
 using Codebase.Services.StaticData;
 using Codebase.Infrastructure.Install;
+using Codebase.StaticData;
 
 namespace Codebase.Logic.PlayerComponents.Shield
 {
-    [RequireComponent(typeof(SpriteRenderer))]
-    [RequireComponent(typeof(CircleCollider2D))]
-    public class Shield : MonoBehaviour, IShield, IDamageable
+    public class Shield : IShield
     {
-        [SerializeField, Range(0.1f, 0.5f)] private float _deactivatedShieldRadius;
-        [SerializeField, Range(0.4f, 2.0f)] private float _activatedShieldRadius;
+        private readonly IEnergy _shipEnergy;
+        private readonly SpriteColorHandler _colorHandler;
+        private readonly int _activatedShieldContactDamage;
+        private readonly float _damageReductionCoefficient;
+        private readonly float _deactivatedShieldRadius;
+        private readonly float _activatedShieldRadius;
 
-        private IEnergy _shipEnergy;
-        private SpriteColorHandler _colorHandler;
         private CircleCollider2D _collider;
         private bool _canAbsorb;
         private bool _isActivated;
-        private float _damageReductionCoefficient;
 
-        [Inject]
-        private void Construct(
+        public Shield(
             IEnergy energy,
             IStaticDataService staticDataService,
             [Inject(Id = InjectionIDs.Shield)]
@@ -28,15 +27,17 @@ namespace Codebase.Logic.PlayerComponents.Shield
         {
             _colorHandler = colorHandler;
             _shipEnergy = energy;
-            _damageReductionCoefficient = staticDataService
-                .ForPlayer()
-                .ShieldDamageReductionCoefficient;
+
+            PlayerStaticData playerData = staticDataService.ForPlayer();
+            _damageReductionCoefficient = playerData.ShieldDamageReductionCoefficient;
+            _deactivatedShieldRadius = playerData.DeactivatedShieldRadius;
+            _activatedShieldRadius = playerData.ActivatedShieldRadius;
+            _activatedShieldContactDamage = playerData.ActivatedShieldContactDamage;
         }
 
-        private void Awake()
+        public void Initialize(CircleCollider2D collider, Material material)
         {
-            _collider = GetComponent<CircleCollider2D>();
-            Material material = GetComponent<SpriteRenderer>().material;
+            _collider = collider;
             _colorHandler.Initialize(material);
         }
 
@@ -48,7 +49,7 @@ namespace Codebase.Logic.PlayerComponents.Shield
 
         public void Disable()
         {
-            _collider.enabled = false;
+            _isActivated = false;
             _collider.radius = _deactivatedShieldRadius;
         }
 
@@ -58,7 +59,7 @@ namespace Codebase.Logic.PlayerComponents.Shield
         public void DisableAbsorption() =>
             _canAbsorb = false;
 
-        public void ApplyDamage(int value)
+        public void OnHit(int value)
         {
             if (_canAbsorb)
                 _shipEnergy.Absorb(value);
@@ -67,6 +68,13 @@ namespace Codebase.Logic.PlayerComponents.Shield
                     (int)(value * _damageReductionCoefficient));
             else
                 _shipEnergy.Reduce(value);                
+        }
+
+        public void OnCollision(Collider2D with)
+        {
+            if (_isActivated
+                && with.TryGetComponent<IDamageable>(out IDamageable damageable))
+                    damageable.ApplyDamage(_activatedShieldContactDamage);
         }
     }
 }

@@ -18,13 +18,14 @@ namespace Codebase.Logic.PlayerComponents.Shield
             SpriteColorHandler colorHandler,
             IShield shield,
             IStaticDataService staticDataService,
-            ICoroutineRunner coroutineRunner)
+            ICoroutineRunner coroutineRunner,
+            PlayerWeaponHandler weaponHandler)
         {
             _states = new Dictionary<Type, IExitableState>
             {
-                [typeof(InactiveState)] = new InactiveState(shield, staticDataService, colorHandler),
+                [typeof(InactiveState)] = new InactiveState(shield, staticDataService, colorHandler, weaponHandler),
                 [typeof(ActivationState)] = new ActivationState(this, colorHandler,coroutineRunner, staticDataService),
-                [typeof(AbsorptionState)] = new AbsorptionState(this, colorHandler, staticDataService, shield),
+                [typeof(AbsorptionState)] = new AbsorptionState(this, colorHandler, staticDataService, coroutineRunner, shield),
                 [typeof(ActiveState)] = new ActiveState(colorHandler, shield, staticDataService),
                 [typeof(DeactivationState)] = new DeactivationState(this, colorHandler, coroutineRunner, staticDataService),
             };

@@ -20,6 +20,9 @@ namespace Codebase.Logic.PlayerComponents
             _input.ShieldButtonReleased += OnShieldButtonReleased;
         }
 
+        public void Initialize() => 
+            _stateMachine.Enter<InactiveState>();
+
         public void Dispose()
         {
             _input.ShieldButtonPressed -= OnShieldButtonPressed;

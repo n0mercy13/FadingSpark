@@ -8,40 +8,47 @@ using Codebase.StaticData;
 
 namespace Codebase.Logic.PlayerComponents
 {
-    public class PlayerWeaponHandler : IDisposable
+    public partial class PlayerWeaponHandler : IDisposable, IPlayerWeaponActivatable
     {
-        private readonly Player _player;
+        private readonly IEnergy _energy;
         private readonly IStaticDataService _staticDataService;
         private readonly IInputService _inputService;
         private readonly IProjectileFactory _projectileFactory;
 
         private WeaponMountPoint[] _mountPoints;
         private List<IWeapon> _weapons;
+        private bool _canShoot;
 
         public PlayerWeaponHandler(
-            Player player,
+            IEnergy energy,
             IStaticDataService staticDataService,
             IInputService inputService,
             IProjectileFactory projectileFactory)
         {
-            _player = player;
+            _energy = energy;
             _staticDataService = staticDataService;
             _inputService = inputService;
             _projectileFactory = projectileFactory;
 
+            _canShoot = true;
             _weapons = new List<IWeapon>();
 
             _inputService.AttackButtonPressed += OnAttack;
         }
+        public void Activate() =>
+            _canShoot = true;
+
+        public void Deactivate() =>
+            _canShoot = false;
+
+        public void Initialize(Player player)
+        {
+            _mountPoints = GetMountPoints(player);
+            GetWeapons(_mountPoints);
+        }
 
         public void Dispose() => 
             _inputService.AttackButtonPressed -= OnAttack;
-
-        public void Initialize()
-        {
-            _mountPoints = GetMountPoints();
-            GetWeapons(_mountPoints);
-        }
 
         private void GetWeapons(WeaponMountPoint[] mountPoints)
         {
@@ -52,19 +59,20 @@ namespace Codebase.Logic.PlayerComponents
                     WeaponStaticData weaponData = _staticDataService
                         .ForWeapon(mountPoint.Type);
                     IWeapon weapon = new Weapon(
-                        mountPoint, weaponData, _player.Energy, _projectileFactory);
+                        mountPoint, weaponData, _energy, _projectileFactory);
                     _weapons.Add(weapon);
                 }
             }
         }
 
-        private WeaponMountPoint[] GetMountPoints() => 
-            _player.GetComponentsInChildren<WeaponMountPoint>();
+        private WeaponMountPoint[] GetMountPoints(Player player) => 
+            player.GetComponentsInChildren<WeaponMountPoint>();
 
         private void OnAttack()
         {
-            foreach (IWeapon weapon in _weapons)
-                weapon.Shoot();
+            if(_canShoot)           
+                foreach (IWeapon weapon in _weapons)
+                    weapon.Shoot();
         }
     }
 }

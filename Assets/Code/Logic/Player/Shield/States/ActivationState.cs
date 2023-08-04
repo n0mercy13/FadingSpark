@@ -37,7 +37,7 @@ namespace Codebase.Logic.PlayerComponents.Shield
             PlayerStaticData playerData = staticDataService.ForPlayer();
             _shieldActivationTime = playerData.ShieldActivationTime;
             _activationDelay = new WaitForSeconds(_shieldActivationTime);
-            _final = playerData.ShieldAbsorptionColor;
+            _final = playerData.ShieldActiveColor;
         }
 
         public void Enter()

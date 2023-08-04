@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace Codebase.Logic.PlayerComponents
 {
-    [RequireComponent(typeof(Rigidbody2D))]
     public class Player : MonoBehaviour
 	{
         private IEnergy _energy;
@@ -38,7 +37,8 @@ namespace Codebase.Logic.PlayerComponents
         private void InitializeComponents()
         {
             _uiHandler.Initialize();
-            _weaponHandler.Initialize();
+            _weaponHandler.Initialize(this);
+            _shieldHandler.Initialize();
         }
 
         private void DisposeComponents()

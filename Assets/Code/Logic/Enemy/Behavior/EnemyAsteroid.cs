@@ -10,7 +10,7 @@ namespace Codebase.Logic.EnemyComponents.Behavior
 
         private Coroutine _selfDestructionCoroutine;
 
-        private void OnEnable()
+        private void Start()
         {
             Vector3 direction = Target.transform.position - transform.position;
             StateMachine.Enter<MoveInDirectionState, Vector3>(direction);
@@ -18,7 +18,7 @@ namespace Codebase.Logic.EnemyComponents.Behavior
             _selfDestructionCoroutine = StartCoroutine(SelfDestructAfterDelay());
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
             if(_selfDestructionCoroutine != null)
                 StopCoroutine(_selfDestructionCoroutine);

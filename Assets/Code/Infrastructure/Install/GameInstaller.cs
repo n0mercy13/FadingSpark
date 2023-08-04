@@ -24,8 +24,8 @@ namespace Codebase.Infrastructure.Installer
         public override void InstallBindings()
         {
             BindInfrastructure();
-            BindInputs();
             BindServices();
+            BindInputs();
             BindFactories();
             BindPlayerComponents();
         }
@@ -33,10 +33,10 @@ namespace Codebase.Infrastructure.Installer
         private void BindPlayerComponents()
         {
             Container.BindInterfacesTo<Energy>().AsSingle();
-            Container.BindInterfacesTo<Shield>().AsSingle();
+            Container.BindInterfacesAndSelfTo<Shield>().AsSingle();
+            Container.Bind<PlayerWeaponHandler>().AsSingle();
             Container.Bind<PlayerUIHandler>().AsSingle();
             Container.Bind<PlayerMover>().AsSingle();  
-            Container.Bind<PlayerWeaponHandler>().AsSingle();
             Container.Bind<ShieldHandler>().AsSingle();
             Container.Bind<ShieldStateMachine>().AsSingle();
             Container.Bind<SpriteColorHandler>().WithId(InjectionIDs.Shield).AsSingle();

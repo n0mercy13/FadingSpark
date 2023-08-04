@@ -30,12 +30,10 @@ namespace Codebase.Logic.PlayerComponents.Shield
         public void Enter()
         {
             _colorHandler.CurrentColor = _activeColor;
-            _shield.Enable();
         }
 
         public void Exit()
         {
-            _shield.Disable();
         }
     }
 }
