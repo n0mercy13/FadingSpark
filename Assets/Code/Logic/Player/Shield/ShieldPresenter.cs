@@ -33,7 +33,7 @@ namespace Codebase.Logic.PlayerComponents.Shield
         private void Initialize()
         {
             Material material = _spriteRenderer.material;
-            _shield.Initialize(_collider, material);
+            _shield.SetComponents(_collider, material);
         }
     }
 }

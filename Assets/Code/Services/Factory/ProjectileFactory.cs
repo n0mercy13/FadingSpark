@@ -8,7 +8,7 @@ using Codebase.Services.StaticData;
 
 namespace Codebase.Services.Factory
 {
-    public class ProjectileFactory : IProjectileFactory
+    public partial class ProjectileFactory
     {
         private const string WeaponsFolderPath = "Weapons/";
 
@@ -33,10 +33,20 @@ namespace Codebase.Services.Factory
                 _parent = monoBehavior.transform;
         }
 
+        private Projectile GetPrefab(WeaponTypes type)
+        {
+            _assetPath = WeaponsFolderPath + type.ToString();
+
+            return _assetProviderService.GetPrefab<Projectile>(_assetPath);
+        }
+    }
+
+    public partial class ProjectileFactory : IProjectileFactory
+    {
         public Projectile Create(
             WeaponTypes type, Vector3 spawnPosition, Vector3 direction)
         {
-            GameObject prefab = GetPrefab(type);
+            Projectile prefab = GetPrefab(type);
             WeaponStaticData weaponData = _staticDataService.ForWeapon(type);
 
             Projectile projectile = _container
@@ -46,13 +56,6 @@ namespace Codebase.Services.Factory
             projectile.gameObject.SetActive(true);
 
             return projectile;
-        }
-
-        private GameObject GetPrefab(WeaponTypes type)
-        {
-            _assetPath = WeaponsFolderPath + type.ToString();
-
-            return _assetProviderService.Get<GameObject>(_assetPath);
         }
     }
 }

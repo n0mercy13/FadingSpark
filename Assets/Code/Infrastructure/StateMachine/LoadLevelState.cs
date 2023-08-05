@@ -1,6 +1,6 @@
 ﻿using Codebase.Services.Factory;
 using Codebase.Services.SceneLoader;
-using Codebase.UI.Factory;
+using Codebase.UI.Manager;
 
 namespace Codebase.Infrastructure.StateMachine
 {
@@ -9,19 +9,19 @@ namespace Codebase.Infrastructure.StateMachine
         private readonly GameStateMachine _gameStateMachine;
         private readonly ISceneLoaderService _sceneLoader;
         private readonly IPlayerFactory _playerFactory;
-        private readonly IUIFactory _uiFactory;
+        private readonly IUIManager _uiManager;
         private readonly GameFactory _gameFactory;
 
         public LoadLevelState(GameStateMachine gameStateMachine,
             ISceneLoaderService sceneLoader,
             IPlayerFactory playerFactory,
-            IUIFactory uiFactory,
+            IUIManager uiManger,
             GameFactory gameFactory)
         {
             _gameStateMachine = gameStateMachine;
             _sceneLoader = sceneLoader;
             _playerFactory = playerFactory;
-            _uiFactory = uiFactory;
+            _uiManager = uiManger;
             _gameFactory = gameFactory;
         }
 
@@ -49,10 +49,7 @@ namespace Codebase.Infrastructure.StateMachine
         private void CreatePlayer() => 
             _playerFactory.CreatePlayer();
 
-        private void CreateUI()
-        {
-            _uiFactory.CreateUIRoot();
-            _uiFactory.CreateHUD();
-        }
+        private void CreateUI() => 
+            _uiManager.GetHUD();
     }
 }

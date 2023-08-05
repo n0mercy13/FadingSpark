@@ -7,12 +7,12 @@ using Codebase.Services.StaticData;
 
 namespace Codebase.Logic.PlayerComponents
 {
-    public class PlayerMover : IDisposable
+    public partial class PlayerMover
     {
         private readonly Player _player;
         private readonly ITickProviderService _tickProvider;
         private readonly IInputService _inputService;
-        private readonly float _movementSpeed;
+        private  float _movementSpeed;
 
         public PlayerMover(
             Player player,
@@ -26,11 +26,8 @@ namespace Codebase.Logic.PlayerComponents
 
             _movementSpeed = staticDataService.ForPlayer().Speed;
 
-            tickProvider.Ticked += OnTick;
+            _tickProvider.Ticked += OnTick;
         }
-
-        public void Dispose() => 
-            _tickProvider.Ticked -= OnTick;
 
         private void OnTick(int _) => 
             MovePlayer();
@@ -43,5 +40,11 @@ namespace Codebase.Logic.PlayerComponents
                     _movementSpeed * _tickProvider.DeltaTime * _inputService.Axis;                
             }
         }
-    }    
+    }  
+    
+    public partial class PlayerMover : IDisposable
+    {
+        public void Dispose() =>
+            _tickProvider.Ticked -= OnTick;
+    }
 }

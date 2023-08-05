@@ -1,10 +1,11 @@
 ﻿using System;
+using UnityEngine;
 using Codebase.Logic.PlayerComponents.Shield;
 using Codebase.Services.Input;
 
 namespace Codebase.Logic.PlayerComponents
 {
-    public class ShieldHandler : IDisposable
+    public partial class ShieldHandler
     {
         private readonly ShieldStateMachine _stateMachine;
         private readonly IInputService _input;
@@ -23,16 +24,19 @@ namespace Codebase.Logic.PlayerComponents
         public void Initialize() => 
             _stateMachine.Enter<InactiveState>();
 
-        public void Dispose()
-        {
-            _input.ShieldButtonPressed -= OnShieldButtonPressed;
-            _input.ShieldButtonReleased -= OnShieldButtonReleased;
-        }
-
         private void OnShieldButtonPressed() => 
             _stateMachine.Enter<ActivationState>();
 
         private void OnShieldButtonReleased() => 
             _stateMachine.Enter<DeactivationState>();
+    }
+
+    public partial class ShieldHandler : IDisposable
+    {
+        public void Dispose()
+        {
+            _input.ShieldButtonPressed -= OnShieldButtonPressed;
+            _input.ShieldButtonReleased -= OnShieldButtonReleased;
+        }
     }
 }

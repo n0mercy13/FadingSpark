@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using Codebase.Services.SceneLoader;
 using Codebase.Services.Factory;
-using Codebase.UI.Factory;
 using Codebase.Services.StaticData;
-using System.Diagnostics;
+using Codebase.Logic.PlayerComponents;
+using Codebase.UI.Manager;
+using Codebase.Services.Initialize;
 
 namespace Codebase.Infrastructure.StateMachine
 {
@@ -15,16 +16,21 @@ namespace Codebase.Infrastructure.StateMachine
 
         public GameStateMachine(
             IStaticDataService staticDataService,
+            IInitializationService initializationService,
             ISceneLoaderService sceneLoader,
             IPlayerFactory playerFactory,
-            IUIFactory uiFactory,
+            IUIManager uiManager,
+            IEnergy playerEnergy,
             GameFactory gameFactory)
         {
             _states = new Dictionary<Type, IExitableState>
             {
-                [typeof(BootstrapState)] = new BootstrapState(this, staticDataService),
-                [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, playerFactory, uiFactory, gameFactory),
-                [typeof(GameLoopState)] = new GameLoopState(this),
+                [typeof(BootstrapState)] = new BootstrapState(
+                    this, staticDataService, initializationService),
+                [typeof(LoadLevelState)] = new LoadLevelState(
+                    this, sceneLoader, playerFactory, uiManager, gameFactory),
+                [typeof(GameLoopState)] = new GameLoopState(
+                    this, uiManager, playerEnergy),
             };
         }
 

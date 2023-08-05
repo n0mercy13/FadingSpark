@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 156410796217476808}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.254, y: -0.084, z: 0}
+  m_LocalPosition: {x: 0.222, y: 0.216, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -103,6 +103,7 @@ GameObject:
   - component: {fileID: 3789147264400575875}
   - component: {fileID: 3925066338940953687}
   - component: {fileID: 5669464880216568305}
+  - component: {fileID: 869449614442015166}
   m_Layer: 0
   m_Name: Shield
   m_TagString: Untagged
@@ -186,7 +187,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.2
 --- !u!212 &3925066338940953687
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -251,6 +252,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45a3f68e23f27c040be045734c50818f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &869449614442015166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5435472113072214745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: feb3100dee277624687dbbe9fdc02264, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _player: {fileID: 9185148132120480954}
 --- !u!1 &6144373833662180140
 GameObject:
   m_ObjectHideFlags: 0
@@ -323,7 +337,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8311954446952180589}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.254, y: -0.084, z: 0}
+  m_LocalPosition: {x: -0.223, y: 0.225, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -387,7 +401,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6692760121034021881}
   - component: {fileID: 6853783914808070983}
-  - component: {fileID: 4555610944643320880}
   m_Layer: 0
   m_Name: View
   m_TagString: Untagged
@@ -462,15 +475,3 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4555610944643320880
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8995170489170362881}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: feb3100dee277624687dbbe9fdc02264, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

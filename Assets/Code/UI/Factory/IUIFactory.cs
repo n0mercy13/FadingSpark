@@ -1,14 +1,13 @@
 ﻿using Codebase.Services;
-using UnityEngine;
+using Codebase.UI.Elements;
 
 namespace Codebase.UI.Factory
 {
     public interface IUIFactory : IService
     {
-        GameObject HUD { get; }
-
         void CreateUIRoot();
-        void CreateHUD();
-        void CreateMenu();
+        UI_HUD CreateHUD();
+        UI_MainMenu CreateMainMenu();
+        UI_GameOverScreen CreateGameOverScreen();
     }
 }

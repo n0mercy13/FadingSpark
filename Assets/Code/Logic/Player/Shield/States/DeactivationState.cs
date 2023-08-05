@@ -1,51 +1,62 @@
-﻿using Codebase.Infrastructure;
+﻿using System.Collections;
+using Zenject;
+using UnityEngine;
+using Codebase.Infrastructure;
 using Codebase.Infrastructure.Install;
 using Codebase.Infrastructure.StateMachine;
 using Codebase.Services.StaticData;
+using Codebase.Services.Initialize;
 using Codebase.StaticData;
-using System.Collections;
-using UnityEngine;
-using Zenject;
+using IInitializable = Codebase.Services.Initialize.IInitializable;
 
 namespace Codebase.Logic.PlayerComponents.Shield
 {
-    public class DeactivationState : IState
+    public partial class DeactivationState
     {
         private readonly ShieldStateMachine _stateMachine;
         private readonly SpriteColorHandler _colorHandler;
         private readonly ICoroutineRunner _coroutineRunner;
-        private readonly Color _final;
-        private readonly float _deactivationDuration;
-        private readonly YieldInstruction _deactivationDelay;
+        private readonly IStaticDataService _staticDataService;
 
-        private Color _initial;
         private Coroutine _switchToDeactivatedStateDelay;
         private Coroutine _colorChangeCoroutine;
+        private YieldInstruction _deactivationDelay;
+        private float _deactivationDuration;
+        private Color _final;
+        private Color _initial;
 
         public DeactivationState(
             ShieldStateMachine stateMachine,
             [Inject(Id = InjectionIDs.Shield)]
-            SpriteColorHandler colorHandler, 
+            SpriteColorHandler colorHandler,
             ICoroutineRunner coroutineRunner,
-            IStaticDataService staticDataService)
+            IStaticDataService staticDataService,
+            IInitializationService initializationService)
         {
             _stateMachine = stateMachine;
             _colorHandler = colorHandler;
             _coroutineRunner = coroutineRunner;
+            _staticDataService = staticDataService;
 
-            PlayerStaticData playerData = staticDataService.ForPlayer();
-            _final = playerData.ShieldInactiveColor;
-            _deactivationDuration = playerData.ShieldDeactivationTime;
-
-            _deactivationDelay = new WaitForSeconds(_deactivationDuration);
+            initializationService.Register(this);
         }
 
+        private IEnumerator SwitchingToDeactivationState()
+        {
+            yield return _deactivationDelay;
+
+            _stateMachine.Enter<InactiveState>();
+        }
+    }
+
+    public partial class DeactivationState : IState
+    {
         public void Enter()
         {
             _initial = _colorHandler.CurrentColor;
 
             _switchToDeactivatedStateDelay = _coroutineRunner
-                .StartCoroutine(SwitchToDeactivationState());
+                .StartCoroutine(SwitchingToDeactivationState());
             _colorChangeCoroutine = _coroutineRunner
                 .StartCoroutine(_colorHandler
                 .ChangeColorOverTime(_initial, _final, _deactivationDuration));
@@ -59,11 +70,17 @@ namespace Codebase.Logic.PlayerComponents.Shield
             if (_colorChangeCoroutine != null)
                 _coroutineRunner.StopCoroutine(_colorChangeCoroutine);
         }
+    }
 
-        private IEnumerator SwitchToDeactivationState()
+    public partial class DeactivationState : IInitializable
+    {
+        public void Initialize()
         {
-            yield return _deactivationDelay;
+            PlayerStaticData playerData = _staticDataService.ForPlayer();
 
-            _stateMachine.Enter<InactiveState>();
+            _final = playerData.ShieldInactiveColor;
+            _deactivationDuration = playerData.ShieldDeactivationTime;
+            _deactivationDelay = new WaitForSeconds(_deactivationDuration);
         }
-    }}
+    }
+}

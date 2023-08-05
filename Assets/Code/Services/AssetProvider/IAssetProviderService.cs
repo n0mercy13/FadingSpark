@@ -4,7 +4,7 @@ namespace Codebase.Services.AssetProvider
 {
     public interface IAssetProviderService : IService
     {
-        T Get<T>(string path) where T : Object;
-        T Instantiate<T>(string path, Vector3 at) where T : Object;
+        TComponent GetPrefab<TComponent>(string path) where TComponent : MonoBehaviour;
+        TComponent Instantiate<TComponent>(string path, Vector3 at) where TComponent : MonoBehaviour;
     }
 }

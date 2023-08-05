@@ -19,6 +19,8 @@
 
             public const string UIRoot = "UI/UIRoot";
             public const string HUD = "UI/HUD";
+            public const string GameOverScreen = "UI/GameOverScreen";
+            public const string MainMenu = "UI/MainMenu";
         }
 
         public static class StaticDataPaths
@@ -33,6 +35,9 @@
             public const int FPS_30 = 30;
             public const int FPS_60 = 60;
             public const int FPS_120 = 120;
+
+            public const float BottomContainerTopBoundary = 0.15f;
+            public const float TopContainerBottomBoundary = 0.9f;
         }
     }
 }

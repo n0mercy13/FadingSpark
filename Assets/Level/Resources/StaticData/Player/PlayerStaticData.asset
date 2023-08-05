@@ -15,13 +15,14 @@ MonoBehaviour:
   <MaxEnergy>k__BackingField: 1193
   <Speed>k__BackingField: 3.17
   <InitialPosition>k__BackingField: {x: 0, y: -3, z: 0}
-  <ShieldActivationTime>k__BackingField: 0.3
-  <ShieldAbsorptionTime>k__BackingField: 0.5
+  <ShieldActivationTime>k__BackingField: 0.1
+  <ShieldAbsorptionTime>k__BackingField: 0.8
   <ShieldDeactivationTime>k__BackingField: 0.3
   <ShieldDamageAbsorptionCoefficient>k__BackingField: 2.5
   <ShieldDamageReductionCoefficient>k__BackingField: 0.502
   <DeactivatedShieldRadius>k__BackingField: 0.21
   <ActivatedShieldRadius>k__BackingField: 0.5
+  <ActivatedShieldContactDamage>k__BackingField: 20
   <ShieldInactiveColor>k__BackingField: {r: 1, g: 1, b: 1, a: 0}
-  <ShieldAbsorptionColor>k__BackingField: {r: 1, g: 0.6028373, b: 0, a: 1}
-  <ShieldActiveColor>k__BackingField: {r: 0.32549024, g: 0.89326215, b: 1, a: 0.5019608}
+  <ShieldAbsorptionColor>k__BackingField: {r: 1, g: 0.95088196, b: 0.08176094, a: 1}
+  <ShieldActiveColor>k__BackingField: {r: 0.29019606, g: 0.65230185, b: 1, a: 0.5019608}

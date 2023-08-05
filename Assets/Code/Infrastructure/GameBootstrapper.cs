@@ -12,7 +12,7 @@ namespace Codebase.Infrastructure
         public void Construct(GameStateMachine gameStateMachine) => 
             _gameStateMachine = gameStateMachine;
 
-        private void Awake() =>
-            _gameStateMachine.Enter<BootstrapState>();        
+        public void Start() => 
+            _gameStateMachine.Enter<BootstrapState>();
     }
 }

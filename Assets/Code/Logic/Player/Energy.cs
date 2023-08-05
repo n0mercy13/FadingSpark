@@ -2,23 +2,29 @@
 using UnityEngine;
 using Codebase.Services.StaticData;
 using Codebase.StaticData;
+using Codebase.Services.Initialize;
 
 namespace Codebase.Logic.PlayerComponents
 {
-    public class Energy : IEnergy
+    public partial class Energy
     {
-        private readonly int _maxValue;
-        private readonly float _absorptionCoefficient;
+        private readonly IStaticDataService _staticDataService;
+        private float _absorptionCoefficient;
+        private int _maxValue;
         private int _value;
 
-        public Energy(IStaticDataService staticDataService)
+        public Energy(
+            IStaticDataService staticDataService,
+            IInitializationService initializationService)
         {
-            PlayerStaticData playerData = staticDataService.ForPlayer();
-            _maxValue = playerData.MaxEnergy;
-            _absorptionCoefficient = playerData.ShieldDamageAbsorptionCoefficient;
-            _value = _maxValue;
-        }
+            _staticDataService = staticDataService;
 
+            initializationService.Register(this);
+        }
+    }
+
+    public partial class Energy : IEnergy
+    {
         public int Current => _value;
 
         public event Action<int, int> Changed = delegate { };
@@ -39,6 +45,17 @@ namespace Codebase.Logic.PlayerComponents
 
             if (_value == 0)
                 Died.Invoke();
+        }
+    }
+
+    public partial class Energy : IInitializable
+    {
+        public void Initialize()
+        {
+            PlayerStaticData playerData = _staticDataService.ForPlayer();
+            _maxValue = playerData.MaxEnergy;
+            _absorptionCoefficient = playerData.ShieldDamageAbsorptionCoefficient;
+            _value = _maxValue;
         }
     }
 }

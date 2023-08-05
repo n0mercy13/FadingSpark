@@ -72,7 +72,7 @@ namespace Codebase.Services.Input
                 {
                     ""name"": """",
                     ""id"": ""fb3ec492-58a8-4417-a5e3-d14fee7a89e5"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
@@ -94,7 +94,7 @@ namespace Codebase.Services.Input
                 {
                     ""name"": """",
                     ""id"": ""7a6803b4-8952-4bd1-997b-329851c6a4bc"",
-                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",

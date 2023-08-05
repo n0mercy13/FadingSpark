@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Codebase.UI.Elements
 {
     [RequireComponent(typeof(CanvasGroup))]
-    public class BarView : MonoBehaviour
+    public class UI_Bar_PlayerEnergy : MonoBehaviour
     {
         [SerializeField] private Image _barView;
 

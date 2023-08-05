@@ -5,6 +5,7 @@ using Codebase.Infrastructure;
 using Codebase.Infrastructure.Install;
 using Codebase.Infrastructure.StateMachine;
 using Codebase.Services.StaticData;
+using Codebase.Services.Initialize;
 
 namespace Codebase.Logic.PlayerComponents.Shield
 {
@@ -19,15 +20,21 @@ namespace Codebase.Logic.PlayerComponents.Shield
             IShield shield,
             IStaticDataService staticDataService,
             ICoroutineRunner coroutineRunner,
-            PlayerWeaponHandler weaponHandler)
+            PlayerWeaponHandler weaponHandler,
+            IInitializationService initializationService)
         {
             _states = new Dictionary<Type, IExitableState>
             {
-                [typeof(InactiveState)] = new InactiveState(shield, staticDataService, colorHandler, weaponHandler),
-                [typeof(ActivationState)] = new ActivationState(this, colorHandler,coroutineRunner, staticDataService),
-                [typeof(AbsorptionState)] = new AbsorptionState(this, colorHandler, staticDataService, coroutineRunner, shield),
-                [typeof(ActiveState)] = new ActiveState(colorHandler, shield, staticDataService),
-                [typeof(DeactivationState)] = new DeactivationState(this, colorHandler, coroutineRunner, staticDataService),
+                [typeof(InactiveState)] = new InactiveState(
+                    shield, staticDataService, colorHandler, weaponHandler, initializationService),
+                [typeof(ActivationState)] = new ActivationState(
+                    this, colorHandler,coroutineRunner, staticDataService, initializationService),
+                [typeof(AbsorptionState)] = new AbsorptionState(
+                    this, colorHandler, staticDataService, coroutineRunner, initializationService,shield),
+                [typeof(ActiveState)] = new ActiveState(
+                    colorHandler, staticDataService, initializationService),
+                [typeof(DeactivationState)] = new DeactivationState(
+                    this, colorHandler, coroutineRunner, staticDataService, initializationService),
             };
         }
 
