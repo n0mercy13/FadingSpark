@@ -1,8 +1,6 @@
-﻿using UnityEngine;
-
-namespace Codebase.UI.Elements
+﻿namespace Codebase.UI.Elements
 {
-    public class UI_GameOverScreen : MonoBehaviour
+    public class UI_GameOverScreen : HideableUI
     {
     }
 }

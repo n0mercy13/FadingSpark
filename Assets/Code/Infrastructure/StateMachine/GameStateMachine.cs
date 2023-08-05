@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using Codebase.Services.SceneLoader;
 using Codebase.Services.Factory;
 using Codebase.Services.StaticData;
+using Codebase.Services.Initialize;
+using Codebase.Services.Pause;
 using Codebase.Logic.PlayerComponents;
 using Codebase.UI.Manager;
-using Codebase.Services.Initialize;
 
 namespace Codebase.Infrastructure.StateMachine
 {
@@ -18,6 +19,7 @@ namespace Codebase.Infrastructure.StateMachine
             IStaticDataService staticDataService,
             IInitializationService initializationService,
             ISceneLoaderService sceneLoader,
+            IPauseService pauseService,
             IPlayerFactory playerFactory,
             IUIManager uiManager,
             IEnergy playerEnergy,
@@ -31,6 +33,8 @@ namespace Codebase.Infrastructure.StateMachine
                     this, sceneLoader, playerFactory, uiManager, gameFactory),
                 [typeof(GameLoopState)] = new GameLoopState(
                     this, uiManager, playerEnergy),
+                [typeof(GameOverState)] = new GameOverState(
+                    this, uiManager, pauseService),
             };
         }
 

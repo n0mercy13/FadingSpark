@@ -5,9 +5,10 @@ namespace Codebase.UI.Manager
 {
     public interface IUIManager
     {
-        UI_GameOverScreen GetGameOverScreen();
-        UI_HUD GetHUD();
-        UI_MainMenu GetMainMenu();
-        bool TryGetUIElement<TComponent>(out TComponent uiElement) where TComponent : MonoBehaviour;
+        IHideableUI OpenUIElement<TUIElement>() where TUIElement : MonoBehaviour, IHideableUI;
+        void CloseUIElement<TUIElement>() where TUIElement : IHideableUI;
+        bool TryGetUIComponent<TUIElement, TUIComponent>(out TUIComponent uiComponent) 
+            where TUIElement : MonoBehaviour, IHideableUI
+            where TUIComponent : MonoBehaviour;
     }
 }

@@ -1,93 +1,63 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
-using Codebase.UI.Factory;
-using Codebase.UI.Elements;
 using Codebase.Extensions;
+using Codebase.UI.Elements;
+using Codebase.UI.Factory;
 
 namespace Codebase.UI.Manager
 {
     public partial class UIManager
     {
         private readonly IUIFactory _uiFactory;
-        private readonly List<MonoBehaviour> _uiElements;
-
-        private bool _isUIRootCreated;
+        private readonly Dictionary<Type, IHideableUI> _uiElements;
 
         public UIManager(IUIFactory factory)
         {
             _uiFactory = factory;
 
-            _uiElements = new List<MonoBehaviour>();
-        }
-
-        private void CreateUIRootIfNone()
-        {
-            if(_isUIRootCreated == false)
-            {
-                _uiFactory.CreateUIRoot();
-                _isUIRootCreated = true;
-            }
+            _uiElements = new Dictionary<Type, IHideableUI>();
         }
     }
 
     public partial class UIManager : IUIManager
     {
-        public UI_HUD GetHUD()
+        public IHideableUI OpenUIElement<TUIElement>() where TUIElement : MonoBehaviour, IHideableUI
         {
-            CreateUIRootIfNone();
-
-            if (TryGetUIElement(out UI_HUD hud))
-                return hud;
-
-            UI_HUD newHUD = _uiFactory.CreateHUD();
-            _uiElements.Add(newHUD);
-
-            return hud;
-        }
-
-        public UI_GameOverScreen GetGameOverScreen()
-        {
-            if (TryGetUIElement(out UI_GameOverScreen gameOverScreen))
-                return gameOverScreen;
-
-            UI_GameOverScreen newGameOverScreen =
-                _uiFactory.CreateGameOverScreen();
-            _uiElements.Add(newGameOverScreen);
-
-            return newGameOverScreen;
-        }
-
-        public UI_MainMenu GetMainMenu()
-        {
-            CreateUIRootIfNone();
-
-            if (TryGetUIElement(out UI_MainMenu mainMenu))
-                return mainMenu;
-
-            UI_MainMenu newMainMenu = _uiFactory.CreateMainMenu();
-            _uiElements.Add(newMainMenu);
-
-            return newMainMenu;
-        }
-
-        public bool TryGetUIElement<TComponent>(out TComponent uiElement) where TComponent : MonoBehaviour
-        {
-            foreach (MonoBehaviour element in _uiElements)
+            if (_uiElements.TryGetValue(
+                typeof(TUIElement), out IHideableUI uiElement))
             {
-                if (element is TComponent component)
-                {
-                    uiElement = component;
-                    return true;
-                }
-                else if (element.TryGetComponentInChildren(out TComponent childComponent))
-                {
-                    uiElement = childComponent;
-                    return true;
-                }
-            }
+                uiElement.Open();
 
-            uiElement = null;
-            return false;
+                return uiElement;
+            }
+            else
+            {
+                return _uiFactory.Create<TUIElement>();
+            }
+        }
+
+        public void CloseUIElement<TUIElement>() where TUIElement : IHideableUI
+        {
+            if (_uiElements.TryGetValue(typeof(TUIElement), out IHideableUI uiElement))
+                uiElement.Hide();
+        }
+
+        public bool TryGetUIComponent<TUIElement, TUIComponent>(out TUIComponent uiComponent)
+            where TUIElement : MonoBehaviour, IHideableUI
+            where TUIComponent : MonoBehaviour
+        {
+            if (_uiElements.TryGetValue(typeof(TUIElement), out IHideableUI uiElement)
+                && uiElement is MonoBehaviour uiBehavior
+                && uiBehavior.TryGetComponentInChildren(out uiComponent))
+            {
+                return true;
+            }
+            else
+            {
+                uiComponent = null;
+                return false;
+            }
         }
     }
 }

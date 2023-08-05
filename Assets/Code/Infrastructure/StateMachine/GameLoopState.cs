@@ -5,13 +5,13 @@ using Codebase.UI.Manager;
 
 namespace Codebase.Infrastructure.StateMachine
 {
-    public class GameLoopState : IState, IDisposable
+    public partial class GameLoopState
     {
         private readonly GameStateMachine _gameStateMachine;
         private readonly IUIManager _uiManager;
         private readonly IEnergy _playerEnergy;
 
-        private UI_HUD_Button_OpenMainMenu _mainMenuButton;
+        private UI_HUD_Button_OpenMainMenu _openMainMenuButton;
 
         public GameLoopState(
             GameStateMachine gameStateMachine,
@@ -25,13 +25,26 @@ namespace Codebase.Infrastructure.StateMachine
             _playerEnergy.Died += OnPlayerDied;
         }
 
-        public void Dispose()
-        {
-            _playerEnergy.Died -= OnPlayerDied;
-            _mainMenuButton.onClick.RemoveListener(OnMainMenuButtonClicked);
-            _mainMenuButton = null;
-        }
+        private void OnPlayerDied() =>
+            _gameStateMachine.Enter<GameOverState>();
 
+        private void OnMainMenuButtonClicked() =>
+            _gameStateMachine.Enter<MainMenuState>();
+
+        private void RegisterButtons()
+        {
+            if (_openMainMenuButton == null
+                && _uiManager.TryGetUIComponent<UI_HUD, UI_HUD_Button_OpenMainMenu>(
+                    out UI_HUD_Button_OpenMainMenu openMainMenuButton))
+            {
+                _openMainMenuButton = openMainMenuButton;
+                _openMainMenuButton.onClick.AddListener(OnMainMenuButtonClicked);
+            }
+        }
+    }
+
+    public partial class GameLoopState : IState
+    {
         public void Enter()
         {
             RegisterButtons();
@@ -40,22 +53,15 @@ namespace Codebase.Infrastructure.StateMachine
         public void Exit()
         {
         }
+    }
 
-        private void OnPlayerDied() => 
-            _gameStateMachine.Enter<GameOverState>();
-
-        private void OnMainMenuButtonClicked() => 
-            _gameStateMachine.Enter<MainMenuState>();
-
-        private void RegisterButtons()
+    public partial class GameLoopState : IDisposable
+    {
+        public void Dispose()
         {
-            if (_mainMenuButton == null 
-                && _uiManager.TryGetUIElement(
-                    out UI_HUD_Button_OpenMainMenu mainMenuButton))
-            {
-                _mainMenuButton = mainMenuButton;
-                _mainMenuButton.onClick.AddListener(OnMainMenuButtonClicked);
-            }
+            _playerEnergy.Died -= OnPlayerDied;
+            _openMainMenuButton.onClick.RemoveListener(OnMainMenuButtonClicked);
+            _openMainMenuButton = null;
         }
     }
 }

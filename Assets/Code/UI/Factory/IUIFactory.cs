@@ -1,13 +1,11 @@
 ﻿using Codebase.Services;
 using Codebase.UI.Elements;
+using UnityEngine;
 
 namespace Codebase.UI.Factory
 {
     public interface IUIFactory : IService
     {
-        void CreateUIRoot();
-        UI_HUD CreateHUD();
-        UI_MainMenu CreateMainMenu();
-        UI_GameOverScreen CreateGameOverScreen();
+        TUIElement Create<TUIElement>() where TUIElement : MonoBehaviour, IHideableUI;
     }
 }

@@ -16,6 +16,7 @@ using Codebase.Services.RandomGenerator;
 using Codebase.UI.Factory;
 using Codebase.UI.Manager;
 using Codebase.Services.Initialize;
+using Codebase.Services.Pause;
 
 namespace Codebase.Infrastructure.Installer
 {
@@ -108,6 +109,9 @@ namespace Codebase.Infrastructure.Installer
 
         private void BindServices()
         {
+            Container
+                .BindInterfacesTo<PauseService>()
+                .AsSingle();
             Container
                 .BindInterfacesTo<RandomGeneratorService>()
                 .AsSingle();

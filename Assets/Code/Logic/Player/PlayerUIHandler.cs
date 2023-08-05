@@ -4,7 +4,7 @@ using Codebase.UI.Manager;
 
 namespace Codebase.Logic.PlayerComponents
 {
-    public class PlayerUIHandler : IDisposable
+    public partial class PlayerUIHandler
     {
         private readonly IUIManager _uiManager;
         private readonly IEnergy _energy;
@@ -20,19 +20,26 @@ namespace Codebase.Logic.PlayerComponents
             _energy.Changed += OnHealthChanged;
         }
 
-        public void Initialize()
+        public void Initialize() => 
+            SetEnergyBar();
+
+        private void SetEnergyBar()
         {
-            if(_uiManager.TryGetUIElement(out UI_Bar_PlayerEnergy energyBar))
+            if (_uiManager.TryGetUIComponent<UI_HUD, UI_Bar_PlayerEnergy>
+                            (out UI_Bar_PlayerEnergy energyBar))
                 _energyBar = energyBar;
             else
-               throw new InvalidOperationException(
-                   $"{typeof(UI_Bar_PlayerEnergy)} not found on HUD");
+                throw new InvalidOperationException(
+                    $"{typeof(UI_Bar_PlayerEnergy)} not found on HUD");
         }
-
-        public void Dispose() => 
-            _energy.Changed -= OnHealthChanged;
 
         private void OnHealthChanged(int current, int max) => 
             _energyBar.SetValues(current, max);
+    }
+
+    public partial class PlayerUIHandler : IDisposable
+    {
+        public void Dispose() =>
+            _energy.Changed -= OnHealthChanged;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using Zenject;
 using UnityEngine;
 using Codebase.Services.AssetProvider;
 using Codebase.StaticData;
@@ -6,36 +7,59 @@ using Codebase.UI.Elements;
 
 namespace Codebase.UI.Factory
 {
-    public class UIFactory : IUIFactory
+    public partial class UIFactory
     {
+        private readonly DiContainer _container;
         private readonly IAssetProviderService _assetProvider;
-        private UI_Root _uiRoot;
 
-        public UIFactory(IAssetProviderService assetProvider) => 
-            _assetProvider = assetProvider;
+        private Transform _uiRootTransform;
 
-        public UI_GameOverScreen CreateGameOverScreen() =>
-            CreateUIElement<UI_GameOverScreen>(Constants.AssetPath.GameOverScreen);
-
-        public UI_HUD CreateHUD() => 
-            CreateUIElement<UI_HUD>(Constants.AssetPath.HUD);
-
-        public UI_MainMenu CreateMainMenu() =>
-            CreateUIElement<UI_MainMenu>(Constants.AssetPath.MainMenu);
-
-        public void CreateUIRoot() => 
-            _uiRoot = _assetProvider.Instantiate<UI_Root>(Constants.AssetPath.UIRoot, Vector3.zero);
-
-        private TComponent CreateUIElement<TComponent>(string assetsPath) where TComponent : MonoBehaviour
+        public UIFactory(
+            DiContainer container,
+            IAssetProviderService assetProvider)
         {
-            TComponent element = _assetProvider
-                .Instantiate<TComponent>(assetsPath, Vector3.zero)
-                ?? throw new InvalidOperationException(
-                    $"UI prefab was not found at path: {assetsPath}");
+            _container = container;
+            _assetProvider = assetProvider;
+        }
 
-            element.transform.SetParent(_uiRoot.transform, false);
+        private TUIElement GetPrefab<TUIElement>() where TUIElement : MonoBehaviour, IHideableUI
+        {
+            string assetPath;
 
-            return element;
+            if (typeof(UI_HUD) == (typeof(TUIElement)))
+                assetPath = Constants.AssetPath.HUD;
+            else if (typeof(UI_Root) == (typeof(TUIElement)))
+                assetPath = Constants.AssetPath.UIRoot;
+            else if (typeof(UI_GameOverScreen) == (typeof(TUIElement)))
+                assetPath = Constants.AssetPath.GameOverScreen;
+            else if (typeof(UI_MainMenu) == (typeof(TUIElement)))
+                assetPath = Constants.AssetPath.MainMenu;
+            else
+                throw new InvalidOperationException($"Unknown type of UI: {nameof(TUIElement)}");
+
+            return _assetProvider.GetPrefab<TUIElement>(assetPath);
+        }
+
+        private void SetParentFor<TUIElement>(TUIElement uIElement) where TUIElement : MonoBehaviour, IHideableUI
+        {
+            if (typeof(UI_Root).IsAssignableFrom(typeof(TUIElement)))
+                _uiRootTransform = uIElement.transform;
+            else
+                uIElement.transform.SetParent(_uiRootTransform, false);
         }
     }
+
+    public partial class UIFactory : IUIFactory
+    {
+        public TUIElement Create<TUIElement>() where TUIElement : MonoBehaviour, IHideableUI
+        {
+            TUIElement prefab = GetPrefab<TUIElement>();
+            TUIElement uIElement = _container
+                .InstantiatePrefabForComponent<TUIElement>(prefab);
+
+            SetParentFor(uIElement);
+
+            return uIElement;
+        }
+    }    
 }
