@@ -8,6 +8,7 @@ using Codebase.Services.Pause;
 using Codebase.Logic.PlayerComponents;
 using Codebase.UI.Manager;
 using Codebase.Logic.PlayerComponents.Manager;
+using Codebase.Services.Input;
 
 namespace Codebase.Infrastructure.StateMachine
 {
@@ -18,6 +19,8 @@ namespace Codebase.Infrastructure.StateMachine
 
         public GameStateMachine(
             IStaticDataService staticDataService,
+            IInputService inputService,
+            ILockable lockableInput,
             IInitializationService initializationService,
             ISceneLoaderService sceneLoader,
             IPauseService pauseService,
@@ -35,7 +38,9 @@ namespace Codebase.Infrastructure.StateMachine
                 [typeof(ResetState)] = new ResetState(
                     this, playerManager, uiManager, pauseService),
                 [typeof(GameLoopState)] = new GameLoopState(
-                    this, uiManager, playerEnergy),
+                    this, uiManager, playerEnergy, inputService),
+                [typeof(MainMenuState)] = new MainMenuState(
+                    this, pauseService, uiManager, lockableInput),
                 [typeof(GameOverState)] = new GameOverState(
                     this, uiManager, pauseService),
             };

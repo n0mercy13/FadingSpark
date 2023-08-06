@@ -1,5 +1,6 @@
 ﻿using System;
 using Codebase.Logic.PlayerComponents;
+using Codebase.Services.Input;
 using Codebase.UI.Elements;
 using Codebase.UI.Manager;
 
@@ -7,7 +8,8 @@ namespace Codebase.Infrastructure.StateMachine
 {
     public partial class GameLoopState
     {
-        private readonly GameStateMachine _gameStateMachine;
+        private readonly GameStateMachine _stateMachine;
+        private readonly IInputService _inputService;
         private readonly IUIManager _uiManager;
         private readonly IEnergy _playerEnergy;
 
@@ -16,20 +18,23 @@ namespace Codebase.Infrastructure.StateMachine
         public GameLoopState(
             GameStateMachine gameStateMachine,
             IUIManager uiManager,
-            IEnergy playerEnergy)
+            IEnergy playerEnergy,
+            IInputService inputService)
         {
-            _gameStateMachine = gameStateMachine;
+            _stateMachine = gameStateMachine;
+            _inputService = inputService;
             _uiManager = uiManager;
             _playerEnergy = playerEnergy;
 
             _playerEnergy.Died += OnPlayerDied;
+            _inputService.MainMenuOpenButtonPressed += OnMainMenuButtonClicked;
         }
-
+                
         private void OnPlayerDied() =>
-            _gameStateMachine.Enter<GameOverState>();
+            _stateMachine.Enter<GameOverState>();
 
         private void OnMainMenuButtonClicked() =>
-            _gameStateMachine.Enter<MainMenuState>();
+            _stateMachine.Enter<MainMenuState>();
 
         private void RegisterButtons()
         {
@@ -60,6 +65,7 @@ namespace Codebase.Infrastructure.StateMachine
         public void Dispose()
         {
             _playerEnergy.Died -= OnPlayerDied;
+            _inputService.MainMenuOpenButtonPressed -= OnMainMenuButtonClicked;
             _openMainMenuButton.onClick.RemoveListener(OnMainMenuButtonClicked);
             _openMainMenuButton = null;
         }

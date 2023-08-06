@@ -8,6 +8,7 @@ namespace Codebase.Services.Input
         event Action AttackButtonPressed;
         event Action ShieldButtonPressed;
         event Action ShieldButtonReleased;
+        event Action MainMenuOpenButtonPressed;
         Vector3 Axis { get; }
     }
 }
