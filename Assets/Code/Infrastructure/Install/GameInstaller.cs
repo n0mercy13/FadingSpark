@@ -17,6 +17,7 @@ using Codebase.UI.Factory;
 using Codebase.UI.Manager;
 using Codebase.Services.Initialize;
 using Codebase.Services.Pause;
+using Codebase.Logic.PlayerComponents.Manager;
 
 namespace Codebase.Infrastructure.Installer
 {
@@ -38,7 +39,12 @@ namespace Codebase.Infrastructure.Installer
         {
             Container
                 .BindInterfacesAndSelfTo<UIManager>()
-                .AsSingle();
+                .AsSingle()
+                .NonLazy();
+            Container
+                .BindInterfacesAndSelfTo<PlayerManager>()
+                .AsSingle()
+                .NonLazy();
         }
 
         private void BindPlayerComponents()
@@ -53,11 +59,8 @@ namespace Codebase.Infrastructure.Installer
                 .Bind<PlayerWeaponHandler>()
                 .AsSingle();
             Container
-                .Bind<PlayerUIHandler>()
-                .AsSingle();
-            Container
                 .Bind<PlayerMover>()
-                .AsSingle();  
+                .AsSingle();
             Container
                 .Bind<ShieldHandler>()
                 .AsSingle();
@@ -75,19 +78,24 @@ namespace Codebase.Infrastructure.Installer
         {
             Container
                 .BindInterfacesTo<PlayerFactory>()
-                .AsSingle();
+                .AsSingle()
+                .NonLazy();
             Container
                 .BindInterfacesTo<EnemyFactory>()
-                .AsSingle();
+                .AsSingle()
+                .NonLazy();
             Container
                 .BindInterfacesTo<UIFactory>()
-                .AsSingle();
+                .AsSingle()
+                .NonLazy();
             Container
                 .BindInterfacesTo<ProjectileFactory>()
-                .AsSingle();
+                .AsSingle()
+                .NonLazy();
             Container
                 .Bind<GameFactory>()
-                .AsSingle();
+                .AsSingle()
+                .NonLazy();
         }
 
         private void BindInfrastructure()

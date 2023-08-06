@@ -4,6 +4,6 @@ namespace Codebase.Services.Factory
 {
     public interface IPlayerFactory : IService
     {
-        void CreatePlayer();
+        Player Create();
     }
 }

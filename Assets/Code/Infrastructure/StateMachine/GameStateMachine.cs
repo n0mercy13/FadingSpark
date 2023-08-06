@@ -7,6 +7,7 @@ using Codebase.Services.Initialize;
 using Codebase.Services.Pause;
 using Codebase.Logic.PlayerComponents;
 using Codebase.UI.Manager;
+using Codebase.Logic.PlayerComponents.Manager;
 
 namespace Codebase.Infrastructure.StateMachine
 {
@@ -20,7 +21,7 @@ namespace Codebase.Infrastructure.StateMachine
             IInitializationService initializationService,
             ISceneLoaderService sceneLoader,
             IPauseService pauseService,
-            IPlayerFactory playerFactory,
+            IPlayerManager playerManager,
             IUIManager uiManager,
             IEnergy playerEnergy,
             GameFactory gameFactory)
@@ -30,7 +31,9 @@ namespace Codebase.Infrastructure.StateMachine
                 [typeof(BootstrapState)] = new BootstrapState(
                     this, staticDataService, initializationService),
                 [typeof(LoadLevelState)] = new LoadLevelState(
-                    this, sceneLoader, playerFactory, uiManager, gameFactory),
+                    this, sceneLoader,  uiManager, gameFactory, playerManager),
+                [typeof(ResetState)] = new ResetState(
+                    this, playerManager, uiManager, pauseService),
                 [typeof(GameLoopState)] = new GameLoopState(
                     this, uiManager, playerEnergy),
                 [typeof(GameOverState)] = new GameOverState(

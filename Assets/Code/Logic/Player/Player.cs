@@ -7,7 +7,6 @@ namespace Codebase.Logic.PlayerComponents
 	{
         private IEnergy _energy;
         private PlayerMover _playerMover;
-        private PlayerUIHandler _uiHandler;
         private PlayerWeaponHandler _weaponHandler;
         private ShieldHandler _shieldHandler;
 
@@ -15,13 +14,11 @@ namespace Codebase.Logic.PlayerComponents
         private void Construct(
             IEnergy energy,
             PlayerMover playerMover,
-            PlayerUIHandler uiHandler,
             PlayerWeaponHandler weaponHandler,
             ShieldHandler shieldHandler)
         {
             _energy = energy;
             _playerMover = playerMover;
-            _uiHandler = uiHandler;
             _weaponHandler = weaponHandler;
             _shieldHandler = shieldHandler;
         }
@@ -32,11 +29,13 @@ namespace Codebase.Logic.PlayerComponents
         private void OnDestroy() => 
             DisposeComponents();
 
-        public IEnergy Energy => _energy;
+        public void Reset()
+        {
+            _energy.Reset();
+        }
 
         private void InitializeComponents()
         {
-            _uiHandler.Initialize();
             _weaponHandler.Initialize(this);
             _shieldHandler.Initialize();
         }
@@ -44,7 +43,6 @@ namespace Codebase.Logic.PlayerComponents
         private void DisposeComponents()
         {
             _playerMover.Dispose();
-            _uiHandler.Dispose();
             _weaponHandler.Dispose();
             _shieldHandler.Dispose();
         }

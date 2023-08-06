@@ -1,4 +1,5 @@
-﻿using Codebase.Services.Factory;
+﻿using Codebase.Logic.PlayerComponents.Manager;
+using Codebase.Services.Factory;
 using Codebase.Services.SceneLoader;
 using Codebase.UI.Elements;
 using Codebase.UI.Manager;
@@ -9,30 +10,35 @@ namespace Codebase.Infrastructure.StateMachine
     {
         private readonly GameStateMachine _gameStateMachine;
         private readonly ISceneLoaderService _sceneLoader;
-        private readonly IPlayerFactory _playerFactory;
+        private readonly IPlayerManager _playerManager;
         private readonly IUIManager _uiManager;
         private readonly GameFactory _gameFactory;
 
         public LoadLevelState(GameStateMachine gameStateMachine,
             ISceneLoaderService sceneLoader,
-            IPlayerFactory playerFactory,
             IUIManager uiManger,
-            GameFactory gameFactory)
+            GameFactory gameFactory,
+            IPlayerManager playerManager)
         {
             _gameStateMachine = gameStateMachine;
             _sceneLoader = sceneLoader;
-            _playerFactory = playerFactory;
             _uiManager = uiManger;
             _gameFactory = gameFactory;
+            _playerManager = playerManager;
         }
 
         private void OnLoaded()
         {
+            InitializeLevel();
+
+            _gameStateMachine.Enter<GameLoopState>();
+        }
+
+        private void InitializeLevel()
+        {
             CreateUI();
             CreatePlayer();
             CreateEnemySpawner();
-
-            _gameStateMachine.Enter<GameLoopState>();
         }
 
         private void CreateUI()
@@ -41,8 +47,8 @@ namespace Codebase.Infrastructure.StateMachine
             _uiManager.OpenUIElement<UI_HUD>();
         }
 
-        private void CreatePlayer() => 
-            _playerFactory.CreatePlayer();
+        private void CreatePlayer() =>
+            _playerManager.Reset();
 
         private void CreateEnemySpawner() => 
             _gameFactory.CreateEnemySpawner();

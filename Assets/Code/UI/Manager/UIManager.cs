@@ -33,13 +33,24 @@ namespace Codebase.UI.Manager
             }
             else
             {
-                return _uiFactory.Create<TUIElement>();
+                var newUIElement = _uiFactory.Create<TUIElement>();
+
+                if(typeof(TUIElement) != typeof(UI_Root))
+                    _uiElements.Add(typeof(TUIElement), newUIElement );
+                
+                return newUIElement;
             }
         }
 
         public void CloseUIElement<TUIElement>() where TUIElement : IHideableUI
         {
-            if (_uiElements.TryGetValue(typeof(TUIElement), out IHideableUI uiElement))
+            if (_uiElements.TryGetValue(typeof(TUIElement), out IHideableUI uiElement)) { }
+                uiElement.Hide();
+        }
+
+        public void CloseAllUI()
+        {
+            foreach (IHideableUI uiElement in _uiElements.Values)
                 uiElement.Hide();
         }
 

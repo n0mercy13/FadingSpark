@@ -3,5 +3,6 @@
     public interface IEnergy : IHealth
     {
         void Absorb(int amount);
+        void Reset();
     }
 }

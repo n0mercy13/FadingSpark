@@ -13,9 +13,9 @@ namespace Codebase.Services.Input
             _controls = inputControls;
             _controls.Enable();
 
-            _controls.Movements.Attack.performed += OnAttackPressed;
-            _controls.Movements.Shield.performed += OnShieldPressed;
-            _controls.Movements.Shield.canceled += OnShieldCanceled;
+            _controls.Gameplay.Attack.performed += OnAttackPressed;
+            _controls.Gameplay.Shield.performed += OnShieldPressed;
+            _controls.Gameplay.Shield.canceled += OnShieldCanceled;
         }
 
         public event Action AttackButtonPressed = delegate { };
@@ -23,7 +23,7 @@ namespace Codebase.Services.Input
         public event Action ShieldButtonReleased = delegate { };
 
         public Vector3 Axis => 
-            _controls.Movements.Axis.ReadValue<Vector3>();
+            _controls.Gameplay.Axis.ReadValue<Vector3>();
 
         private void OnAttackPressed(InputAction.CallbackContext context)
         {
@@ -48,9 +48,9 @@ namespace Codebase.Services.Input
     {
         public void Dispose()
         {
-            _controls.Movements.Attack.performed -= OnAttackPressed;
-            _controls.Movements.Shield.performed -= OnShieldPressed;
-            _controls.Movements.Shield.canceled -= OnShieldCanceled;
+            _controls.Gameplay.Attack.performed -= OnAttackPressed;
+            _controls.Gameplay.Shield.performed -= OnShieldPressed;
+            _controls.Gameplay.Shield.canceled -= OnShieldCanceled;
         }
     }
 }

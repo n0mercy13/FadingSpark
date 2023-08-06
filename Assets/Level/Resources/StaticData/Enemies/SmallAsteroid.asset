@@ -15,4 +15,4 @@ MonoBehaviour:
   <Type>k__BackingField: 1
   <MaxHealth>k__BackingField: 10
   <Speed>k__BackingField: 4
-  <DamageOnCollision>k__BackingField: 50
+  <DamageOnCollision>k__BackingField: 300

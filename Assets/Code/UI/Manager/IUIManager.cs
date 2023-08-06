@@ -7,6 +7,7 @@ namespace Codebase.UI.Manager
     {
         IHideableUI OpenUIElement<TUIElement>() where TUIElement : MonoBehaviour, IHideableUI;
         void CloseUIElement<TUIElement>() where TUIElement : IHideableUI;
+        void CloseAllUI();
         bool TryGetUIComponent<TUIElement, TUIComponent>(out TUIComponent uiComponent) 
             where TUIElement : MonoBehaviour, IHideableUI
             where TUIComponent : MonoBehaviour;

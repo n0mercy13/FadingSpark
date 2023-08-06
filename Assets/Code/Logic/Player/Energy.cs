@@ -46,6 +46,12 @@ namespace Codebase.Logic.PlayerComponents
             if (_value == 0)
                 Died.Invoke();
         }
+
+        public void Reset()
+        {
+            _value = _maxValue;
+            Changed.Invoke(_value, _maxValue);
+        }
     }
 
     public partial class Energy : IInitializable
@@ -53,8 +59,10 @@ namespace Codebase.Logic.PlayerComponents
         public void Initialize()
         {
             PlayerStaticData playerData = _staticDataService.ForPlayer();
+
             _maxValue = playerData.MaxEnergy;
             _absorptionCoefficient = playerData.ShieldDamageAbsorptionCoefficient;
+
             _value = _maxValue;
         }
     }

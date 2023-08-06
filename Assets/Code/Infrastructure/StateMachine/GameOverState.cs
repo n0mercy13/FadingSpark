@@ -1,8 +1,8 @@
-﻿using Codebase.Services.Pause;
-using Codebase.StaticData;
+﻿using System;
+using UnityEngine;
+using Codebase.Services.Pause;
 using Codebase.UI.Elements;
 using Codebase.UI.Manager;
-using System;
 
 namespace Codebase.Infrastructure.StateMachine
 {
@@ -24,6 +24,14 @@ namespace Codebase.Infrastructure.StateMachine
             _pauseService = pauseService;
         }
 
+        private void SetUI()
+        {
+            _uiManager.CloseAllUI();
+            _uiManager.OpenUIElement<UI_GameOverScreen>();
+
+            RegisterButtons();
+        }
+
         private void RegisterButtons()
         {
             if (_restartButton == null
@@ -35,10 +43,8 @@ namespace Codebase.Infrastructure.StateMachine
             }
         }
 
-        private void OnGameOverScreenRestartButtonPressed()
-        {
-            _stateMachine.Enter<LoadLevelState, string>(Constants.Level.InitialLevelName);
-        }
+        private void OnGameOverScreenRestartButtonPressed() => 
+            _stateMachine.Enter<ResetState>();
     }
 
     public partial class GameOverState : IState
@@ -46,14 +52,11 @@ namespace Codebase.Infrastructure.StateMachine
         public void Enter()
         {
             _pauseService.Pause();
-            _uiManager.CloseUIElement<UI_HUD>();
-            _uiManager.OpenUIElement<UI_GameOverScreen>();
-            RegisterButtons();
+            SetUI();
         }
 
         public void Exit()
         {
-            _pauseService.Resume();
         }
     }
 
