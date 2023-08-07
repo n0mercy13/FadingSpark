@@ -1,32 +1,28 @@
 ﻿using System;
-using System.Collections;
 using Zenject;
 using UnityEngine;
-using Codebase.Infrastructure;
 using Codebase.StaticData;
 using Codebase.Logic.EnemyComponents;
 using Codebase.Services.Tick;
 
 namespace Codebase.Logic.Weapons
 {
-    public class Projectile : MonoBehaviour, IDisposable
+    public partial class Projectile : MonoBehaviour
     {
-        private const float SelfDestructDelay = 5.0f;
+        private const float SelfDestructDelay = 3.0f;
 
-        private EnemyMover _mover;
-        private ICoroutineRunner _coroutineRunner;
         private ITickProviderService _tickProvider;
-        private Coroutine _selfDestructAfterDelayCoroutine;
+        private EnemyMover _mover;
         private int _damage;
         private float _speed;
+        private float _time;
 
         [Inject]
-        private void Construct(
-            ICoroutineRunner coroutineRunner, 
-            ITickProviderService tickProvider)
+        private void Construct(ITickProviderService tickProvider)
         {
-            _coroutineRunner = coroutineRunner;
             _tickProvider = tickProvider;
+
+            _tickProvider.Ticked += OnTicked;
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
@@ -35,9 +31,12 @@ namespace Codebase.Logic.Weapons
             {
                 damageable.ApplyDamage(_damage);
 
-                this.Dispose();
+                Destroy(gameObject);
             }
         }
+
+        private void OnDestroy() => 
+            Dispose();
 
         public void Initialize(WeaponStaticData weaponData, Vector3 direction)
         {
@@ -45,27 +44,28 @@ namespace Codebase.Logic.Weapons
             _damage = weaponData.ProjectileDamage;
 
             _mover = new EnemyMover(this, _tickProvider, _speed);
-            _mover.StartToMoveInDirection(direction);
-            
-            _selfDestructAfterDelayCoroutine = _coroutineRunner
-                .StartCoroutine(SelfDestructAfterDelay());
+            _mover.StartToMoveInDirection(direction);            
         }
 
+        private void OnTicked(int _) => 
+            SelfDestructionAfterDelay();
+
+        private void SelfDestructionAfterDelay()
+        {
+            _time += _tickProvider.DeltaTime;
+
+            if (_time > SelfDestructDelay)
+                Destroy(gameObject);
+        }
+    }
+
+    public partial class Projectile : IDisposable
+    {
         public void Dispose()
         {
-            if (_selfDestructAfterDelayCoroutine != null)
-                _coroutineRunner.StopCoroutine(_selfDestructAfterDelayCoroutine);
+            _tickProvider.Ticked -= OnTicked;
 
             _mover.Dispose();
-
-            Destroy(gameObject);
-        }
-
-        private IEnumerator SelfDestructAfterDelay()
-        {
-            yield return new WaitForSeconds(SelfDestructDelay);
-
-            this.Dispose();
         }
     }
 }

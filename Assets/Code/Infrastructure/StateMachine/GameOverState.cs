@@ -3,6 +3,7 @@ using UnityEngine;
 using Codebase.Services.Pause;
 using Codebase.UI.Elements;
 using Codebase.UI.Manager;
+using Codebase.Services.Input;
 
 namespace Codebase.Infrastructure.StateMachine
 {
@@ -11,17 +12,20 @@ namespace Codebase.Infrastructure.StateMachine
         private readonly GameStateMachine _stateMachine;
         private readonly IUIManager _uiManager;
         private readonly IPauseService _pauseService;
+        private readonly ILockable _inputService;
 
         private UI_GameOverScreen_Button_Restart _restartButton;
 
         public GameOverState(
             GameStateMachine stateMachine,
             IUIManager uiManager,
-            IPauseService pauseService)
+            IPauseService pauseService,
+            ILockable inputService)
         {
             _stateMachine = stateMachine;
             _uiManager = uiManager;
             _pauseService = pauseService;
+            _inputService = inputService;
         }
 
         private void SetUI()
@@ -51,6 +55,7 @@ namespace Codebase.Infrastructure.StateMachine
     {
         public void Enter()
         {
+            _inputService.LockGameplayControls();
             _pauseService.Pause();
             SetUI();
         }

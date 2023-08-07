@@ -10,6 +10,7 @@ namespace Codebase.Infrastructure.StateMachine
     {
         private readonly GameStateMachine _stateMachine;
         private readonly IInputService _inputService;
+        private readonly ILockable _lockableInput;
         private readonly IUIManager _uiManager;
         private readonly IEnergy _playerEnergy;
 
@@ -25,6 +26,9 @@ namespace Codebase.Infrastructure.StateMachine
             _inputService = inputService;
             _uiManager = uiManager;
             _playerEnergy = playerEnergy;
+
+            if(_inputService is ILockable lockableInput)
+                _lockableInput = lockableInput;
 
             _playerEnergy.Died += OnPlayerDied;
             _inputService.MainMenuOpenButtonPressed += OnMainMenuButtonClicked;
@@ -53,6 +57,7 @@ namespace Codebase.Infrastructure.StateMachine
         public void Enter()
         {
             RegisterButtons();
+            _lockableInput.UnlockGameplayControls();
         }
 
         public void Exit()

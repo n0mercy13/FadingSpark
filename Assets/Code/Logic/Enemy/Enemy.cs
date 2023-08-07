@@ -15,6 +15,7 @@ namespace Codebase.Logic.EnemyComponents
         [SerializeField] private EnemyTypes _type;
 
         protected EnemyStateMachine StateMachine;
+        protected ITickProviderService TickProvider;
         protected Player Target;
         protected IHealth Health;
 
@@ -36,13 +37,14 @@ namespace Codebase.Logic.EnemyComponents
             ICoroutineRunner coroutineRunner)
         {
             Target = target;
+            TickProvider = tickProvider;
 
             EnemyStaticData enemyData = staticDataService.ForEnemy(_type);
             float speed = enemyData.Speed;
             int maxHealth = enemyData.MaxHealth;
             int damageOnCollision = enemyData.DamageOnCollision;
             
-            _mover = new EnemyMover(this, tickProvider, speed);
+            _mover = new EnemyMover(this, TickProvider, speed);
             Health = new Health(maxHealth);
             _collisionHandler = new EnemyCollisionHandler(coroutineRunner, damageOnCollision);
             StateMachine = new EnemyStateMachine(_mover, Destruction);

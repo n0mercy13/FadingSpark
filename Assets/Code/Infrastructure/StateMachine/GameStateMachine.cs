@@ -42,7 +42,7 @@ namespace Codebase.Infrastructure.StateMachine
                 [typeof(MainMenuState)] = new MainMenuState(
                     this, pauseService, uiManager, lockableInput),
                 [typeof(GameOverState)] = new GameOverState(
-                    this, uiManager, pauseService),
+                    this, uiManager, pauseService, lockableInput),
             };
         }
 
