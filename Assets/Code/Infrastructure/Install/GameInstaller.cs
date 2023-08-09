@@ -6,6 +6,7 @@ using Codebase.Infrastructure.Install;
 using Codebase.Logic;
 using Codebase.Logic.PlayerComponents;
 using Codebase.Logic.PlayerComponents.Shield;
+using Codebase.Logic.PlayerComponents.Manager;
 using Codebase.Services.StaticData;
 using Codebase.Services.Input;
 using Codebase.Services.AssetProvider;
@@ -13,11 +14,11 @@ using Codebase.Services.Factory;
 using Codebase.Services.SceneLoader;
 using Codebase.Services.Tick;
 using Codebase.Services.RandomGenerator;
-using Codebase.UI.Factory;
-using Codebase.UI.Manager;
+using Codebase.Services.Pool;
 using Codebase.Services.Initialize;
 using Codebase.Services.Pause;
-using Codebase.Logic.PlayerComponents.Manager;
+using Codebase.UI.Factory;
+using Codebase.UI.Manager;
 
 namespace Codebase.Infrastructure.Installer
 {
@@ -28,11 +29,20 @@ namespace Codebase.Infrastructure.Installer
         public override void InstallBindings()
         {
             BindInfrastructure();
-            BindServices();
-            BindManagers();
             BindInputs();
+            BindServices();
             BindFactories();
+            BindPools();
+            BindManagers();
             BindPlayerComponents();
+        }
+
+        private void BindPools()
+        {
+            Container
+                .BindInterfacesTo<VFXPool>()
+                .AsSingle()
+                .NonLazy();
         }
 
         private void BindManagers()
@@ -78,20 +88,21 @@ namespace Codebase.Infrastructure.Installer
         {
             Container
                 .BindInterfacesTo<PlayerFactory>()
-                .AsSingle()
-                .NonLazy();
+                .AsSingle();
             Container
                 .BindInterfacesTo<EnemyFactory>()
                 .AsSingle()
                 .NonLazy();
             Container
                 .BindInterfacesTo<UIFactory>()
-                .AsSingle()
-                .NonLazy();
+                .AsSingle();
             Container
                 .BindInterfacesTo<ProjectileFactory>()
                 .AsSingle()
                 .NonLazy();
+            Container
+                .BindInterfacesTo<VFXFactory>()
+                .AsSingle();
             Container
                 .Bind<GameFactory>()
                 .AsSingle()

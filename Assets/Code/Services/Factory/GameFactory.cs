@@ -1,5 +1,5 @@
-﻿using Codebase.Logic.EnemyComponents;
-using Zenject;
+﻿using Zenject;
+using Codebase.Logic.EnemyComponents;
 
 namespace Codebase.Services.Factory
 {

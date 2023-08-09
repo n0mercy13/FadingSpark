@@ -27,13 +27,13 @@ namespace Codebase.UI.Factory
             string assetPath;
 
             if (typeof(UI_HUD) == (typeof(TUIElement)))
-                assetPath = Constants.AssetPath.HUD;
+                assetPath = Constants.AssetPath.UI.HUD;
             else if (typeof(UI_Root) == (typeof(TUIElement)))
-                assetPath = Constants.AssetPath.UIRoot;
+                assetPath = Constants.AssetPath.UI.Root;
             else if (typeof(UI_GameOverScreen) == (typeof(TUIElement)))
-                assetPath = Constants.AssetPath.GameOverScreen;
+                assetPath = Constants.AssetPath.UI.GameOverScreen;
             else if (typeof(UI_MainMenu) == (typeof(TUIElement)))
-                assetPath = Constants.AssetPath.MainMenu;
+                assetPath = Constants.AssetPath.UI.MainMenu;
             else
                 throw new InvalidOperationException($"Unknown type of UI: {nameof(TUIElement)}");
 

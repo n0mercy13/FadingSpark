@@ -17,10 +17,19 @@
             public const string Player = "Player/Player";
             public const string Bootstrapper = "Infrastructure/Bootstraper";
 
-            public const string UIRoot = "UI/UIRoot";
-            public const string HUD = "UI/HUD";
-            public const string GameOverScreen = "UI/GameOverScreen";
-            public const string MainMenu = "UI/MainMenu";
+            public static class UI
+            {
+                public const string Root = "UI/UIRoot";
+                public const string HUD = "UI/HUD";
+                public const string GameOverScreen = "UI/GameOverScreen";
+                public const string MainMenu = "UI/MainMenu";
+            }
+
+            public static class VFX
+            {
+                public const string OnPlayerLaserHit = "VFX/vfx_onPlayerLaserHit";
+            }
+            
         }
 
         public static class StaticDataPaths

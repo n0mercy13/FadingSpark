@@ -1,10 +1,13 @@
-﻿using Zenject;
+﻿using System;
+using Zenject;
 using UnityEngine;
 using Codebase.Services.AssetProvider;
 using Codebase.Infrastructure;
 using Codebase.Logic.Weapons;
 using Codebase.StaticData;
 using Codebase.Services.StaticData;
+using Codebase.Services.Pool;
+using Codebase.Logic.VFX;
 
 namespace Codebase.Services.Factory
 {
@@ -13,21 +16,26 @@ namespace Codebase.Services.Factory
         private const string WeaponsFolderPath = "Weapons/";
 
         private readonly IAssetProviderService _assetProviderService;
+        private readonly IVFXPool _vfxPool;
         private readonly IStaticDataService _staticDataService;
         private readonly DiContainer _container;
         private readonly Transform _parent;
 
+        private Action<Vector3> _spawnVFX;
+        private Projectile _projectile;
         private string _assetPath;
 
         public ProjectileFactory(
             DiContainer container,
             IAssetProviderService assetProviderService,
             ICoroutineRunner runner,
-            IStaticDataService staticDataService)
+            IStaticDataService staticDataService,
+            IVFXPool vfxPool)
         {
             _container = container;
             _assetProviderService = assetProviderService;
             _staticDataService = staticDataService;
+            _vfxPool = vfxPool;
 
             if (runner is MonoBehaviour monoBehavior)
                 _parent = monoBehavior.transform;
@@ -39,6 +47,22 @@ namespace Codebase.Services.Factory
 
             return _assetProviderService.GetPrefab<Projectile>(_assetPath);
         }
+
+        private Action<Vector3> GetSpawnVFXAction(WeaponTypes type)
+        {
+            switch (type)
+            {
+                case WeaponTypes.None:
+                    return null;
+
+                case WeaponTypes.Laser:
+                    return _vfxPool.Spawn<VFX_OnPlayerLaserHit>;
+
+                default:
+                    throw new InvalidOperationException(
+                        $"VFX spawn action for weapon type '{nameof(type)}' was not found!");
+            }
+        }
     }
 
     public partial class ProjectileFactory : IProjectileFactory
@@ -48,14 +72,15 @@ namespace Codebase.Services.Factory
         {
             Projectile prefab = GetPrefab(type);
             WeaponStaticData weaponData = _staticDataService.ForWeapon(type);
+            _spawnVFX = GetSpawnVFXAction(type);
 
-            Projectile projectile = _container
+            _projectile = _container
                 .InstantiatePrefabForComponent<Projectile>(
                 prefab, spawnPosition, Quaternion.identity, _parent);
-            projectile.Initialize(weaponData, direction);
-            projectile.gameObject.SetActive(true);
+            _projectile.Initialize(weaponData, direction, _spawnVFX);
+            _projectile.gameObject.SetActive(true);
 
-            return projectile;
+            return _projectile;
         }
     }
 }

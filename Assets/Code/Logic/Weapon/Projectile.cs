@@ -13,6 +13,7 @@ namespace Codebase.Logic.Weapons
 
         private ITickProviderService _tickProvider;
         private EnemyMover _mover;
+        private Action<Vector3> _spawnVFX;
         private int _damage;
         private float _speed;
         private float _time;
@@ -30,6 +31,7 @@ namespace Codebase.Logic.Weapons
             if (collision.TryGetComponent(out IDamageable damageable))
             {
                 damageable.ApplyDamage(_damage);
+                _spawnVFX.Invoke(transform.position);
 
                 Destroy(gameObject);
             }
@@ -38,10 +40,14 @@ namespace Codebase.Logic.Weapons
         private void OnDestroy() => 
             Dispose();
 
-        public void Initialize(WeaponStaticData weaponData, Vector3 direction)
+        public void Initialize(
+            WeaponStaticData weaponData, 
+            Vector3 direction,
+            Action<Vector3> spawnVFX)
         {
             _speed = weaponData.ProjectileSpeed;
             _damage = weaponData.ProjectileDamage;
+            _spawnVFX = spawnVFX;
 
             _mover = new EnemyMover(this, _tickProvider, _speed);
             _mover.StartToMoveInDirection(direction);            
