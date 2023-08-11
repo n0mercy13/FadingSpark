@@ -9,11 +9,11 @@ namespace Codebase.Services.Factory
     public partial class EnemyFactory
     {
         private const string EnemiesFolderPath = "Enemies/";
-
+        private const string ParentName = "Enemies";
         private readonly IAssetProviderService _assetProviderService;
         private readonly DiContainer _container;
-        private readonly Transform _parent;
 
+        private Transform _parent;
         private string _assetPath;
 
         public EnemyFactory(
@@ -25,7 +25,10 @@ namespace Codebase.Services.Factory
             _assetProviderService = assetProviderService;
 
             if (coroutineRunner is MonoBehaviour monoBehaviour)
-                _parent = monoBehaviour.transform;
+            {
+                _parent = new GameObject(ParentName).transform;
+                _parent.SetParent(monoBehaviour.transform);
+            }
         }
 
         private Enemy GetPrefab(EnemyTypes by)

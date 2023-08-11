@@ -14,13 +14,14 @@ namespace Codebase.Services.Factory
     public partial class ProjectileFactory
     {
         private const string WeaponsFolderPath = "Weapons/";
+        private const string ParentName = "Projectiles";
 
         private readonly IAssetProviderService _assetProviderService;
         private readonly IVFXPool _vfxPool;
         private readonly IStaticDataService _staticDataService;
         private readonly DiContainer _container;
-        private readonly Transform _parent;
-
+        
+        private Transform _parent;
         private Action<Vector3> _spawnVFX;
         private Projectile _projectile;
         private string _assetPath;
@@ -38,7 +39,10 @@ namespace Codebase.Services.Factory
             _vfxPool = vfxPool;
 
             if (runner is MonoBehaviour monoBehavior)
-                _parent = monoBehavior.transform;
+            {
+                _parent = new GameObject(ParentName).transform;
+                _parent.SetParent(monoBehavior.transform);
+            }
         }
 
         private Projectile GetPrefab(WeaponTypes type)

@@ -9,6 +9,8 @@ namespace Codebase.Services.Factory
 {
     public partial class VFXFactory
     {
+        private const string ParentName = "VFXs";
+
         private readonly IAssetProviderService _assetProviderService;
         private readonly Transform _parent;
 
@@ -18,8 +20,11 @@ namespace Codebase.Services.Factory
         {
             _assetProviderService = assetProviderService;
 
-            if (coroutineRunner is MonoBehaviour monoBehaviour)
-                _parent = monoBehaviour.transform;
+            if (coroutineRunner is MonoBehaviour runner)
+            {
+                _parent = new GameObject(ParentName).transform;
+                _parent.SetParent(runner.transform);
+            }
         }
 
         private TEffect GetPrefab<TEffect>() where TEffect : VFX
