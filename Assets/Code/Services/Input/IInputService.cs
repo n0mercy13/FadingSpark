@@ -9,6 +9,7 @@ namespace Codebase.Services.Input
         event Action ShieldButtonPressed;
         event Action ShieldButtonReleased;
         event Action MainMenuOpenButtonPressed;
-        Vector3 Axis { get; }
+        Vector3 Movement { get; }
+        Vector3 PointerPosition { get; }
     }
 }

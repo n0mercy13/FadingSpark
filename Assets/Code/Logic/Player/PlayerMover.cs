@@ -11,8 +11,9 @@ namespace Codebase.Logic.PlayerComponents
     {
         private readonly Player _player;
         private readonly ITickProviderService _tickProvider;
-        private readonly IInputService _inputService;
-        private  float _movementSpeed;
+        private readonly IInputService _input;
+        private readonly float _movementSpeed;
+        private readonly float _rotationSpeed;
 
         public PlayerMover(
             Player player,
@@ -21,23 +22,39 @@ namespace Codebase.Logic.PlayerComponents
             IStaticDataService staticDataService)
         {
             _player = player;
-            _inputService = inputService;
+            _input = inputService;
             _tickProvider = tickProvider;
 
-            _movementSpeed = staticDataService.ForPlayer().Speed;
+            _movementSpeed = staticDataService.ForPlayer().MoveSpeed;
+            _rotationSpeed = staticDataService.ForPlayer().RotationSpeed;
 
             _tickProvider.Ticked += OnTick;
         }
 
-        private void OnTick(int _) => 
+        private Vector3 _up
+        {
+            get => _player.transform.up;
+            set => _player.transform.up = value;
+        }
+
+        private void OnTick(int _)
+        {
             MovePlayer();
+            RotatePlayer();
+        }
+
+        private void RotatePlayer()
+        {
+            _up = Vector3.MoveTowards(
+                _up, _input.PointerPosition, _tickProvider.DeltaTime * _rotationSpeed);
+        }
 
         private void MovePlayer()
         {
-            if(_inputService.Axis.sqrMagnitude >= Constants.Game.Epsilon)
+            if(_input.Movement.sqrMagnitude >= Constants.Game.Epsilon)
             {
                 _player.transform.position +=
-                    _movementSpeed * _tickProvider.DeltaTime * _inputService.Axis;                
+                    _movementSpeed * _tickProvider.DeltaTime * _input.Movement;                
             }
         }
     }  

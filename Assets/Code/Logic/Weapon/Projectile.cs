@@ -49,6 +49,7 @@ namespace Codebase.Logic.Weapons
             _damage = weaponData.ProjectileDamage;
             _spawnVFX = spawnVFX;
 
+            transform.up = direction;
             _mover = new EnemyMover(this, _tickProvider, _speed);
             _mover.StartToMoveInDirection(direction);            
         }

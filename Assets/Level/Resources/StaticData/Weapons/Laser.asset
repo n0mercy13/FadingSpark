@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Type>k__BackingField: 1
   <ProjectileSpeed>k__BackingField: 15
-  <RateOfFire>k__BackingField: 0.94
+  <RateOfFire>k__BackingField: 0.1
   <ProjectileDamage>k__BackingField: 5
   <EnergyConsumption>k__BackingField: 3

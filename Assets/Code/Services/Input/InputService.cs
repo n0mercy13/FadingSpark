@@ -8,6 +8,9 @@ namespace Codebase.Services.Input
     {
         private readonly InputControls _controls;
 
+        private Vector3 _pointerScreenPosition;
+        private Vector3 _pointerWorldPosition;
+
         public InputService(InputControls inputControls)
         {
             _controls = inputControls;
@@ -42,6 +45,15 @@ namespace Codebase.Services.Input
             if(context.canceled)
                 ShieldButtonReleased.Invoke();
         }
+
+        private Vector3 GetPointerPosition()
+        {
+            _pointerScreenPosition = Pointer.current.position.ReadValue();
+            _pointerWorldPosition = Camera.main.ScreenToWorldPoint(_pointerScreenPosition);
+            _pointerWorldPosition.z = 0;
+
+            return _pointerWorldPosition;
+        }
     }
 
     public partial class InputService : IInputService
@@ -51,8 +63,12 @@ namespace Codebase.Services.Input
         public event Action ShieldButtonReleased = delegate { };
         public event Action MainMenuOpenButtonPressed = delegate { };
 
-        public Vector3 Axis =>
+        public Vector3 Movement =>
             _controls.Gameplay.Axis.ReadValue<Vector3>();
+
+        public Vector3 PointerPosition => 
+            GetPointerPosition();
+            
     }
 
     public partial class InputService : ILockable

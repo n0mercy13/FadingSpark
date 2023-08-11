@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35c7dfe1191b88841a0ae92252ef0ea8, type: 3}
   m_Name: PlayerStaticData
   m_EditorClassIdentifier: 
-  <MaxEnergy>k__BackingField: 1193
-  <Speed>k__BackingField: 3.17
+  <MaxEnergy>k__BackingField: 1000
+  <MoveSpeed>k__BackingField: 5
+  <RotationSpeed>k__BackingField: 10
   <InitialPosition>k__BackingField: {x: 0, y: -3, z: 0}
   <ShieldActivationTime>k__BackingField: 0.1
   <ShieldAbsorptionTime>k__BackingField: 0.8

@@ -7,7 +7,8 @@ namespace Codebase.StaticData
     public class PlayerStaticData : ScriptableObject
     {
         [field: SerializeField, Min(1), Header("Ship")] public int MaxEnergy { get; private set; }
-        [field: SerializeField, Min(0.1f)] public float Speed { get; private set; }
+        [field: SerializeField, Min(0.1f)] public float MoveSpeed { get; private set; }
+        [field: SerializeField, Min(0.1f)] public float RotationSpeed { get; private set; }
         [field: SerializeField] public Vector3 InitialPosition { get; private set; }
 
         [field: SerializeField, Min(0f), Header("Shield")] public float ShieldActivationTime { get; private set; }
