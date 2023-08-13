@@ -45,6 +45,7 @@ namespace Codebase.Services.Factory
         public Enemy Create(EnemyTypes type, Vector3 at)
         {
             Enemy prefab = GetPrefab(by: type);
+
             return _container
                 .InstantiatePrefabForComponent<Enemy>(
                 prefab, at, Quaternion.identity, _parent);

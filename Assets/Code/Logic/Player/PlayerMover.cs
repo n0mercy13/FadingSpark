@@ -36,6 +36,11 @@ namespace Codebase.Logic.PlayerComponents
             get => _player.transform.up;
             set => _player.transform.up = value;
         }
+        private Vector3 _pointerDirection =>
+            (_input.PointerPosition - _player.transform.position).normalized;
+        private bool _isPlayerUpAlignsWithPointer =>
+            Mathf.Approximately(_up.x, _pointerDirection.x)
+            && Mathf.Approximately(_up.y, _pointerDirection.y);
 
         private void OnTick(int _)
         {
@@ -45,8 +50,11 @@ namespace Codebase.Logic.PlayerComponents
 
         private void RotatePlayer()
         {
+            if (_isPlayerUpAlignsWithPointer)
+                return;
+
             _up = Vector3.MoveTowards(
-                _up, _input.PointerPosition, _tickProvider.DeltaTime * _rotationSpeed);
+                _up, _pointerDirection, _tickProvider.DeltaTime * _rotationSpeed);
         }
 
         private void MovePlayer()

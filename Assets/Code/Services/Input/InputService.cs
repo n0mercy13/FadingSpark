@@ -68,7 +68,6 @@ namespace Codebase.Services.Input
 
         public Vector3 PointerPosition => 
             GetPointerPosition();
-            
     }
 
     public partial class InputService : ILockable
