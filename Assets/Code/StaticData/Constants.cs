@@ -28,6 +28,8 @@
             public static class VFX
             {
                 public const string OnPlayerLaserHit = "VFX/vfx_onPlayerLaserHit";
+                public const string OnPlayerActiveShieldHit = "VFX/vfx_onPlayerActiveShieldHit";
+                public const string OnPlayerInactiveShieldHit = "VFX/vfx_onPlayerInactiveShieldHit";
             }
             
         }

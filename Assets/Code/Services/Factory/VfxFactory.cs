@@ -33,6 +33,10 @@ namespace Codebase.Services.Factory
 
             if (typeof(VFX_OnPlayerLaserHit) == typeof(TEffect))
                 assetPath = Constants.AssetPath.VFX.OnPlayerLaserHit;
+            else if (typeof(VFX_OnPlayerActiveShieldHit) == typeof(TEffect))
+                assetPath = Constants.AssetPath.VFX.OnPlayerActiveShieldHit;
+            else if (typeof(VFX_OnPlayerInactiveShieldHit) == typeof(TEffect))
+                assetPath = Constants.AssetPath.VFX.OnPlayerInactiveShieldHit;
             else
                 throw new InvalidOperationException(
                     $"Prefab with {nameof(TEffect)} component was not found");

@@ -1,9 +1,11 @@
 ﻿using Zenject;
 using UnityEngine;
-using Codebase.Services.StaticData;
 using Codebase.Infrastructure.Install;
-using Codebase.StaticData;
+using Codebase.Logic.VFX;
+using Codebase.Services.StaticData;
 using Codebase.Services.Initialize;
+using Codebase.Services.Pool;
+using Codebase.StaticData;
 using IInitializable = Codebase.Services.Initialize.IInitializable;
 
 namespace Codebase.Logic.PlayerComponents.Shield
@@ -11,10 +13,12 @@ namespace Codebase.Logic.PlayerComponents.Shield
     public partial class Shield
     {
         private readonly IEnergy _shipEnergy;
+        private readonly IVFXPool _vfxPool;
         private readonly IStaticDataService _staticDataService;
         private readonly SpriteColorHandler _colorHandler;
 
         private CircleCollider2D _collider;
+        private Vector3 _vfxSpawnPosition;
         private int _activatedShieldContactDamage;
         private float _damageReductionCoefficient;
         private float _deactivatedShieldRadius;
@@ -27,11 +31,13 @@ namespace Codebase.Logic.PlayerComponents.Shield
             IStaticDataService staticDataService,
             IInitializationService initiationService,
             [Inject(Id = InjectionIDs.Shield)]
-            SpriteColorHandler colorHandler)
+            SpriteColorHandler colorHandler,
+            IVFXPool vfxPool)
         {
             _staticDataService = staticDataService;
             _colorHandler = colorHandler;
             _shipEnergy = energy;
+            _vfxPool = vfxPool;
 
             initiationService.Register(this);
         }
@@ -53,11 +59,24 @@ namespace Codebase.Logic.PlayerComponents.Shield
                 _shipEnergy.Reduce(value);                
         }
 
-        public void OnCollision(Collider2D with)
+        public void OnCollision(Collider2D collider)
         {
-            if (_isActivated
-                && with.TryGetComponent(out IDamageable damageable))
+            if (collider.TryGetComponent(out IDamageable damageable))
+            {
+                _vfxSpawnPosition = _collider
+                    .ClosestPoint(collider.transform.position);
+
+                if (_isActivated)
+                {
+                    _vfxPool.Spawn<VFX_OnPlayerActiveShieldHit>(_vfxSpawnPosition);
+
                     damageable.ApplyDamage(_activatedShieldContactDamage);
+                }
+                else
+                {
+                    _vfxPool.Spawn<VFX_OnPlayerInactiveShieldHit>(_vfxSpawnPosition);
+                }
+            }                    
         }
     }
 

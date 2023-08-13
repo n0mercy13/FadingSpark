@@ -25,7 +25,7 @@ namespace Codebase.Logic.PlayerComponents.Shield
         }
 
         private void OnTriggerEnter2D(Collider2D collision) => 
-            _shield.OnCollision(with: collision);
+            _shield.OnCollision(collider: collision);
 
         public void ApplyDamage(int value) => 
             _shield.OnHit(value);
