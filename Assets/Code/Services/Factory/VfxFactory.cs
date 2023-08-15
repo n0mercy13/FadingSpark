@@ -32,11 +32,11 @@ namespace Codebase.Services.Factory
             string assetPath;
 
             if (typeof(VFX_OnPlayerLaserHit) == typeof(TEffect))
-                assetPath = Constants.AssetPath.VFX.OnPlayerLaserHit;
+                assetPath = Constants.AssetPath.VFX.PlayerLaserHit;
             else if (typeof(VFX_OnPlayerActiveShieldHit) == typeof(TEffect))
-                assetPath = Constants.AssetPath.VFX.OnPlayerActiveShieldHit;
+                assetPath = Constants.AssetPath.VFX.PlayerActiveShieldHit;
             else if (typeof(VFX_OnPlayerInactiveShieldHit) == typeof(TEffect))
-                assetPath = Constants.AssetPath.VFX.OnPlayerInactiveShieldHit;
+                assetPath = Constants.AssetPath.VFX.PlayerInactiveShieldHit;
             else
                 throw new InvalidOperationException(
                     $"Prefab with {nameof(TEffect)} component was not found");

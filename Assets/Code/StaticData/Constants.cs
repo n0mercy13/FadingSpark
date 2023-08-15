@@ -27,11 +27,15 @@
 
             public static class VFX
             {
-                public const string OnPlayerLaserHit = "VFX/vfx_onPlayerLaserHit";
-                public const string OnPlayerActiveShieldHit = "VFX/vfx_onPlayerActiveShieldHit";
-                public const string OnPlayerInactiveShieldHit = "VFX/vfx_onPlayerInactiveShieldHit";
+                public const string PlayerLaserHit = "VFX/vfx_onPlayerLaserHit";
+                public const string PlayerActiveShieldHit = "VFX/vfx_onPlayerActiveShieldHit";
+                public const string PlayerInactiveShieldHit = "VFX/vfx_onPlayerInactiveShieldHit";
             }
             
+            public static class Collectables
+            {
+                public const string Experience = "Collectibles/Experience";
+            }
         }
 
         public static class StaticDataPaths

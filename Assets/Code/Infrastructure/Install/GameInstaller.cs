@@ -104,6 +104,9 @@ namespace Codebase.Infrastructure.Installer
                 .BindInterfacesTo<VFXFactory>()
                 .AsSingle();
             Container
+                .BindInterfacesTo<CollectibleFactory>()
+                .AsSingle();
+            Container
                 .Bind<GameFactory>()
                 .AsSingle()
                 .NonLazy();
