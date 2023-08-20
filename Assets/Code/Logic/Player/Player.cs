@@ -1,49 +1,50 @@
 using Zenject;
 using UnityEngine;
+using System;
 
 namespace Codebase.Logic.PlayerComponents
 {
-    public class Player : MonoBehaviour
+    public partial class Player : MonoBehaviour
 	{
-        private IEnergy _energy;
-        private PlayerMover _playerMover;
+        private PlayerMoveHandler _moveHandler;
         private PlayerWeaponHandler _weaponHandler;
-        private ShieldHandler _shieldHandler;
+        private PlayerShieldHandler _shieldHandler;
+        private IEnergy _energy;
 
         [Inject]
         private void Construct(
             IEnergy energy,
-            PlayerMover playerMover,
-            PlayerWeaponHandler weaponHandler,
-            ShieldHandler shieldHandler)
+            PlayerWeaponHandler playerWeaponHandler,
+            PlayerMoveHandler playerMoveHandler,
+            PlayerShieldHandler playerShieldHandler)
         {
             _energy = energy;
-            _playerMover = playerMover;
-            _weaponHandler = weaponHandler;
-            _shieldHandler = shieldHandler;
+            _weaponHandler = playerWeaponHandler;
+            _moveHandler = playerMoveHandler;
+            _shieldHandler = playerShieldHandler;
         }
 
-        private void Start() => 
-            InitializeComponents();
+        private void OnEnable() => 
+            Reset();
 
         private void OnDestroy() => 
-            DisposeComponents();
+            Dispose();
+
+        public IEnergy Energy => _energy;
 
         public void Reset()
         {
             _energy.Reset();
+            _shieldHandler.Reset();
         }
+    }
 
-        private void InitializeComponents()
+    public partial class Player : IDisposable
+    {
+        public void Dispose()
         {
-            _weaponHandler.Initialize(this);
-            _shieldHandler.Initialize();
-        }
-
-        private void DisposeComponents()
-        {
-            _playerMover.Dispose();
             _weaponHandler.Dispose();
+            _moveHandler.Dispose();
             _shieldHandler.Dispose();
         }
     }

@@ -1,4 +1,5 @@
-﻿using Zenject;
+﻿using System;
+using Zenject;
 using UnityEngine;
 using Codebase.Logic.PlayerComponents;
 using Codebase.Logic.Enemy.StateMachine;
@@ -12,8 +13,6 @@ namespace Codebase.Logic.EnemyComponents
     [RequireComponent(typeof(Collider2D))]
     public abstract class Enemy : MonoBehaviour
     {
-        [SerializeField] private EnemyTypes _type;
-
         protected EnemyStateMachine StateMachine;
         protected ITickProviderService TickProvider;
         protected Player Target;
@@ -34,12 +33,12 @@ namespace Codebase.Logic.EnemyComponents
             Player target, 
             IStaticDataService staticDataService, 
             ITickProviderService tickProvider,
-            ICoroutineRunner coroutineRunner)
+            ICoroutineRunner coroutineRunner,
+            EnemyStaticData enemyData)
         {
             Target = target;
             TickProvider = tickProvider;
 
-            EnemyStaticData enemyData = staticDataService.ForEnemy(_type);
             float speed = enemyData.Speed;
             int maxHealth = enemyData.MaxHealth;
             int damageOnCollision = enemyData.DamageOnCollision;

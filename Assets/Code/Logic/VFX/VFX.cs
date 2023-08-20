@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Codebase.Logic.VFX
+namespace Codebase.Logic.VisualEffects
 {
     [RequireComponent(typeof(ParticleSystem))]
     public class VFX : MonoBehaviour

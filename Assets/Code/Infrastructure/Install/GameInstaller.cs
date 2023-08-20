@@ -1,12 +1,6 @@
-using System;
 using Zenject;
 using UnityEngine;
 using Codebase.Infrastructure.StateMachine;
-using Codebase.Infrastructure.Install;
-using Codebase.Logic;
-using Codebase.Logic.PlayerComponents;
-using Codebase.Logic.PlayerComponents.Shield;
-using Codebase.Logic.PlayerComponents.Manager;
 using Codebase.Services.StaticData;
 using Codebase.Services.Input;
 using Codebase.Services.AssetProvider;
@@ -14,11 +8,14 @@ using Codebase.Services.Factory;
 using Codebase.Services.SceneLoader;
 using Codebase.Services.Tick;
 using Codebase.Services.RandomGenerator;
-using Codebase.Services.Pool;
 using Codebase.Services.Initialize;
 using Codebase.Services.Pause;
 using Codebase.UI.Factory;
+using Codebase.Logic.PlayerComponents.Manager;
 using Codebase.UI.Manager;
+using Codebase.Services.Pool;
+using Codebase.StaticData;
+using Codebase.Logic.PlayerComponents;
 
 namespace Codebase.Infrastructure.Installer
 {
@@ -32,17 +29,18 @@ namespace Codebase.Infrastructure.Installer
             BindInputs();
             BindServices();
             BindFactories();
-            BindPools();
             BindManagers();
-            BindPlayerComponents();
+            BindPools();
         }
 
         private void BindPools()
         {
             Container
                 .BindInterfacesTo<VFXPool>()
-                .AsSingle()
-                .NonLazy();
+                .AsSingle();
+            Container
+                .BindInterfacesTo<ProjectilePool>()
+                .AsSingle();
         }
 
         private void BindManagers()
@@ -57,59 +55,18 @@ namespace Codebase.Infrastructure.Installer
                 .NonLazy();
         }
 
-        private void BindPlayerComponents()
-        {
-            Container
-                .BindInterfacesTo<Energy>()
-                .AsSingle();
-            Container
-                .BindInterfacesAndSelfTo<Shield>()
-                .AsSingle();
-            Container
-                .Bind<PlayerWeaponHandler>()
-                .AsSingle();
-            Container
-                .Bind<PlayerMover>()
-                .AsSingle();
-            Container
-                .Bind<ShieldHandler>()
-                .AsSingle();
-            Container
-                .Bind<ShieldStateMachine>()
-                .AsSingle()
-                .NonLazy();
-            Container
-                .Bind<SpriteColorHandler>()
-                .WithId(InjectionIDs.Shield)
-                .AsSingle();
-        }
-
         private void BindFactories()
         {
             Container
-                .BindInterfacesTo<PlayerFactory>()
-                .AsSingle();
-            Container
-                .BindInterfacesTo<EnemyFactory>()
-                .AsSingle()
-                .NonLazy();
-            Container
                 .BindInterfacesTo<UIFactory>()
-                .AsSingle();
-            Container
-                .BindInterfacesTo<ProjectileFactory>()
-                .AsSingle()
-                .NonLazy();
-            Container
-                .BindInterfacesTo<VFXFactory>()
-                .AsSingle();
-            Container
-                .BindInterfacesTo<CollectibleFactory>()
                 .AsSingle();
             Container
                 .Bind<GameFactory>()
                 .AsSingle()
                 .NonLazy();
+            Container
+                .BindFactory<PlayerStaticData, Player, PlayerFactory>()
+                .FromFactory<CustomPlayerFactory>();
         }
 
         private void BindInfrastructure()
@@ -141,19 +98,19 @@ namespace Codebase.Infrastructure.Installer
                 .BindInterfacesTo<InitializationService>()
                 .AsSingle();
             Container
-                .BindInterfacesTo<StaticDataService>()
-                .AsSingle();
-            Container
                 .BindInterfacesTo<InputService>()
-                .AsSingle();
-            Container
-                .BindInterfacesTo<AssetProviderService>()
                 .AsSingle();
             Container
                 .BindInterfacesTo<SceneLoaderService>()
                 .AsSingle();  
             Container
                 .BindInterfacesTo<TickProviderService>()
+                .AsSingle();
+            Container
+                .BindInterfacesTo<StaticDataService>()
+                .AsSingle();
+            Container
+                .BindInterfacesTo<AssetProviderService>()
                 .AsSingle();
         }
     }

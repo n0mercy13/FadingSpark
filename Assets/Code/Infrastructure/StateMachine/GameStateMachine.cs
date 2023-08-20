@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using Codebase.Services.SceneLoader;
 using Codebase.Services.Factory;
 using Codebase.Services.StaticData;
-using Codebase.Services.Initialize;
 using Codebase.Services.Pause;
-using Codebase.Logic.PlayerComponents;
 using Codebase.UI.Manager;
 using Codebase.Logic.PlayerComponents.Manager;
 using Codebase.Services.Input;
@@ -21,24 +19,22 @@ namespace Codebase.Infrastructure.StateMachine
             IStaticDataService staticDataService,
             IInputService inputService,
             ILockable lockableInput,
-            IInitializationService initializationService,
             ISceneLoaderService sceneLoader,
             IPauseService pauseService,
             IPlayerManager playerManager,
             IUIManager uiManager,
-            IEnergy playerEnergy,
             GameFactory gameFactory)
         {
             _states = new Dictionary<Type, IExitableState>
             {
                 [typeof(BootstrapState)] = new BootstrapState(
-                    this, staticDataService, initializationService),
+                    this, staticDataService),
                 [typeof(LoadLevelState)] = new LoadLevelState(
                     this, sceneLoader,  uiManager, gameFactory, playerManager),
                 [typeof(ResetState)] = new ResetState(
                     this, playerManager, uiManager, pauseService),
                 [typeof(GameLoopState)] = new GameLoopState(
-                    this, uiManager, playerEnergy, inputService),
+                    this, uiManager, inputService),
                 [typeof(MainMenuState)] = new MainMenuState(
                     this, pauseService, uiManager, lockableInput),
                 [typeof(GameOverState)] = new GameOverState(

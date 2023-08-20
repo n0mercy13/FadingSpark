@@ -6,7 +6,7 @@ namespace Codebase.Logic.PlayerComponents.Shield
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(SpriteRenderer))]
     [RequireComponent(typeof(CircleCollider2D))]
-    public class ShieldPresenter : MonoBehaviour, IDamageable
+    public partial class ShieldPresenter : MonoBehaviour
     {
         private CircleCollider2D _collider;
         private SpriteRenderer _spriteRenderer;
@@ -27,13 +27,16 @@ namespace Codebase.Logic.PlayerComponents.Shield
         private void OnTriggerEnter2D(Collider2D collision) => 
             _shield.OnCollision(collider: collision);
 
-        public void ApplyDamage(int value) => 
-            _shield.OnHit(value);
-
         private void Initialize()
         {
             Material material = _spriteRenderer.material;
             _shield.SetComponents(_collider, material);
         }
+    }
+
+    public partial class ShieldPresenter : IDamageable
+    {
+        public void ApplyDamage(int value) =>
+            _shield.OnHit(value);
     }
 }

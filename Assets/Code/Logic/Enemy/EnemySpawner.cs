@@ -1,38 +1,40 @@
 ﻿using System;
-using UnityEngine;
-using Codebase.Services.Factory;
 using Codebase.Services.Tick;
 using Codebase.Services.RandomGenerator;
+using Codebase.Services.Pool;
+using Codebase.Logic.EnemyComponents.Behavior;
+using UnityEngine;
+using Codebase.Logic.PlayerComponents.Manager;
 
 namespace Codebase.Logic.EnemyComponents
 {
-    public class EnemySpawner : IDisposable
+    public partial class EnemySpawner
     {
         private const float SpawnDelay = 1f;
 
-        private readonly IEnemyFactory _enemyFactory;
+        private readonly IEnemyPool _pool;
         private readonly ITickProviderService _tickProvider;
         private readonly IRandomGeneratorService _random;
 
+        private Transform _playerTransform;
         private float _timer;
 
         public EnemySpawner(
-            IEnemyFactory enemyFactory,
             ITickProviderService tickProvider,
-            IRandomGeneratorService random)
+            IRandomGeneratorService random,
+            IPlayerManager playerManager,
+            IEnemyPool pool)
         {
-            _enemyFactory = enemyFactory;
             _tickProvider = tickProvider;
             _random = random;
+            _pool = pool;
+            _playerTransform = playerManager.Player;
 
             _tickProvider.Ticked += OnTick;
         }
 
         private float _deltaTime => 
             _tickProvider.DeltaTime;
-
-        public void Dispose() => 
-            _tickProvider.Ticked -= OnTick;
 
         private void OnTick(int tickCount)
         {
@@ -46,8 +48,13 @@ namespace Codebase.Logic.EnemyComponents
         }
 
         private void CreateSmallAsteroid() => 
-            _enemyFactory.Create(
-                EnemyTypes.SmallAsteroid, 
-                _random.GetPositionOutsideViewport());
+            _pool.Spawn<Enemy_SmallAsteroid>(
+                _random.GetPositionOutsideViewport(), _playerTransform.position);
+    }
+
+    public partial class EnemySpawner : IDisposable
+    {
+        public void Dispose() =>
+            _tickProvider.Ticked -= OnTick;
     }
 }

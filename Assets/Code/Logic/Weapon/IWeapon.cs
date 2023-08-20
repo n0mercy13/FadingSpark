@@ -1,6 +1,6 @@
 ﻿namespace Codebase.Logic.Weapons
 {
-    public interface IWeapon
+    public interface IWeapon 
     {
         void Shoot();
     }

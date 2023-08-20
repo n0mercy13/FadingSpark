@@ -38,7 +38,7 @@ namespace Codebase.Infrastructure.StateMachine
         {
             CreateUI();
             CreatePlayer();
-            CreateEnemySpawner();
+            //CreateEnemySpawner();
         }
 
         private void CreateUI()
@@ -48,7 +48,7 @@ namespace Codebase.Infrastructure.StateMachine
         }
 
         private void CreatePlayer() =>
-            _playerManager.Reset();
+            _playerManager.Spawn();
 
         private void CreateEnemySpawner() => 
             _gameFactory.CreateEnemySpawner();

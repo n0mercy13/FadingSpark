@@ -4,6 +4,7 @@ using UnityEngine;
 using Codebase.StaticData;
 using Codebase.Logic.EnemyComponents;
 using Codebase.Services.Tick;
+using Codebase.Logic.VisualEffects;
 
 namespace Codebase.Logic.Weapons
 {
@@ -13,7 +14,7 @@ namespace Codebase.Logic.Weapons
 
         private ITickProviderService _tickProvider;
         private EnemyMover _mover;
-        private Action<Vector3> _spawnVFX;
+        private Func<Vector3, VFX> _spawnVFX;
         private int _damage;
         private float _speed;
         private float _time;
@@ -43,7 +44,7 @@ namespace Codebase.Logic.Weapons
         public void Initialize(
             WeaponStaticData weaponData, 
             Vector3 direction,
-            Action<Vector3> spawnVFX)
+            Func<Vector3, VFX> spawnVFX)
         {
             _speed = weaponData.ProjectileSpeed;
             _damage = weaponData.ProjectileDamage;

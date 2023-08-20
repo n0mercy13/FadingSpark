@@ -1,5 +1,4 @@
-﻿using Codebase.Services.Initialize;
-using Codebase.Services.StaticData;
+﻿using Codebase.Services.StaticData;
 using Codebase.StaticData;
 
 namespace Codebase.Infrastructure.StateMachine
@@ -8,23 +7,17 @@ namespace Codebase.Infrastructure.StateMachine
     {
         private readonly GameStateMachine _gameStateMachine;
         private readonly IStaticDataService _staticDataService;
-        private readonly IInitializationService _initializationService;
 
         public BootstrapState(
             GameStateMachine gameStateMachine,
-            IStaticDataService staticDataService,
-            IInitializationService initializationService)
+            IStaticDataService staticDataService)
         {
             _gameStateMachine = gameStateMachine;
             _staticDataService = staticDataService;
-            _initializationService = initializationService;
         }
 
         private void LoadStaticData() => 
             _staticDataService.Load();
-
-        private void InitializeClasses() => 
-            _initializationService.InitializeAll();
     }
 
     public partial class BootstrapState : IState
@@ -32,7 +25,6 @@ namespace Codebase.Infrastructure.StateMachine
         public void Enter()
         {
             LoadStaticData();
-            InitializeClasses();
 
             _gameStateMachine.Enter<LoadLevelState, string>(Constants.Level.InitialLevelName);
         }

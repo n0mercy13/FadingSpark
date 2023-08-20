@@ -64,7 +64,7 @@ namespace Codebase.Services.Pool
 
                 for (int i = 0; i < spawnables.Count; i++)
                 {
-                    if (spawnables[i].isActiveAndEnabled.Equals(true))
+                    if (spawnables[i].isActiveAndEnabled.Equals(false))
                     {
                         _spawnable = spawnables[i];
 

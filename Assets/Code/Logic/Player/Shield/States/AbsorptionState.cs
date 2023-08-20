@@ -1,13 +1,9 @@
 ﻿using System.Collections;
-using Zenject;
 using UnityEngine;
 using Codebase.Infrastructure;
-using Codebase.Infrastructure.Install;
 using Codebase.Infrastructure.StateMachine;
-using Codebase.Services.StaticData;
 using Codebase.StaticData;
-using Codebase.Services.Initialize;
-using IInitializable = Codebase.Services.Initialize.IInitializable;
+using Codebase.Services.StaticData;
 
 namespace Codebase.Logic.PlayerComponents.Shield
 {
@@ -15,7 +11,6 @@ namespace Codebase.Logic.PlayerComponents.Shield
     {
         private readonly ShieldStateMachine _stateMachine;
         private readonly ICoroutineRunner _coroutineRunner;
-        private readonly IStaticDataService _staticDataService;
         private readonly SpriteColorHandler _colorHandler;
         private readonly IShield _shield;
 
@@ -26,20 +21,21 @@ namespace Codebase.Logic.PlayerComponents.Shield
 
         public AbsorptionState(
             ShieldStateMachine stateMachine,
-            [Inject(Id = InjectionIDs.Shield)]
             SpriteColorHandler colorHandler,
             IStaticDataService staticDataService,
             ICoroutineRunner coroutineRunner,
-            IInitializationService initializationService,
             IShield shield)
         {
             _stateMachine = stateMachine;
             _colorHandler = colorHandler;
             _coroutineRunner = coroutineRunner;
-            _staticDataService = staticDataService;
             _shield = shield;
 
-            initializationService.Register(this);
+            PlayerStaticData playerData = staticDataService.ForPlayer();
+
+            _shieldAbsorbColor = playerData.ShieldAbsorptionColor;
+            _absorbDuration = playerData.ShieldAbsorptionTime;
+            _switchDelay = new WaitForSeconds(_absorbDuration);
         }
 
         private IEnumerator SwitchingToActiveState()
@@ -68,18 +64,6 @@ namespace Codebase.Logic.PlayerComponents.Shield
 
             if (_switchToActiveStateCoroutine != null)
                 _coroutineRunner.StopCoroutine(_switchToActiveStateCoroutine);
-        }
-    }
-
-    public partial class AbsorptionState : IInitializable
-    {
-        public void Initialize()
-        {
-            PlayerStaticData staticData = _staticDataService.ForPlayer();
-
-            _shieldAbsorbColor = staticData.ShieldAbsorptionColor;
-            _absorbDuration = staticData.ShieldAbsorptionTime;
-            _switchDelay = new WaitForSeconds(_absorbDuration);
         }
     }
 }

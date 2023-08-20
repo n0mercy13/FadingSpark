@@ -3,8 +3,8 @@ using System.Linq;
 using UnityEngine;
 using Codebase.StaticData;
 using System.Collections.Generic;
-using Codebase.Logic.EnemyComponents;
 using Codebase.Logic.Weapons;
+using Codebase.Logic.Enemy;
 
 namespace Codebase.Services.StaticData
 {
@@ -34,11 +34,14 @@ namespace Codebase.Services.StaticData
                 $"{typeof(PlayerStaticData)} was not loaded");
 
 
-        public EnemyStaticData ForEnemy(EnemyTypes type) => 
-            _enemiesData.TryGetValue(type, out EnemyStaticData enemyData)
-            ? enemyData
-            : throw new ArgumentNullException(
+        public EnemyStaticData ForEnemy(EnemyTypes type)
+        {
+            if (_enemiesData.TryGetValue(type, out EnemyStaticData enemyData))
+                return enemyData;
+            else
+                throw new ArgumentNullException(
                 $"{typeof(EnemyStaticData)} for type '{type}' was not loaded");
+        }
 
         public WeaponStaticData ForWeapon(WeaponTypes type) =>
             _weaponsData.TryGetValue(type, out WeaponStaticData weaponData)

@@ -31,7 +31,7 @@ namespace Codebase.Infrastructure.StateMachine
         {
             _uIManager.CloseAllUI();
             _uIManager.OpenUIElement<UI_HUD>();
-            _playerManager.Reset();
+            _playerManager.Spawn();
             _pauseService.Resume();
 
             _stateMachine.Enter<GameLoopState>();

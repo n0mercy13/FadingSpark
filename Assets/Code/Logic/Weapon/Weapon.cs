@@ -1,16 +1,16 @@
 ﻿using System;
 using UnityEngine;
 using Codebase.Logic.PlayerComponents;
-using Codebase.Services.Factory;
 using Codebase.Services.Tick;
 using Codebase.StaticData;
+using Codebase.Services.Pool;
 
 namespace Codebase.Logic.Weapons
 {
     public partial class Weapon
     {
         private readonly IEnergy _shipsEnergy;
-        private readonly IProjectileFactory _projectileFactory;
+        private readonly IProjectilePool _projectilePool;
         private readonly ITickProviderService _tickProvider;
         private readonly Func<Vector3> _getShootDirection;
         private readonly Transform _projectileSpawnPoint;
@@ -24,12 +24,12 @@ namespace Codebase.Logic.Weapons
             WeaponMountPoint mountPoint,
             WeaponStaticData weaponData,
             IEnergy energy,
-            IProjectileFactory projectileFactory,
+            IProjectilePool projectilePool,
             ITickProviderService tickProvider,
             Func<Vector3> getShootDirection)
         {
             _shipsEnergy = energy;
-            _projectileFactory = projectileFactory;
+            _projectilePool = projectilePool;
             _tickProvider = tickProvider;
             _getShootDirection = getShootDirection;
             _projectileSpawnPoint = mountPoint.transform;
@@ -60,15 +60,19 @@ namespace Codebase.Logic.Weapons
 
     public partial class Weapon : IWeapon
     {
-        public void Shoot()
+        public virtual void Shoot()
+        {
+        }
+
+        protected void Shoot<TProjectile>() where TProjectile : Projectile
         {
             if (CanShoot())
             {
                 _time = 0;
                 _isReadyToShoot = false;
 
-                _projectileFactory.Create(
-                    Type, _projectileSpawnPoint.position, _getShootDirection.Invoke());
+                _projectilePool.Spawn<TProjectile>(
+                    _projectileSpawnPoint.position, _getShootDirection.Invoke());
                 _shipsEnergy.Reduce(_energyConsumption);
             }
         }

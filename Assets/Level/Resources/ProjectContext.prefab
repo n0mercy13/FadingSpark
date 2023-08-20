@@ -75,3 +75,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _coroutineRunner: {fileID: 4245001121318006580, guid: 2af8527cf8d398345811566b3478961e, type: 3}
+  _playerPrefab: {fileID: 9185148132120480954, guid: 892caf6777b99f643b611969b6d6a0c9, type: 3}

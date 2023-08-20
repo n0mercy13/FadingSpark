@@ -1,12 +1,8 @@
-﻿using Zenject;
-using UnityEngine;
-using Codebase.Infrastructure.Install;
-using Codebase.Logic.VFX;
-using Codebase.Services.StaticData;
-using Codebase.Services.Initialize;
+﻿using UnityEngine;
+using Codebase.Logic.VisualEffects;
 using Codebase.Services.Pool;
 using Codebase.StaticData;
-using IInitializable = Codebase.Services.Initialize.IInitializable;
+using Codebase.Services.StaticData;
 
 namespace Codebase.Logic.PlayerComponents.Shield
 {
@@ -14,32 +10,33 @@ namespace Codebase.Logic.PlayerComponents.Shield
     {
         private readonly IEnergy _shipEnergy;
         private readonly IVFXPool _vfxPool;
-        private readonly IStaticDataService _staticDataService;
         private readonly SpriteColorHandler _colorHandler;
+        private readonly int _activatedShieldContactDamage;
+        private readonly float _damageReductionCoefficient;
+        private readonly float _deactivatedShieldRadius;
+        private readonly float _activatedShieldRadius;
 
         private CircleCollider2D _collider;
         private Vector3 _vfxSpawnPosition;
-        private int _activatedShieldContactDamage;
-        private float _damageReductionCoefficient;
-        private float _deactivatedShieldRadius;
-        private float _activatedShieldRadius;
         private bool _canAbsorb;
         private bool _isActivated;
 
         public Shield(
             IEnergy energy,
             IStaticDataService staticDataService,
-            IInitializationService initiationService,
-            [Inject(Id = InjectionIDs.Shield)]
             SpriteColorHandler colorHandler,
             IVFXPool vfxPool)
         {
-            _staticDataService = staticDataService;
             _colorHandler = colorHandler;
             _shipEnergy = energy;
             _vfxPool = vfxPool;
 
-            initiationService.Register(this);
+            PlayerStaticData playerData = staticDataService.ForPlayer();
+
+            _damageReductionCoefficient = playerData.ShieldDamageReductionCoefficient;
+            _deactivatedShieldRadius = playerData.DeactivatedShieldRadius;
+            _activatedShieldRadius = playerData.ActivatedShieldRadius;
+            _activatedShieldContactDamage = playerData.ActivatedShieldContactDamage;
         }
 
         public void SetComponents(CircleCollider2D collider, Material material)
@@ -66,17 +63,22 @@ namespace Codebase.Logic.PlayerComponents.Shield
                 _vfxSpawnPosition = _collider
                     .ClosestPoint(collider.transform.position);
 
-                if (_isActivated)
-                {
-                    _vfxPool.Spawn<VFX_OnPlayerActiveShieldHit>(_vfxSpawnPosition);
+                ApplyDamageOnContact(damageable);
+            }
+        }
 
-                    damageable.ApplyDamage(_activatedShieldContactDamage);
-                }
-                else
-                {
-                    _vfxPool.Spawn<VFX_OnPlayerInactiveShieldHit>(_vfxSpawnPosition);
-                }
-            }                    
+        private void ApplyDamageOnContact(IDamageable damageable)
+        {
+            if (_isActivated)
+            {
+                _vfxPool.Spawn<VFX_OnPlayerActiveShieldHit>(_vfxSpawnPosition);
+
+                damageable.ApplyDamage(_activatedShieldContactDamage);
+            }
+            else
+            {
+                _vfxPool.Spawn<VFX_OnPlayerInactiveShieldHit>(_vfxSpawnPosition);
+            }
         }
     }
 
@@ -99,18 +101,5 @@ namespace Codebase.Logic.PlayerComponents.Shield
 
         public void DisableAbsorption() =>
             _canAbsorb = false;
-    }
-
-    public partial class Shield : IInitializable
-    {
-        public void Initialize()
-        {
-            PlayerStaticData playerData = _staticDataService.ForPlayer();
-
-            _damageReductionCoefficient = playerData.ShieldDamageReductionCoefficient;
-            _deactivatedShieldRadius = playerData.DeactivatedShieldRadius;
-            _activatedShieldRadius = playerData.ActivatedShieldRadius;
-            _activatedShieldContactDamage = playerData.ActivatedShieldContactDamage;
-        }
     }
 }

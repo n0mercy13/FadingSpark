@@ -1,11 +1,7 @@
-﻿using Zenject;
-using UnityEngine;
+﻿using UnityEngine;
 using Codebase.Infrastructure.StateMachine;
-using Codebase.Services.StaticData;
 using Codebase.StaticData;
-using Codebase.Infrastructure.Install;
-using Codebase.Services.Initialize;
-using IInitializable = Codebase.Services.Initialize.IInitializable;
+using Codebase.Services.StaticData;
 
 namespace Codebase.Logic.PlayerComponents.Shield
 {
@@ -13,7 +9,6 @@ namespace Codebase.Logic.PlayerComponents.Shield
     {
         private readonly IShield _shield;
         private readonly IPlayerWeaponActivatable _weapons;
-        private readonly IStaticDataService _staticDataService;
         private readonly SpriteColorHandler _colorHandler;
 
         private Color _inactiveColor;
@@ -21,17 +16,16 @@ namespace Codebase.Logic.PlayerComponents.Shield
         public InactiveState(
             IShield shield,
             IStaticDataService staticDataService,
-            [Inject(Id = InjectionIDs.Shield)]
             SpriteColorHandler colorHandler,
-            IPlayerWeaponActivatable weaponHandler,
-            IInitializationService initializationService)
+            IPlayerWeaponActivatable weaponHandler)
         {
             _shield = shield;
             _colorHandler = colorHandler;
             _weapons = weaponHandler;
-            _staticDataService = staticDataService;
 
-            initializationService.Register(this);
+            PlayerStaticData playerData = staticDataService.ForPlayer();
+
+            _inactiveColor = playerData.ShieldInactiveColor;
         }
     }
 
@@ -48,16 +42,6 @@ namespace Codebase.Logic.PlayerComponents.Shield
         {
             _weapons.Deactivate();
             _shield.Enable();
-        }
-    }
-
-    public partial class InactiveState : IInitializable
-    {
-        public void Initialize()
-        {
-            PlayerStaticData playerData = _staticDataService.ForPlayer();
-
-            _inactiveColor = playerData.ShieldInactiveColor;
         }
     }
 }

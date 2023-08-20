@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Zenject;
 using UnityEngine;
 using Codebase.StaticData;
 
@@ -7,9 +7,8 @@ namespace Codebase.Logic.PlayerComponents
     [RequireComponent(typeof(SpriteRenderer))]
     public class BoundariesKeeper : MonoBehaviour
     {
-        [SerializeField] private Player _player;
-
         private SpriteRenderer _spriteRenderer;
+        private Transform _playerTransform;
         private Camera _camera;
         private Vector2 _position;
         private Vector2 _minBounds;
@@ -17,11 +16,9 @@ namespace Codebase.Logic.PlayerComponents
         private float _spriteWidth;
         private float _spriteHeight;
 
-        private void OnValidate()
-        {
-            if (_player == null)
-                throw new ArgumentNullException(nameof(_player));
-        }
+        [Inject]
+        private void Construct(Player player) => 
+            _playerTransform = player.transform;
 
         private void Awake()
         {
@@ -44,8 +41,8 @@ namespace Codebase.Logic.PlayerComponents
 
         private Vector3 _playerPosition
         {
-            get => _player.transform.position;
-            set => _player.transform.position = value;
+            get => _playerTransform.position;
+            set => _playerTransform.position = value;
         }
 
         private void KeepInBounds()

@@ -1,17 +1,23 @@
 ﻿using Zenject;
 using Codebase.Logic.PlayerComponents;
 using Codebase.Services.AssetProvider;
+using Codebase.Services.StaticData;
+using Codebase.Infrastructure.Installer;
 using Codebase.StaticData;
 
 namespace Codebase.Services.Factory
 {
-    public partial class PlayerFactory
+    public class PlayerFactory : PlaceholderFactory<PlayerStaticData, Player>
+    {
+    }
+
+    public partial class CustomPlayerFactory
     {
         private readonly DiContainer _container;
         private readonly IAssetProviderService _assetProviderService;
 
-        public PlayerFactory(
-            DiContainer container,            
+        public CustomPlayerFactory(
+            DiContainer container, 
             IAssetProviderService assetProviderService)
         {
             _container = container;
@@ -19,14 +25,16 @@ namespace Codebase.Services.Factory
         }
     }
 
-    public partial class PlayerFactory : IPlayerFactory
+    public partial class CustomPlayerFactory : Zenject.IFactory<PlayerStaticData, Player>
     {
-        public Player Create()
+        public Player Create(PlayerStaticData playerData)
         {
-            Player playerPrefab = _assetProviderService
-                .GetPrefab<Player>(Constants.AssetPath.Player);
-            _container.Bind<Player>()
-                .FromComponentInNewPrefab(playerPrefab)
+            Player playerPrefab = 
+                _assetProviderService.GetPrefab<Player>();
+            _container
+                .Bind<Player>()
+                .FromSubContainerResolve()
+                .ByNewPrefabInstaller<PlayerInstaller>(playerPrefab)
                 .AsSingle();
 
             return _container.Resolve<Player>();
